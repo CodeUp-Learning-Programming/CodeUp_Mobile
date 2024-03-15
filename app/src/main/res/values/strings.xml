@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Codeup</string>
+    <string name="title_activity_tela_home">TelaHome</string>
+    <string name="title_activity_tela_login">TelaLogin</string>
+    <string name="title_activity_styles">Styles</string>
+
+    <string name="text_email">Email</string>
+    <string name="text_senha">Senha</string>
+    <string name="text_lembrar">Lembrar-me</string>
+    <string name="text_nao_tem_conta">Não tem conta ainda?</string>
+    <string name="text_cadastrar_se">Cadastre-se</string>
+    <string name="text_login">Login</string>
+    <string name="text_home">Home</string>
+    <string name="text_entrar">Entrar</string>
+
+</resources>
