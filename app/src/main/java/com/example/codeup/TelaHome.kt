@@ -6,10 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.codeup.ui.theme.CodeupTheme
 
 class TelaHome : ComponentActivity() {
@@ -22,25 +20,28 @@ class TelaHome : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting2("Android")
+
+                        Home("Android")
+
                 }
             }
         }
     }
 }
 
+
+
+
+
 @Composable
-fun Greeting2(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun Home(name: String, modifier: Modifier = Modifier) {
+    ScaffoldExample("${R.mipmap.fundo}", totalCoracoes = 5, totalMoedas = 10, totalSequencia = 5)
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview2() {
-    CodeupTheme {
-        Greeting2("Android")
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun GreetingPreview2() {
+//    CodeupTheme {
+//        Home("Android")
+//    }
+//}
