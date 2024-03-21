@@ -169,6 +169,7 @@ fun BotaoAzul(
 fun TextFieldBordaGradienteAzul(
     isTextFieldFocused: Boolean,
     texto: String,
+    exemplo: String,
     onValueChanged: (String) -> Unit,
     onFocusChanged: (FocusState) -> Unit,
 

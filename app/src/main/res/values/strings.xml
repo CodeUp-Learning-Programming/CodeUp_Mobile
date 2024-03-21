@@ -3,7 +3,6 @@
     <string name="title_activity_tela_home">TelaHome</string>
     <string name="title_activity_tela_login">TelaLogin</string>
     <string name="title_activity_styles">Styles</string>
-
     <string name="text_email">Email</string>
     <string name="text_senha">Senha</string>
     <string name="text_lembrar">Lembrar-me</string>
@@ -16,5 +15,8 @@
     <string name="text_aprenda">Aprenda</string>
     <string name="text_ranking">Ranking</string>
     <string name="text_perfil">Perfil</string>
-
+    <string name="title_activity_tela_cadastro">TelaCadastro</string>
+    <string name="text_data_nascimento">Data de Nascimento</string>
+    <string name="text_nome">Nome</string>
+    <string name="text_ja_tem_conta">Ja tem Conta?</string>
 </resources>
