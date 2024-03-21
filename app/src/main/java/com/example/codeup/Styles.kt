@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -30,7 +31,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
@@ -253,7 +253,7 @@ fun CheckboxComGradiente(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScaffoldExample(imagem:String, totalCoracoes:Int, totalSequencia:Int, totalMoedas:Int) {
+fun ScaffoldExample(imagem:String, nomeMateria:String, totalCoracoes:Int, totalSequencia:Int, totalMoedas:Int) {
     var presses by remember { mutableIntStateOf(0) }
 
     Scaffold(
@@ -264,13 +264,10 @@ fun ScaffoldExample(imagem:String, totalCoracoes:Int, totalSequencia:Int, totalM
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
-                    Box(){
+                    Box{
                         Column {
                             //Linha de cima
-                            Row(
-
-                                
-                            ){
+                            Row{
 
                                 //materia
                                 Row{
@@ -280,11 +277,12 @@ fun ScaffoldExample(imagem:String, totalCoracoes:Int, totalSequencia:Int, totalM
                                     Image(
                                         painter = painter,
                                         contentDescription = stringResource(R.string.text_descricao_materia),
-                                        contentScale = contentScale,
-                                        modifier = Modifier.padding(all = 10.dp)
                                     )
                                 }
-                                Row{
+                                Row(modifier = Modifier
+                                    .fillMaxWidth(),
+
+                                    ){
                                     //coracao
                                     //fogo
                                     //moedas
@@ -292,13 +290,11 @@ fun ScaffoldExample(imagem:String, totalCoracoes:Int, totalSequencia:Int, totalM
                                     val painter2: Painter = painterResource(id = R.mipmap.fogo_azul)
                                     val painter3: Painter = painterResource(id = R.mipmap.moeda)
                                     val contentScale = ContentScale.FillBounds
-                                    Row(){
+                                    Row(modifier = Modifier){
                                         TextoBranco(texto = "${totalCoracoes}", tamanhoFonte = 20, pesoFonte = "normal")
                                         Image(
                                             painter = painter1,
                                             contentDescription = stringResource(R.string.text_descricao_materia),
-                                            contentScale = ContentScale.Crop, // Mantém a proporção original
-                                            modifier = Modifier.scale(3f)
                                         )
                                     }
                                     Row(){
@@ -306,8 +302,6 @@ fun ScaffoldExample(imagem:String, totalCoracoes:Int, totalSequencia:Int, totalM
                                         Image(
                                             painter = painter2,
                                             contentDescription = stringResource(R.string.text_descricao_materia),
-                                            contentScale = contentScale,
-                                            modifier = Modifier.padding(all = 10.dp)
                                         )
                                     }
                                     Row(){
@@ -315,8 +309,6 @@ fun ScaffoldExample(imagem:String, totalCoracoes:Int, totalSequencia:Int, totalM
                                         Image(
                                             painter = painter3,
                                             contentDescription = stringResource(R.string.text_descricao_materia),
-                                            contentScale = contentScale,
-                                            modifier = Modifier.padding(all = 10.dp)
                                         )
                                     }
 
@@ -326,6 +318,7 @@ fun ScaffoldExample(imagem:String, totalCoracoes:Int, totalSequencia:Int, totalM
                             Row(){
                                 //menu hamburg
                                 //materia
+                                TextoBranco(texto = nomeMateria, tamanhoFonte = 20, pesoFonte = "normal")
                             }
                         }
                     }
@@ -337,12 +330,72 @@ fun ScaffoldExample(imagem:String, totalCoracoes:Int, totalSequencia:Int, totalM
                 containerColor = Color(R.color.black),
                 contentColor = MaterialTheme.colorScheme.primary,
             ) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    text = "Bottom app bar",
-                )
+               Box(modifier = Modifier
+                       .fillMaxWidth()
+                       .fillMaxHeight()){
+                   Row(modifier = Modifier
+                       .fillMaxWidth()
+                       .fillMaxHeight(),
+                       horizontalArrangement = Arrangement.SpaceAround,
+                       verticalAlignment = Alignment.CenterVertically
+                   ){
+                       val painter1: Painter = painterResource(id = R.mipmap.chapeu_estudante)
+                       val painter2: Painter = painterResource(id = R.mipmap.medalha)
+                       val painter3: Painter = painterResource(id = R.mipmap.usuario)
+                       val painter4: Painter = painterResource(id = R.mipmap.usuario)
+                       val contentScale = ContentScale.FillBounds
+
+                       Column(
+                           modifier = Modifier,
+                           horizontalAlignment = Alignment.CenterHorizontally,
+                           verticalArrangement = Arrangement.Center
+                       ) {
+                           Image(
+                               painter = painter1,
+                               contentDescription = stringResource(R.string.text_aprenda),
+                               modifier = Modifier
+
+                           )
+                           TextoBranco(texto = stringResource(R.string.text_aprenda), tamanhoFonte = 12, pesoFonte = "normal")
+                       }
+                       Column (
+                           modifier = Modifier,
+                           horizontalAlignment = Alignment.CenterHorizontally,
+                           verticalArrangement = Arrangement.Center
+                       ){
+                           Image(
+                               painter = painter2,
+                               contentDescription = stringResource(R.string.text_ranking),
+
+                           )
+                           TextoBranco(texto = stringResource(R.string.text_ranking), tamanhoFonte = 12, pesoFonte = "normal")
+                       }
+                       Column (
+                           modifier = Modifier,
+                           horizontalAlignment = Alignment.CenterHorizontally,
+                           verticalArrangement = Arrangement.Center
+                       ){
+                           Image(
+                               painter = painter3,
+                               contentDescription = stringResource(R.string.text_perfil),
+
+                           )
+                           TextoBranco(texto = stringResource(R.string.text_perfil), tamanhoFonte = 12, pesoFonte = "normal")
+                       }
+                       Column (
+                           modifier = Modifier,
+                           horizontalAlignment = Alignment.CenterHorizontally,
+                           verticalArrangement = Arrangement.Center
+                       ){
+                           Image(
+                               painter = painter4,
+                               contentDescription = stringResource(R.string.text_perfil),
+
+                           )
+                           TextoBranco(texto = stringResource(R.string.text_perfil), tamanhoFonte = 12, pesoFonte = "normal")
+                       }
+                   }
+               }
             }
         },
     ) { innerPadding ->

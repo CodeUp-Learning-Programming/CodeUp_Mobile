@@ -13,5 +13,8 @@
     <string name="text_home">Home</string>
     <string name="text_entrar">Entrar</string>
     <string name="text_descricao_materia">Logo da matéria escolhida</string>
+    <string name="text_aprenda">Aprenda</string>
+    <string name="text_ranking">Ranking</string>
+    <string name="text_perfil">Perfil</string>
 
 </resources>

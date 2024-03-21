@@ -18,17 +18,7 @@
             android:label="@string/title_activity_tela_home"
             android:theme="@style/Theme.Codeup" />
         <activity
-            android:name=".Styles"
-            android:exported="false"
-            android:label="@string/title_activity_styles"
-            android:theme="@style/Theme.Codeup" />
-        <activity
             android:name=".TelaLogin"
-            android:exported="false"
-            android:label="@string/title_activity_tela_login"
-            android:theme="@style/Theme.Codeup" />
-        <activity
-            android:name=".ui.theme.TelaLogin"
             android:exported="false"
             android:label="@string/title_activity_tela_login"
             android:theme="@style/Theme.Codeup" />
