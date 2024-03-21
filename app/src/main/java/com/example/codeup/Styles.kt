@@ -165,6 +165,7 @@ fun BotaoAzul(
 fun TextFieldBordaGradienteAzul(
     isTextFieldFocused: Boolean,
     texto: String,
+    exemplo: String,
     onValueChanged: (String) -> Unit,
     onFocusChanged: (FocusState) -> Unit,
 
@@ -194,8 +195,16 @@ fun TextFieldBordaGradienteAzul(
             .border(1.dp, corDaBorda, shape = RoundedCornerShape(8.dp))
             .background(Color(1,1,1))
             .padding(8.dp),
+
     ) {
-        TextoBranco(texto = texto, tamanhoFonte = 14, pesoFonte = "normal")
+        val textoExibido = if (texto.isEmpty()) exemplo else texto
+        val corDoTexto = if (texto.isEmpty()) Color.Gray else Color.White // Ajustando a cor do texto
+        Text(
+            text = textoExibido,
+            color = corDoTexto,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Medium
+        )
     }
 }
 

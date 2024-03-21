@@ -12,5 +12,9 @@
     <string name="text_login">Login</string>
     <string name="text_home">Home</string>
     <string name="text_entrar">Entrar</string>
+    <string name="title_activity_tela_cadastro">TelaCadastro</string>
+    <string name="text_data_nascimento">Data de Nascimento</string>
+    <string name="text_nome">Nome</string>
+    <string name="text_ja_tem_conta">Ja tem Conta?</string>
 
 </resources>
