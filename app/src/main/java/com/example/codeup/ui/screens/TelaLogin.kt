@@ -1,8 +1,7 @@
-package com.example.codeup
+package com.example.codeup.ui.screens
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -29,13 +28,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
+import com.example.codeup.R
+import com.example.codeup.Usuario
+import com.example.codeup.ui.composables.BotaoAzul
+import com.example.codeup.ui.composables.CheckboxComGradiente
+import com.example.codeup.ui.composables.TextFieldBordaGradienteAzul
+import com.example.codeup.ui.composables.TextoAzulGradienteSublinhado
+import com.example.codeup.ui.composables.TextoBranco
 import com.example.codeup.ui.theme.CodeupTheme
 
 class TelaLogin : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window,false)
 
         setContent {
             CodeupTheme {
@@ -91,7 +95,7 @@ fun Login(name: String, modifier: Modifier = Modifier) {
             TextFieldBordaGradienteAzul(
                 isTextFieldFocused = isTextfieldFocused,
                 texto = usuario.email.toString(),
-                exemplo = "seuEmail@gmail.com",
+                label = stringResource(R.string.text_email_label),
                 onValueChanged = {usuarioSetter(usuario.copy(email = it.toString()))},
                 onFocusChanged = {isTextfieldFocused = it.isFocused},
             )
@@ -110,10 +114,9 @@ fun Login(name: String, modifier: Modifier = Modifier) {
             TextFieldBordaGradienteAzul(
                 isTextFieldFocused = isTextfieldFocused,
                 texto = usuario.senha.toString(),
-                exemplo = "********",
+                label = "********",
                 onValueChanged = {usuarioSetter(usuario.copy(senha = it.toString()))},
                 onFocusChanged = {isTextfieldFocused = it.isFocused},
-
                 )
         }
 
@@ -161,7 +164,8 @@ fun Login(name: String, modifier: Modifier = Modifier) {
             TextoBranco(texto = stringResource(R.string.text_nao_tem_conta), tamanhoFonte = 12, pesoFonte = "normal")
             TextButton(
                 onClick = {
-                    Toast.makeText(contexto,"Botão clicado!", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(contexto, TelaCadastro::class.java)
+                    contexto.startActivity(intent)
                 },) {
                 TextoAzulGradienteSublinhado(texto = stringResource(R.string.text_cadastrar_se), tamanhoFonte = 12, pesoFonte = "normal")
             }

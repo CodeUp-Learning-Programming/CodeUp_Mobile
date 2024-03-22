@@ -1,8 +1,7 @@
-package com.example.codeup
+package com.example.codeup.ui.screens
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,11 +26,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.codeup.R
+import com.example.codeup.Usuario
+import com.example.codeup.ui.composables.BotaoAzul
+import com.example.codeup.ui.composables.TextFieldBordaGradienteAzul
+import com.example.codeup.ui.composables.TextoAzulGradienteSublinhado
+import com.example.codeup.ui.composables.TextoBranco
 import com.example.codeup.ui.theme.CodeupTheme
 
 class TelaCadastro : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             CodeupTheme {
                 // A surface container using the 'background' color from the theme
@@ -83,7 +88,7 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
             TextFieldBordaGradienteAzul(
                 isTextFieldFocused = isTextfieldFocused,
                 texto = usuario.nome.toString(),
-                exemplo = "Seu Nome",
+                label = stringResource(R.string.text_nome_label),
                 onValueChanged = {usuarioSetter(usuario.copy(nome = it.toString()))},
                 onFocusChanged = {isTextfieldFocused = it.isFocused},
             )
@@ -102,7 +107,7 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
             TextFieldBordaGradienteAzul(
                 isTextFieldFocused = isTextfieldFocused,
                 texto = usuario.dataNascimento.toString(),
-                exemplo = "25/03/2001",
+                label = stringResource(R.string.text_data_label),
                 onValueChanged = {usuarioSetter(usuario.copy(dataNascimento = it.toString()))},
                 onFocusChanged = {isTextfieldFocused = it.isFocused},
             )
@@ -121,7 +126,7 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
             TextFieldBordaGradienteAzul(
                 isTextFieldFocused = isTextfieldFocused,
                 texto = usuario.email.toString(),
-                exemplo = "seuEmail@gmail.com",
+                label = stringResource(R.string.text_email_label),
                 onValueChanged = {usuarioSetter(usuario.copy(email = it.toString()))},
                 onFocusChanged = {isTextfieldFocused = it.isFocused},
             )
@@ -140,7 +145,7 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
             TextFieldBordaGradienteAzul(
                 isTextFieldFocused = isTextfieldFocused,
                 texto = usuario.senha.toString(),
-                exemplo = "********",
+                label = "********",
                 onValueChanged = {usuarioSetter(usuario.copy(senha = it.toString()))},
                 onFocusChanged = {isTextfieldFocused = it.isFocused},
 

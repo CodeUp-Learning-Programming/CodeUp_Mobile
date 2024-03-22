@@ -13,17 +13,17 @@
         android:theme="@style/Theme.Codeup"
         tools:targetApi="31">
         <activity
-            android:name=".TelaCadastro"
+            android:name=".ui.screens.TelaCadastro"
             android:exported="false"
             android:label="@string/title_activity_tela_cadastro"
             android:theme="@style/Theme.Codeup" />
         <activity
-            android:name=".TelaHome"
+            android:name=".ui.screens.TelaHome"
             android:exported="false"
             android:label="@string/title_activity_tela_home"
             android:theme="@style/Theme.Codeup" />
         <activity
-            android:name=".TelaLogin"
+            android:name=".ui.screens.TelaLogin"
             android:exported="false"
             android:label="@string/title_activity_tela_login"
             android:theme="@style/Theme.Codeup" />

@@ -19,4 +19,7 @@
     <string name="text_data_nascimento">Data de Nascimento</string>
     <string name="text_nome">Nome</string>
     <string name="text_ja_tem_conta">Ja tem Conta?</string>
+    <string name="text_email_label">seu-email@gmail.com</string>
+    <string name="text_data_label">25/03//2001</string>
+    <string name="text_nome_label">Seu nome</string>
 </resources>
