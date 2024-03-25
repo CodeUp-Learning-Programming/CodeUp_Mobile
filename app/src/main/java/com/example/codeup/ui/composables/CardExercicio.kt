@@ -3,6 +3,7 @@ package com.example.codeup.ui.composables
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,13 +20,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
-import com.example.codeup.ui.theme.CodeupTheme
 
 @Composable
-fun Card(bloqueado: Boolean, totalExerciciosConcluidos: Int, totalExercicios: Int) {
+fun Card(
+    bloqueado: Boolean,
+    totalExerciciosConcluidos: Int,
+    totalExercicios: Int,
+    onClick: () -> Unit
+) {
     val borderGradient = Brush.horizontalGradient(
         colors = listOf(
             Color(0, 225, 242),
@@ -33,12 +37,22 @@ fun Card(bloqueado: Boolean, totalExerciciosConcluidos: Int, totalExercicios: In
         )
     )
 
+    val borderGradientBloqueado = Brush.horizontalGradient(
+        colors = listOf(
+            Color(92, 92, 92),
+            Color(92, 92, 92),
+        )
+    )
+
+    val borda = if (bloqueado) borderGradientBloqueado else borderGradient
+
     Box(
         modifier = Modifier
             .width(130.dp)
             .height(100.dp)
             .background(Color.Black) // Cor de fundo do cartão
-            .border(2.dp, borderGradient, shape = RoundedCornerShape(8F)) // Borda com gradiente
+            .border(2.dp, borda, shape = RoundedCornerShape(8F)) // Borda com gradiente
+            .clickable(onClick = onClick)
     ) {
         Column(
             modifier = Modifier
@@ -46,14 +60,14 @@ fun Card(bloqueado: Boolean, totalExerciciosConcluidos: Int, totalExercicios: In
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if(bloqueado){
-                val painter1: Painter = painterResource(id = R.mipmap.cadeado)
+            if (bloqueado) {
+                val painter1: Painter = painterResource(id = R.drawable.icon_cadeado)
                 Image(
                     painter = painter1,
                     contentDescription = stringResource(R.string.text_descricao_materia),
                 )
-            }else{
-                Row(){
+            } else {
+                Row() {
                     TextoBranco("$totalExerciciosConcluidos/$totalExercicios", 36, "normal")
                 }
             }
@@ -62,6 +76,7 @@ fun Card(bloqueado: Boolean, totalExerciciosConcluidos: Int, totalExercicios: In
     }
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun CardPreview() {
@@ -69,3 +84,4 @@ fun CardPreview() {
         Card(false, 2, 10)
     }
 }
+*/

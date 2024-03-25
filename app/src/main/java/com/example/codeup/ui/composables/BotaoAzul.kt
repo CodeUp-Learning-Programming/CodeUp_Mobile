@@ -3,7 +3,6 @@ package com.example.codeup.ui.composables
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -24,11 +23,14 @@ import com.example.codeup.R
 fun BotaoAzul(
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
-){
+    modifier: Modifier = Modifier,
+    altura: Int = 56,
+    largura: Int = 120,
+    tamanhoFonte: Int = 16
+) {
     Box(
         modifier = modifier
-            .size(width = 120.dp, height = 56.dp)
+            .size(width = largura.dp, height = altura.dp)
             .shadow(4.dp, RoundedCornerShape(1.dp))
             .background(
                 brush = Brush.horizontalGradient(
@@ -40,8 +42,7 @@ fun BotaoAzul(
                 shape = RoundedCornerShape(8.dp)
             )
             .clickable { onClick.invoke() }
-            .padding(16.dp)
-    ){
+    ) {
         Text(
             text = text,
             color = Color.White,
@@ -49,7 +50,7 @@ fun BotaoAzul(
             fontFamily = FontFamily(
                 Font(R.font.poppins_semi_bold, FontWeight.SemiBold)
             ),
-            fontSize = 16.sp
+            fontSize = tamanhoFonte.sp
         )
     }
 }

@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 fun CheckboxComGradiente(
     lembrar: Boolean,
     onCheckedChange: (Boolean) -> Unit,
-){
+) {
     val gradient =
         Brush.horizontalGradient(
             colors = listOf(

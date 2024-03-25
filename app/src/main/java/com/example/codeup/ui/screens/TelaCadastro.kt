@@ -3,7 +3,9 @@ package com.example.codeup.ui.screens
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -22,9 +23,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 import com.example.codeup.Usuario
@@ -37,13 +38,20 @@ import com.example.codeup.ui.theme.CodeupTheme
 class TelaCadastro : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(
+                0, 0
+            ),
+            navigationBarStyle = SystemBarStyle.light(
+                0, 0
+            )
+        )
         setContent {
             CodeupTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    color = Color(13, 13, 13)
                 ) {
                     Cadastro("Android")
                 }
@@ -55,14 +63,15 @@ class TelaCadastro : ComponentActivity() {
 @Composable
 fun Cadastro(name: String, modifier: Modifier = Modifier) {
     val contexto = LocalContext.current
-    val (usuario, usuarioSetter) = remember{
+    val (usuario, usuarioSetter) = remember {
         mutableStateOf(Usuario())
     }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(all = 20.dp),
-        verticalArrangement = Arrangement.Top){
+        verticalArrangement = Arrangement.Top
+    ) {
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -82,15 +91,19 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
         )
 
         Column(modifier = Modifier.fillMaxWidth()) {
-            TextoBranco(texto = stringResource(R.string.text_nome), tamanhoFonte = 14, pesoFonte = "normal")
+            TextoBranco(
+                texto = stringResource(R.string.text_nome),
+                tamanhoFonte = 14,
+                pesoFonte = "normal"
+            )
             var isTextfieldFocused by remember { mutableStateOf(false) }
 
             TextFieldBordaGradienteAzul(
                 isTextFieldFocused = isTextfieldFocused,
                 texto = usuario.nome.toString(),
                 label = stringResource(R.string.text_nome_label),
-                onValueChanged = {usuarioSetter(usuario.copy(nome = it.toString()))},
-                onFocusChanged = {isTextfieldFocused = it.isFocused},
+                onValueChanged = { usuarioSetter(usuario.copy(nome = it.toString())) },
+                onFocusChanged = { isTextfieldFocused = it.isFocused },
             )
         }
 
@@ -101,15 +114,19 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
         )
 
         Column(modifier = Modifier.fillMaxWidth()) {
-            TextoBranco(texto = stringResource(R.string.text_data_nascimento), tamanhoFonte = 14, pesoFonte = "normal")
+            TextoBranco(
+                texto = stringResource(R.string.text_data_nascimento),
+                tamanhoFonte = 14,
+                pesoFonte = "normal"
+            )
             var isTextfieldFocused by remember { mutableStateOf(false) }
 
             TextFieldBordaGradienteAzul(
                 isTextFieldFocused = isTextfieldFocused,
                 texto = usuario.dataNascimento.toString(),
                 label = stringResource(R.string.text_data_label),
-                onValueChanged = {usuarioSetter(usuario.copy(dataNascimento = it.toString()))},
-                onFocusChanged = {isTextfieldFocused = it.isFocused},
+                onValueChanged = { usuarioSetter(usuario.copy(dataNascimento = it.toString())) },
+                onFocusChanged = { isTextfieldFocused = it.isFocused },
             )
         }
 
@@ -120,15 +137,19 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
         )
 
         Column(modifier = Modifier.fillMaxWidth()) {
-            TextoBranco(texto = stringResource(R.string.text_email), tamanhoFonte = 14, pesoFonte = "normal")
+            TextoBranco(
+                texto = stringResource(R.string.text_email),
+                tamanhoFonte = 14,
+                pesoFonte = "normal"
+            )
             var isTextfieldFocused by remember { mutableStateOf(false) }
 
             TextFieldBordaGradienteAzul(
                 isTextFieldFocused = isTextfieldFocused,
                 texto = usuario.email.toString(),
                 label = stringResource(R.string.text_email_label),
-                onValueChanged = {usuarioSetter(usuario.copy(email = it.toString()))},
-                onFocusChanged = {isTextfieldFocused = it.isFocused},
+                onValueChanged = { usuarioSetter(usuario.copy(email = it.toString())) },
+                onFocusChanged = { isTextfieldFocused = it.isFocused },
             )
         }
 
@@ -139,15 +160,19 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
         )
 
         Column(modifier = Modifier.fillMaxWidth()) {
-            TextoBranco(texto = stringResource(R.string.text_senha), tamanhoFonte = 14, pesoFonte = "normal")
+            TextoBranco(
+                texto = stringResource(R.string.text_senha),
+                tamanhoFonte = 14,
+                pesoFonte = "normal"
+            )
             var isTextfieldFocused by remember { mutableStateOf(false) }
 
             TextFieldBordaGradienteAzul(
                 isTextFieldFocused = isTextfieldFocused,
                 texto = usuario.senha.toString(),
                 label = "********",
-                onValueChanged = {usuarioSetter(usuario.copy(senha = it.toString()))},
-                onFocusChanged = {isTextfieldFocused = it.isFocused},
+                onValueChanged = { usuarioSetter(usuario.copy(senha = it.toString())) },
+                onFocusChanged = { isTextfieldFocused = it.isFocused },
 
 
                 )
@@ -160,7 +185,7 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
         )
 
         BotaoAzul(
-            text = stringResource(R.string.text_entrar),
+            text = stringResource(R.string.text_cadastrar),
             onClick = {
                 val telaHome = Intent(contexto, TelaHome::class.java)
                 telaHome.putExtra("usuario", usuario)
@@ -172,7 +197,7 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp)
+                .height(170.dp)
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -180,23 +205,33 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
 
-        ){
-            TextoBranco(texto = stringResource(R.string.text_ja_tem_conta), tamanhoFonte = 12, pesoFonte = "normal")
+        ) {
+            TextoBranco(
+                texto = stringResource(R.string.text_ja_tem_conta),
+                tamanhoFonte = 12,
+                pesoFonte = "normal"
+            )
             TextButton(
                 onClick = {
                     val intent = Intent(contexto, TelaLogin::class.java)
                     contexto.startActivity(intent)
-                },) {
-                TextoAzulGradienteSublinhado(texto = stringResource(R.string.text_entrar), tamanhoFonte = 12, pesoFonte = "normal")
+                },
+            ) {
+                TextoAzulGradienteSublinhado(
+                    texto = stringResource(R.string.text_entrar),
+                    tamanhoFonte = 12,
+                    pesoFonte = "normal"
+                )
             }
         }
     }
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     CodeupTheme {
         Cadastro("Android")
     }
-}
+}*/

@@ -24,18 +24,14 @@ class MainActivity : ComponentActivity() {
                 0, 0
             )
         )
-
-
-
-
         setContent {
             CodeupTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color(13,13,13)
+                    color = Color(13, 13, 13)
                 ) {
-                    Greeting("Android")
+                    Login("Android")
                 }
             }
         }
@@ -46,11 +42,3 @@ class MainActivity : ComponentActivity() {
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Login("")
 }
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview() {
-//    CodeupTheme {
-//        Login("")
-//    }
-//}

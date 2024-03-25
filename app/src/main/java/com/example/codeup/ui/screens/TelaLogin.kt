@@ -3,8 +3,9 @@ package com.example.codeup.ui.screens
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 import com.example.codeup.Usuario
@@ -41,13 +41,21 @@ class TelaLogin : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(
+                0, 0
+            ),
+            navigationBarStyle = SystemBarStyle.light(
+                0, 0
+            )
+        )
+
         setContent {
             CodeupTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color(1, 1, 1)),
+                        .fillMaxSize(),
+                    color = Color(13, 13, 13)
                 ) {
                     Login("extras")
                 }
@@ -59,9 +67,9 @@ class TelaLogin : ComponentActivity() {
 @Composable
 fun Login(name: String, modifier: Modifier = Modifier) {
 
-    var lembrar by remember { mutableStateOf(false)}
+    var lembrar by remember { mutableStateOf(false) }
     val contexto = LocalContext.current
-    val (usuario, usuarioSetter) = remember{
+    val (usuario, usuarioSetter) = remember {
         mutableStateOf(Usuario())
     }
 
@@ -69,7 +77,8 @@ fun Login(name: String, modifier: Modifier = Modifier) {
         modifier = Modifier
             .fillMaxSize()
             .padding(all = 20.dp),
-        verticalArrangement = Arrangement.Top) {
+        verticalArrangement = Arrangement.Top
+    ) {
 
         Spacer(
             modifier = Modifier
@@ -89,15 +98,19 @@ fun Login(name: String, modifier: Modifier = Modifier) {
                 .height(40.dp)
         )
         Column(modifier = Modifier.fillMaxWidth()) {
-            TextoBranco(texto = stringResource(R.string.text_email), tamanhoFonte = 14, pesoFonte = "normal")
+            TextoBranco(
+                texto = stringResource(R.string.text_email),
+                tamanhoFonte = 14,
+                pesoFonte = "normal"
+            )
             var isTextfieldFocused by remember { mutableStateOf(false) }
 
             TextFieldBordaGradienteAzul(
                 isTextFieldFocused = isTextfieldFocused,
                 texto = usuario.email.toString(),
                 label = stringResource(R.string.text_email_label),
-                onValueChanged = {usuarioSetter(usuario.copy(email = it.toString()))},
-                onFocusChanged = {isTextfieldFocused = it.isFocused},
+                onValueChanged = { usuarioSetter(usuario.copy(email = it.toString())) },
+                onFocusChanged = { isTextfieldFocused = it.isFocused },
             )
         }
 
@@ -108,16 +121,20 @@ fun Login(name: String, modifier: Modifier = Modifier) {
         )
 
         Column(modifier = Modifier.fillMaxWidth()) {
-            TextoBranco(texto = stringResource(R.string.text_senha), tamanhoFonte = 14, pesoFonte = "normal")
+            TextoBranco(
+                texto = stringResource(R.string.text_senha),
+                tamanhoFonte = 14,
+                pesoFonte = "normal"
+            )
             var isTextfieldFocused by remember { mutableStateOf(false) }
 
             TextFieldBordaGradienteAzul(
                 isTextFieldFocused = isTextfieldFocused,
                 texto = usuario.senha.toString(),
                 label = "********",
-                onValueChanged = {usuarioSetter(usuario.copy(senha = it.toString()))},
-                onFocusChanged = {isTextfieldFocused = it.isFocused},
-                )
+                onValueChanged = { usuarioSetter(usuario.copy(senha = it.toString())) },
+                onFocusChanged = { isTextfieldFocused = it.isFocused },
+            )
         }
 
         Row(
@@ -126,10 +143,14 @@ fun Login(name: String, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .width(115.dp)
                 .height(60.dp)
-        ){
-            CheckboxComGradiente(lembrar = lembrar, onCheckedChange = {lembrar = it})
+        ) {
+            CheckboxComGradiente(lembrar = lembrar, onCheckedChange = { lembrar = it })
 
-            TextoBranco(texto = stringResource(R.string.text_lembrar), tamanhoFonte = 12, pesoFonte = "normal")
+            TextoBranco(
+                texto = stringResource(R.string.text_lembrar),
+                tamanhoFonte = 12,
+                pesoFonte = "normal"
+            )
         }
 
 
@@ -152,7 +173,7 @@ fun Login(name: String, modifier: Modifier = Modifier) {
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
+                .height(268.dp)
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -160,26 +181,26 @@ fun Login(name: String, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
 
-        ){
-            TextoBranco(texto = stringResource(R.string.text_nao_tem_conta), tamanhoFonte = 12, pesoFonte = "normal")
+        ) {
+            TextoBranco(
+                texto = stringResource(R.string.text_nao_tem_conta),
+                tamanhoFonte = 12,
+                pesoFonte = "normal"
+            )
             TextButton(
                 onClick = {
                     val intent = Intent(contexto, TelaCadastro::class.java)
                     contexto.startActivity(intent)
-                },) {
-                TextoAzulGradienteSublinhado(texto = stringResource(R.string.text_cadastrar_se), tamanhoFonte = 12, pesoFonte = "normal")
+                },
+            ) {
+                TextoAzulGradienteSublinhado(
+                    texto = stringResource(R.string.text_cadastrar_se),
+                    tamanhoFonte = 12,
+                    pesoFonte = "normal"
+                )
             }
         }
     }
 
 
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview3() {
-    CodeupTheme {
-        Login("sada")
-    }
 }

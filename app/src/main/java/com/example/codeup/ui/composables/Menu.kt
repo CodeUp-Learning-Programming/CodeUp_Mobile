@@ -66,11 +66,10 @@ fun Menu(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-
                         //materia
                         Row {
                             val painter: Painter =
-                                painterResource(id = R.mipmap.javascript_logo)
+                                painterResource(id = R.drawable.icon_javascript_logo)
                             val contentScale = ContentScale.FillBounds
 
                             Image(
@@ -87,9 +86,10 @@ fun Menu(
                             //coracao
                             //fogo
                             //moedas
-                            val painter1: Painter = painterResource(id = R.mipmap.coracao_cheio)
-                            val painter2: Painter = painterResource(id = R.mipmap.fogo_azul)
-                            val painter3: Painter = painterResource(id = R.mipmap.moeda)
+                            val painter1: Painter =
+                                painterResource(id = R.drawable.icon_coracao_cheio)
+                            val painter2: Painter = painterResource(id = R.drawable.icon_fogo_azul)
+                            val painter3: Painter = painterResource(id = R.drawable.icon_moeda)
                             val contentScale = ContentScale.FillBounds
                             Row(
                                 modifier = Modifier.width(50.dp),
@@ -175,10 +175,10 @@ fun Menu(
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val painter1: Painter = painterResource(id = R.mipmap.chapeu_estudante)
-                        val painter2: Painter = painterResource(id = R.mipmap.medalha)
-                        val painter3: Painter = painterResource(id = R.mipmap.usuario)
-                        val painter4: Painter = painterResource(id = R.mipmap.usuario)
+                        val painter1: Painter = painterResource(id = R.drawable.icon_aprenda)
+                        val painter2: Painter = painterResource(id = R.drawable.icon_medalha)
+                        val painter3: Painter = painterResource(id = R.drawable.icon_amigos)
+                        val painter4: Painter = painterResource(id = R.drawable.icon_usuario)
                         val contentScale = ContentScale.FillBounds
 
                         Column(
@@ -221,11 +221,11 @@ fun Menu(
                         ) {
                             Image(
                                 painter = painter3,
-                                contentDescription = stringResource(R.string.text_perfil),
+                                contentDescription = stringResource(R.string.text_amigos),
 
                                 )
                             TextoBranco(
-                                texto = stringResource(R.string.text_perfil),
+                                texto = stringResource(R.string.text_amigos),
                                 tamanhoFonte = 12,
                                 pesoFonte = "normal"
                             )
@@ -256,7 +256,7 @@ fun Menu(
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            ImageBackgroundExample(backgroundImageResId = R.mipmap.fundo) {
+            ImageBackgroundExample(backgroundImageResId = R.drawable.tema_estrela) {
                 //Colocar conteudo aqui dinamicamente
                 conteudo()
             }

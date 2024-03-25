@@ -49,11 +49,14 @@ fun TextFieldBordaGradienteAzul(
             .fillMaxWidth()
             .onFocusChanged { onFocusChanged(it) }
             .border(1.dp, corDaBorda, shape = RoundedCornerShape(8.dp))
-            .background(Color(1, 1, 1))
+            .background(
+                Color(0, 0, 0), shape = RoundedCornerShape(8.dp)
+            )
             .padding(8.dp),
     ) {
         val textoExibido = if (texto.isEmpty()) label else texto
-        val corDoTexto = if (texto.isEmpty()) Color.Gray else Color.White // Ajustando a cor do texto
+        val corDoTexto =
+            if (texto.isEmpty()) Color.Gray else Color.White // Ajustando a cor do texto
         Text(
             text = textoExibido,
             color = corDoTexto,

@@ -11,8 +11,8 @@ import androidx.compose.ui.unit.sp
 import com.example.codeup.R
 
 @Composable
-fun TextoBranco(texto: String, tamanhoFonte:Int, pesoFonte: String){
-    if(pesoFonte == "Titulo"){
+fun TextoBranco(texto: String, tamanhoFonte: Int, pesoFonte: String) {
+    if (pesoFonte == "Titulo") {
         Text(
             text = texto,
             color = Color.White,
@@ -22,7 +22,7 @@ fun TextoBranco(texto: String, tamanhoFonte:Int, pesoFonte: String){
             fontSize = tamanhoFonte.sp,
             textAlign = TextAlign.Start
         )
-    }else{
+    } else {
         Text(
             text = texto,
             color = Color.White,

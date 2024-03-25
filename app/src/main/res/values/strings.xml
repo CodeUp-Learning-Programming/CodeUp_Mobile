@@ -6,7 +6,7 @@
     <string name="text_email">Email</string>
     <string name="text_senha">Senha</string>
     <string name="text_lembrar">Lembrar-me</string>
-    <string name="text_nao_tem_conta">Não tem conta ainda?</string>
+    <string name="text_nao_tem_conta">Não possui uma conta ainda?</string>
     <string name="text_cadastrar_se">Cadastre-se</string>
     <string name="text_login">Login</string>
     <string name="text_home">Home</string>
@@ -18,8 +18,10 @@
     <string name="title_activity_tela_cadastro">TelaCadastro</string>
     <string name="text_data_nascimento">Data de Nascimento</string>
     <string name="text_nome">Nome</string>
-    <string name="text_ja_tem_conta">Ja tem Conta?</string>
+    <string name="text_ja_tem_conta">Já possui uma conta?</string>
     <string name="text_email_label">seu-email@gmail.com</string>
     <string name="text_data_label">25/03//2001</string>
     <string name="text_nome_label">Seu nome</string>
+    <string name="text_amigos">Amigos</string>
+    <string name="text_cadastrar">Cadastrar</string>
 </resources>
