@@ -7,11 +7,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -111,7 +109,7 @@ fun MenuExercicio(
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val painter1: Painter = painterResource(id = R.drawable.icon_aprenda)
+                        val painter1: Painter = painterResource(id = R.drawable.icon_aprenda_selecionado)
                         val painter2: Painter = painterResource(id = R.drawable.icon_medalha)
                         val painter3: Painter = painterResource(id = R.drawable.icon_amigos)
                         val painter4: Painter = painterResource(id = R.drawable.icon_usuario)

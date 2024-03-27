@@ -176,7 +176,7 @@ fun Menu(
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val painter1: Painter = painterResource(id = R.drawable.icon_aprenda)
+                        val painter1: Painter = painterResource(id = R.drawable.icon_aprenda_selecionado)
                         val painter2: Painter = painterResource(id = R.drawable.icon_medalha)
                         val painter3: Painter = painterResource(id = R.drawable.icon_amigos)
                         val painter4: Painter = painterResource(id = R.drawable.icon_usuario)

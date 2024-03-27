@@ -1,6 +1,5 @@
 package com.example.codeup.ui.composables
 
-import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -69,7 +68,7 @@ fun CardAprenda(
             ) {
                 TextoBranco(texto = "APRENDA", tamanhoFonte = 12, pesoFonte = "regular")
 
-                val painter1: Painter = painterResource(id = R.drawable.icon_aprenda)
+                val painter1: Painter = painterResource(id = R.drawable.icon_aprenda_selecionado)
                 Image(
                     painter = painter1,
                     contentDescription = stringResource(R.string.text_descricao_materia),
