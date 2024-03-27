@@ -24,4 +24,5 @@
     <string name="text_nome_label">Seu nome</string>
     <string name="text_amigos">Amigos</string>
     <string name="text_cadastrar">Cadastrar</string>
+    <string name="title_activity_tela_exercicio">TelaExercicio</string>
 </resources>

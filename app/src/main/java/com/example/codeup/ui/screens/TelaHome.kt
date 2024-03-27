@@ -6,13 +6,17 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -30,7 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 import com.example.codeup.ui.DadosDoCard
-import com.example.codeup.ui.composables.Card
+import com.example.codeup.ui.composables.CardExercicio
 import com.example.codeup.ui.composables.CardPopup
 import com.example.codeup.ui.composables.Menu
 import com.example.codeup.ui.theme.CodeupTheme
@@ -66,7 +70,7 @@ class TelaHome : ComponentActivity() {
 @Composable
 fun Home(name: String, fundo: String = "tema_padrao", modifier: Modifier = Modifier) {
     Menu(
-        "${R.drawable.tema_estrela}",
+        "${R.drawable.tema_pontos}",
         "Algoritimo",
         totalCoracoes = 5,
         totalMoedas = 10,
@@ -141,7 +145,8 @@ fun Home(name: String, fundo: String = "tema_padrao", modifier: Modifier = Modif
             var i = 0;
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .padding(top = 10.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 reverseLayout = false
@@ -154,6 +159,12 @@ fun Home(name: String, fundo: String = "tema_padrao", modifier: Modifier = Modif
                             modifier = Modifier
                                 .fillMaxHeight()
                         ) {
+                            drawLine(
+                                color = Color.Gray,
+                                start = Offset(300f, 0f),
+                                end = Offset(300f, 400f),
+                                strokeWidth = 50f
+                            )
                             drawLine(
                                 color = Color.Black,
                                 start = Offset(300f, 0f),
@@ -168,7 +179,7 @@ fun Home(name: String, fundo: String = "tema_padrao", modifier: Modifier = Modif
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = if (alinharDireita) Arrangement.End else Arrangement.Start
                         ) {
-                            Card(
+                            CardExercicio(
                                 bloqueado = exercicio.bloqueado,
                                 totalExercicios = exercicio.totalExercicios,
                                 totalExerciciosConcluidos = exercicio.totalExerciciosConcluidos,
@@ -193,18 +204,25 @@ fun Home(name: String, fundo: String = "tema_padrao", modifier: Modifier = Modif
             }
             // Se o pop-up estiver visível, mostra o pop-up correspondente ao card selecionado
             if (showPopup && selectedCardIndex != -1) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color(13,13,13).copy(alpha = 0.2f))
+                        .clickable {
+                            // Fecha o pop-up ao clicar no botão de fechar
+                            setShowPopup(false)
+                            // Reseta o índice do card selecionado
+                            selectedCardIndex = -1
+                        },
+                    contentAlignment = Alignment.Center
+                ){
+                    CardPopup(
+                        bloqueado = listaExercicios[selectedCardIndex].bloqueado,
+                        totalExercicios = listaExercicios[selectedCardIndex].totalExercicios,
+                        totalExerciciosConcluidos = listaExercicios[selectedCardIndex].totalExerciciosConcluidos,
+                    )
+                }
 
-                CardPopup(
-                    bloqueado = listaExercicios[selectedCardIndex].bloqueado,
-                    totalExercicios = listaExercicios[selectedCardIndex].totalExercicios,
-                    totalExerciciosConcluidos = listaExercicios[selectedCardIndex].totalExerciciosConcluidos,
-                    onClose = {
-                        // Fecha o pop-up ao clicar no botão de fechar
-                        setShowPopup(false)
-                        // Reseta o índice do card selecionado
-                        selectedCardIndex = -1
-                    }
-                )
             }
         }
     )

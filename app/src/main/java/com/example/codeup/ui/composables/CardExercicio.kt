@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 
 @Composable
-fun Card(
+fun CardExercicio(
     bloqueado: Boolean,
     totalExerciciosConcluidos: Int,
     totalExercicios: Int,

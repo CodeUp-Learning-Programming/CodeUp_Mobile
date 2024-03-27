@@ -50,6 +50,7 @@ fun Menu(
                     .fillMaxWidth()
                     .background(Color(0, 0, 0))
                     .height(140.dp)
+                    .padding(top = 50.dp)
             ) {
                 Column(
                     modifier = Modifier
@@ -256,7 +257,7 @@ fun Menu(
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            ImageBackgroundExample(backgroundImageResId = R.drawable.tema_estrela) {
+            ImageBackgroundExample(backgroundImageResId = R.drawable.tema_pontos) {
                 //Colocar conteudo aqui dinamicamente
                 conteudo()
             }

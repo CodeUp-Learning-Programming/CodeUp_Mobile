@@ -10,13 +10,9 @@ fun CardPopup(
     bloqueado: Boolean,
     totalExerciciosConcluidos: Int,
     totalExercicios: Int,
-    onClose: () -> Unit,
 ) {
     // Conteúdo do pop-up
-    Surface(
-        modifier = Modifier
-            .clickable { onClose() }, // Fechar pop-up ao clicar fora
-    ) {
+    Surface{
         if (!bloqueado) {
             CardAprenda(
                 bloqueado = false,

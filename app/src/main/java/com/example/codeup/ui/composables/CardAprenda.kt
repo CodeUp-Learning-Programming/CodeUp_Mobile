@@ -1,5 +1,7 @@
 package com.example.codeup.ui.composables
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,15 +24,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
+import com.example.codeup.ui.screens.TelaExercicio
 import com.example.codeup.ui.theme.CodeupTheme
 
 @Composable
-fun CardAprenda(bloqueado: Boolean, totalExerciciosConcluidos: Int, totalExercicios: Int) {
+fun CardAprenda(
+    bloqueado: Boolean,
+    totalExerciciosConcluidos: Int,
+    totalExercicios: Int,
+    ) {
+    val contexto = LocalContext.current
+
     val borderGradient = Brush.horizontalGradient(
         colors = listOf(
             Color(0, 225, 242),
@@ -110,7 +120,10 @@ fun CardAprenda(bloqueado: Boolean, totalExerciciosConcluidos: Int, totalExercic
             )
             Row {
                 BotaoAzul(
-                    text = "CONTINUE APRENDENDO", onClick = { /*TODO*/ },
+                    text = "CONTINUE APRENDENDO", onClick = {
+                        val telaExercicio = Intent(contexto, TelaExercicio::class.java)
+                        contexto.startActivity(telaExercicio)
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     altura = 30,
                     largura = 20,
