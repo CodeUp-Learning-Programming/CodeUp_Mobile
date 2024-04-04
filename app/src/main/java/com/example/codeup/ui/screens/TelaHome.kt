@@ -71,7 +71,7 @@ class TelaHome : ComponentActivity() {
 fun Home(name: String, fundo: String = "tema_padrao", modifier: Modifier = Modifier) {
     Menu(
         "${R.drawable.tema_pontos}",
-        "Algoritimo",
+        "Algoritmo",
         totalCoracoes = 5,
         totalMoedas = 10,
         totalSequencia = 5,

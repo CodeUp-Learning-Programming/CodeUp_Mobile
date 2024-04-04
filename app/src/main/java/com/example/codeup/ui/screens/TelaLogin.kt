@@ -29,7 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
-import com.example.codeup.Usuario
+import com.example.codeup.api.Usuario
 import com.example.codeup.ui.composables.BotaoAzul
 import com.example.codeup.ui.composables.CheckboxComGradiente
 import com.example.codeup.ui.composables.TextFieldBordaGradienteAzul
