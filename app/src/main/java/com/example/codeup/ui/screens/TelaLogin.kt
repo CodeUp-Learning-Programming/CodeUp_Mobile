@@ -29,13 +29,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
-import com.example.codeup.api.Usuario
+import com.example.codeup.api.RetrofitService
+import com.example.codeup.data.Usuario
+import com.example.codeup.data.UsuarioLoginRequest
 import com.example.codeup.ui.composables.BotaoAzul
 import com.example.codeup.ui.composables.CheckboxComGradiente
 import com.example.codeup.ui.composables.TextFieldBordaGradienteAzul
 import com.example.codeup.ui.composables.TextoAzulGradienteSublinhado
 import com.example.codeup.ui.composables.TextoBranco
 import com.example.codeup.ui.theme.CodeupTheme
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class TelaLogin : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,9 +74,14 @@ fun Login(name: String, modifier: Modifier = Modifier) {
 
     var lembrar by remember { mutableStateOf(false) }
     val contexto = LocalContext.current
+    val (usuarioLoginRequest, usuarioLoginRequestSetter) = remember {
+        mutableStateOf(UsuarioLoginRequest())
+    }
     val (usuario, usuarioSetter) = remember {
         mutableStateOf(Usuario())
     }
+
+    val erroApi = remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -107,9 +117,9 @@ fun Login(name: String, modifier: Modifier = Modifier) {
 
             TextFieldBordaGradienteAzul(
                 isTextFieldFocused = isTextfieldFocused,
-                texto = usuario.email.toString(),
+                texto = usuarioLoginRequest.email,
                 label = stringResource(R.string.text_email_label),
-                onValueChanged = { usuarioSetter(usuario.copy(email = it.toString())) },
+                onValueChanged = { usuarioLoginRequestSetter(usuarioLoginRequest.copy(email = it)) },
                 onFocusChanged = { isTextfieldFocused = it.isFocused },
             )
         }
@@ -130,9 +140,9 @@ fun Login(name: String, modifier: Modifier = Modifier) {
 
             TextFieldBordaGradienteAzul(
                 isTextFieldFocused = isTextfieldFocused,
-                texto = usuario.senha.toString(),
+                texto = usuarioLoginRequest.senha,
                 label = "********",
-                onValueChanged = { usuarioSetter(usuario.copy(senha = it.toString())) },
+                onValueChanged = { usuarioLoginRequestSetter(usuarioLoginRequest.copy(senha = it)) },
                 onFocusChanged = { isTextfieldFocused = it.isFocused },
             )
         }
@@ -163,13 +173,53 @@ fun Login(name: String, modifier: Modifier = Modifier) {
         BotaoAzul(
             text = stringResource(R.string.text_entrar),
             onClick = {
-                val telaHome = Intent(contexto, TelaHome::class.java)
-                telaHome.putExtra("usuario", usuario)
-                contexto.startActivity(telaHome)
+                val ApiUsuarios = RetrofitService.getApiUsuarioService(null)
+                val post = ApiUsuarios.login(usuarioLoginRequest);
+
+                post.enqueue(object : Callback<Usuario> {
+                    override fun onResponse(call: Call<Usuario>, response: Response<Usuario>) {
+                        if (response.isSuccessful) {
+                            val usuarioResponse = response.body()
+                            if (usuarioResponse != null) {
+                                usuarioSetter(usuario.copy(
+                                    id = usuarioResponse.id,
+                                    fotoPerfil = usuarioResponse.fotoPerfil,
+                                    nome = usuarioResponse.nome,
+                                    token = usuarioResponse.token,
+                                    email = usuarioResponse.email,
+                                    moedas = usuarioResponse.moedas,
+                                    nivel = usuarioResponse.nivel,
+                                    xp = usuarioResponse.xp,
+                                    itensAdquiridos = usuarioResponse.itensAdquiridos
+                                ))
+
+                                val telaHome = Intent(contexto, TelaHome::class.java)
+                                telaHome.putExtra("usuario", usuario)
+                                contexto.startActivity(telaHome)
+
+
+                            } else {
+                                erroApi.value = "Erro: Usuário não encontrado"
+                            }
+                        } else {
+                            erroApi.value = "Erro na resposta: ${response.code()}"
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Usuario>, t: Throwable) {
+                        erroApi.value = t.message.toString()
+                    }
+                })
+
             },
             modifier = Modifier.fillMaxWidth()
         )
-
+        if(!erroApi.equals("")){
+            TextoBranco(
+                texto = erroApi.value,
+                tamanhoFonte = 12,
+                pesoFonte = "normal")
+        }
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -200,7 +250,9 @@ fun Login(name: String, modifier: Modifier = Modifier) {
                 )
             }
         }
+
     }
+
 
 
 }

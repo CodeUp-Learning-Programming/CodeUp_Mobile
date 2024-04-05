@@ -28,7 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
-import com.example.codeup.api.Usuario
+import com.example.codeup.data.Usuario
 import com.example.codeup.ui.composables.BotaoAzul
 import com.example.codeup.ui.composables.TextFieldBordaGradienteAzul
 import com.example.codeup.ui.composables.TextoAzulGradienteSublinhado
@@ -120,14 +120,14 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
                 pesoFonte = "normal"
             )
             var isTextfieldFocused by remember { mutableStateOf(false) }
-
-            TextFieldBordaGradienteAzul(
-                isTextFieldFocused = isTextfieldFocused,
-                texto = usuario.dataNascimento.toString(),
-                label = stringResource(R.string.text_data_label),
-                onValueChanged = { usuarioSetter(usuario.copy(dataNascimento = it.toString())) },
-                onFocusChanged = { isTextfieldFocused = it.isFocused },
-            )
+//
+//            TextFieldBordaGradienteAzul(
+//                isTextFieldFocused = isTextfieldFocused,
+//                texto = usuario.dataNascimento.toString(),
+//                label = stringResource(R.string.text_data_label),
+//                onValueChanged = { usuarioSetter(usuario.copy(dataNascimento = it.toString())) },
+//                onFocusChanged = { isTextfieldFocused = it.isFocused },
+//            )
         }
 
         Spacer(
@@ -167,15 +167,15 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
             )
             var isTextfieldFocused by remember { mutableStateOf(false) }
 
-            TextFieldBordaGradienteAzul(
-                isTextFieldFocused = isTextfieldFocused,
-                texto = usuario.senha.toString(),
-                label = "********",
-                onValueChanged = { usuarioSetter(usuario.copy(senha = it.toString())) },
-                onFocusChanged = { isTextfieldFocused = it.isFocused },
-
-
-                )
+//            TextFieldBordaGradienteAzul(
+//                isTextFieldFocused = isTextfieldFocused,
+//                texto = usuario.senha.toString(),
+//                label = "********",
+//                onValueChanged = { usuarioSetter(usuario.copy(senha = it.toString())) },
+//                onFocusChanged = { isTextfieldFocused = it.isFocused },
+//
+//
+//                )
         }
 
         Spacer(
