@@ -22,15 +22,22 @@ fun TextFieldBordaGradienteAzul(
     isTextFieldFocused: Boolean,
     texto: String,
     label: String,
+    dadoIncorreto: Boolean = false,
     onValueChanged: (String) -> Unit,
     onFocusChanged: (FocusState) -> Unit,
-
-    ) {
+) {
     val corDaBorda = if (isTextFieldFocused) {
         Brush.horizontalGradient(
             colors = listOf(
                 Color(0, 225, 242),
                 Color(0, 132, 249)
+            )
+        )
+    } else if (dadoIncorreto) {
+        Brush.horizontalGradient(
+            colors = listOf(
+                Color(242, 0, 0),
+                Color(242, 0, 0)
             )
         )
     } else {

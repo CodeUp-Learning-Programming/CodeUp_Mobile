@@ -32,9 +32,9 @@ import com.example.codeup.ui.screens.TelaExercicio
 
 @Composable
 fun CardAprenda(
-    bloqueado: Boolean,
-    totalExerciciosConcluidos: Int,
-    totalExercicios: Int,
+    desbloqueada: Boolean,
+    qtdExerciciosFaseConcluidos: Int,
+    qtdExerciciosFase: Int,
     ) {
     val contexto = LocalContext.current
 
@@ -89,7 +89,7 @@ fun CardAprenda(
                 ) {
                     TextoBranco(texto = "PARTE", tamanhoFonte = 10, pesoFonte = "normal")
                     TextoBranco(
-                        texto = "$totalExerciciosConcluidos/$totalExercicios",
+                        texto = "$qtdExerciciosFaseConcluidos/$qtdExerciciosFase",
                         tamanhoFonte = 10,
                         pesoFonte = "normal"
                     )
@@ -100,7 +100,7 @@ fun CardAprenda(
                         .fillMaxWidth()
                 ) {
                     LinearProgressIndicator(
-                        progress = totalExerciciosConcluidos.toFloat() / totalExercicios.toFloat(),
+                        progress = qtdExerciciosFaseConcluidos.toFloat() / qtdExerciciosFase.toFloat(),
                         modifier = Modifier
                             .fillMaxWidth(),
                         trackColor = Color(49, 49, 49),

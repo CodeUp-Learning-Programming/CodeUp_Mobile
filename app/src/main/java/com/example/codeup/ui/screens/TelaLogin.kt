@@ -73,6 +73,10 @@ class TelaLogin : ComponentActivity() {
 fun Login(name: String, modifier: Modifier = Modifier) {
 
     var lembrar by remember { mutableStateOf(false) }
+
+    var emailInputValido by remember { mutableStateOf(false) }
+    var senhaInputValido by remember { mutableStateOf(false) }
+
     val contexto = LocalContext.current
     val (usuarioLoginRequest, usuarioLoginRequestSetter) = remember {
         mutableStateOf(UsuarioLoginRequest())
@@ -120,7 +124,11 @@ fun Login(name: String, modifier: Modifier = Modifier) {
                 texto = usuarioLoginRequest.email,
                 label = stringResource(R.string.text_email_label),
                 onValueChanged = { usuarioLoginRequestSetter(usuarioLoginRequest.copy(email = it)) },
-                onFocusChanged = { isTextfieldFocused = it.isFocused },
+                onFocusChanged = {
+                    isTextfieldFocused = it.isFocused
+                    emailInputValido = false
+                },
+                dadoIncorreto = emailInputValido
             )
         }
 
@@ -143,7 +151,11 @@ fun Login(name: String, modifier: Modifier = Modifier) {
                 texto = usuarioLoginRequest.senha,
                 label = "********",
                 onValueChanged = { usuarioLoginRequestSetter(usuarioLoginRequest.copy(senha = it)) },
-                onFocusChanged = { isTextfieldFocused = it.isFocused },
+                onFocusChanged = {
+                    isTextfieldFocused = it.isFocused
+                    senhaInputValido = false
+                },
+                dadoIncorreto = senhaInputValido
             )
         }
 
@@ -173,52 +185,47 @@ fun Login(name: String, modifier: Modifier = Modifier) {
         BotaoAzul(
             text = stringResource(R.string.text_entrar),
             onClick = {
-                val ApiUsuarios = RetrofitService.getApiUsuarioService(null)
-                val post = ApiUsuarios.login(usuarioLoginRequest);
+                if (usuarioLoginRequest.email.isEmpty() || usuarioLoginRequest.senha.isEmpty()) {
+                    emailInputValido = true
+                    senhaInputValido = true
 
-                post.enqueue(object : Callback<Usuario> {
-                    override fun onResponse(call: Call<Usuario>, response: Response<Usuario>) {
-                        if (response.isSuccessful) {
-                            val usuarioResponse = response.body()
-                            if (usuarioResponse != null) {
-                                usuarioSetter(usuario.copy(
-                                    id = usuarioResponse.id,
-                                    fotoPerfil = usuarioResponse.fotoPerfil,
-                                    nome = usuarioResponse.nome,
-                                    token = usuarioResponse.token,
-                                    email = usuarioResponse.email,
-                                    moedas = usuarioResponse.moedas,
-                                    nivel = usuarioResponse.nivel,
-                                    xp = usuarioResponse.xp,
-                                    itensAdquiridos = usuarioResponse.itensAdquiridos
-                                ))
+                } else {
 
-                                val telaHome = Intent(contexto, TelaHome::class.java)
-                                telaHome.putExtra("usuario", usuario)
-                                contexto.startActivity(telaHome)
+                    val ApiUsuarios = RetrofitService.getApiUsuarioService(null)
+                    val post = ApiUsuarios.login(usuarioLoginRequest);
 
-
+                    post.enqueue(object : Callback<Usuario> {
+                        override fun onResponse(call: Call<Usuario>, response: Response<Usuario>) {
+                            if (response.isSuccessful) {
+                                val usuarioResponse = response.body()
+                                if (usuarioResponse != null) {
+                                    val telaHome = Intent(contexto, TelaHome::class.java)
+                                    telaHome.putExtra("usuario", usuarioResponse)
+                                    contexto.startActivity(telaHome)
+                                } else {
+                                    erroApi.value = "Erro: Usuário não encontrado"
+                                }
                             } else {
-                                erroApi.value = "Erro: Usuário não encontrado"
+                                erroApi.value = "Erro na resposta: ${response.code()}"
                             }
-                        } else {
-                            erroApi.value = "Erro na resposta: ${response.code()}"
                         }
-                    }
 
-                    override fun onFailure(call: Call<Usuario>, t: Throwable) {
-                        erroApi.value = t.message.toString()
-                    }
-                })
+                        override fun onFailure(call: Call<Usuario>, t: Throwable) {
+                            erroApi.value = t.message.toString()
+                        }
+                    })
+                }
 
             },
             modifier = Modifier.fillMaxWidth()
         )
-        if(!erroApi.equals("")){
+
+        if (!erroApi.equals("")) {
             TextoBranco(
                 texto = erroApi.value,
                 tamanhoFonte = 12,
-                pesoFonte = "normal")
+                pesoFonte = "normal"
+            )
         }
         Spacer(
             modifier = Modifier
@@ -252,7 +259,6 @@ fun Login(name: String, modifier: Modifier = Modifier) {
         }
 
     }
-
 
 
 }

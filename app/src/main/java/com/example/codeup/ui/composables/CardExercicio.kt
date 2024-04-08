@@ -25,26 +25,27 @@ import com.example.codeup.R
 
 @Composable
 fun CardExercicio(
-    bloqueado: Boolean,
-    totalExerciciosConcluidos: Int,
-    totalExercicios: Int,
+    desbloqueada: Boolean = false,
+    qtdExerciciosFaseConcluidos: Int = 0,
+    qtdExerciciosFase: Int = 0,
     onClick: () -> Unit
 ) {
-    val borderGradient = Brush.horizontalGradient(
+
+    val borderGradientdesbloqueada = Brush.horizontalGradient(
         colors = listOf(
             Color(0, 225, 242),
             Color(0, 132, 249)
         )
     )
 
-    val borderGradientBloqueado = Brush.horizontalGradient(
+    val borderGradient = Brush.horizontalGradient(
         colors = listOf(
             Color(92, 92, 92),
             Color(92, 92, 92),
         )
     )
 
-    val borda = if (bloqueado) borderGradientBloqueado else borderGradient
+    val borda = if (desbloqueada) borderGradientdesbloqueada else borderGradient
 
     Box(
         modifier = Modifier
@@ -60,7 +61,7 @@ fun CardExercicio(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (bloqueado) {
+            if (!desbloqueada) {
                 val painter1: Painter = painterResource(id = R.drawable.icon_cadeado)
                 Image(
                     painter = painter1,
@@ -68,7 +69,7 @@ fun CardExercicio(
                 )
             } else {
                 Row() {
-                    TextoBranco("$totalExerciciosConcluidos/$totalExercicios", 36, "normal")
+                    TextoBranco("$qtdExerciciosFaseConcluidos/$qtdExerciciosFase", 36, "normal")
                 }
             }
 

@@ -11,6 +11,7 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface UsuarioApi {
+
     @GET("/usuarios/{id}")
     fun buscarPorId(@Path("id") id: Int): Call<Usuario>
 
@@ -20,7 +21,7 @@ interface UsuarioApi {
     @POST("/usuarios/cadastrar")
     fun cadastrar(@Body usuario: Usuario): Call<Usuario>
 
-    @POST("/usuarios/login")
+    @POST("api/usuarios/login")
     fun login(@Body usuarioLoginRequest: UsuarioLoginRequest): Call<Usuario>
 
     @PATCH("/usuarios/foto")

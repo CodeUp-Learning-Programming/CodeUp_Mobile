@@ -22,8 +22,9 @@ import androidx.compose.ui.unit.sp
 fun TextOpcaoPergunta(
     texto: String,
     isSelected: Boolean,
-    onOptionSelected: () -> Unit
-) {
+    onOptionSelected: () -> Unit,
+    dado_incorreto: Boolean = false,
+    ) {
 
 
     //selecionado

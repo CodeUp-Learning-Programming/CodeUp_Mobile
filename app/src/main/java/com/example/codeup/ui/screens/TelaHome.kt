@@ -35,12 +35,17 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
+import com.example.codeup.api.RetrofitService
+import com.example.codeup.data.Fase
 import com.example.codeup.data.Usuario
 import com.example.codeup.ui.DadosDoCard
 import com.example.codeup.ui.composables.CardExercicio
 import com.example.codeup.ui.composables.CardPopup
 import com.example.codeup.ui.composables.Menu
 import com.example.codeup.ui.theme.CodeupTheme
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class TelaHome : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -48,7 +53,6 @@ class TelaHome : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         val extras = intent.extras
-
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.light(
                 0, 0
@@ -76,77 +80,64 @@ class TelaHome : ComponentActivity() {
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-fun Home(name: String = "a", fundo: String = "tema_padrao",extras: Bundle?, modifier: Modifier = Modifier) {
+fun Home(
+    name: String = "a",
+    fundo: String = "tema_padrao",
+    extras: Bundle?,
+    modifier: Modifier = Modifier
+) {
 
     val user = extras?.getSerializable("usuario") as? Usuario
+    val erroApi = remember { mutableStateOf("") }
+    val ApiUsuarios = RetrofitService.getApiFaseService(user?.token)
+    val get = ApiUsuarios.buscarFasePelaMateria(1);
+    var listaExercicios by remember { mutableStateOf<List<DadosDoCard>>(emptyList()) }
+
+    get.enqueue(object : Callback<List<Fase>> {
+        override fun onResponse(call: Call<List<Fase>>, response: Response<List<Fase>>) {
+            if (response.isSuccessful) {
+                val faseResponse = response.body()
+                if (faseResponse != null) {
+                    listaExercicios = faseResponse.map { fase ->
+                        DadosDoCard(
+                            desbloqueada = fase.desbloqueada,
+                            qtdExerciciosFase = fase.qtdExerciciosFase,
+                            qtdExerciciosFaseConcluidos = fase.qtdExerciciosFaseConcluidos
+                        )
+                    }
+                } else {
+                    erroApi.value = "Erro: Usuário não encontrado"
+                }
+            } else {
+                erroApi.value = "Erro na resposta: ${response.code()}"
+            }
+        }
+
+        override fun onFailure(call: Call<List<Fase>>, t: Throwable) {
+            erroApi.value = t.message.toString()
+            var listaExerciciosMock = listOf(
+                DadosDoCard(
+                    desbloqueada = false,
+                    qtdExerciciosFase = 5,
+                    qtdExerciciosFaseConcluidos = 5
+                ),
+                DadosDoCard(
+                    desbloqueada = false,
+                    qtdExerciciosFase = 5,
+                    qtdExerciciosFaseConcluidos = 3
+                ),
+            )
+        }
+    })
+
     if (user != null) {
         Menu(
             "${R.drawable.tema_pontos}",
             user.nome,
             totalCoracoes = 5,
-            totalMoedas = 10,
+            totalMoedas = user.moedas,
             totalSequencia = 5,
             conteudo = {
-                val listaExercicios = remember {
-                    mutableListOf(
-                        DadosDoCard(
-                            bloqueado = false,
-                            totalExercicios = 5,
-                            totalExerciciosConcluidos = 5
-                        ),
-                        DadosDoCard(
-                            bloqueado = false,
-                            totalExercicios = 5,
-                            totalExerciciosConcluidos = 3
-                        ),
-                        DadosDoCard(
-                            bloqueado = true,
-                            totalExercicios = 10,
-                            totalExerciciosConcluidos = 8
-                        ),
-                        DadosDoCard(
-                            bloqueado = true,
-                            totalExercicios = 10,
-                            totalExerciciosConcluidos = 8
-                        ),
-                        DadosDoCard(
-                            bloqueado = true,
-                            totalExercicios = 10,
-                            totalExerciciosConcluidos = 8
-                        ),
-                        DadosDoCard(
-                            bloqueado = true,
-                            totalExercicios = 10,
-                            totalExerciciosConcluidos = 8
-                        ),
-                        DadosDoCard(
-                            bloqueado = true,
-                            totalExercicios = 10,
-                            totalExerciciosConcluidos = 8
-                        ),
-                        DadosDoCard(
-                            bloqueado = true,
-                            totalExercicios = 10,
-                            totalExerciciosConcluidos = 8
-                        ),
-                        DadosDoCard(
-                            bloqueado = true,
-                            totalExercicios = 10,
-                            totalExerciciosConcluidos = 8
-                        ),
-                        DadosDoCard(
-                            bloqueado = true,
-                            totalExercicios = 10,
-                            totalExerciciosConcluidos = 8
-                        ),
-                        DadosDoCard(
-                            bloqueado = true,
-                            totalExercicios = 15,
-                            totalExerciciosConcluidos = 12
-                        )
-                    )
-                }
-
 
                 // Variável de estado para controlar a visibilidade do pop-up
                 val (showPopup, setShowPopup) = remember { mutableStateOf(false) }
@@ -191,9 +182,9 @@ fun Home(name: String = "a", fundo: String = "tema_padrao",extras: Bundle?, modi
                                 horizontalArrangement = if (alinharDireita) Arrangement.End else Arrangement.Start
                             ) {
                                 CardExercicio(
-                                    bloqueado = exercicio.bloqueado,
-                                    totalExercicios = exercicio.totalExercicios,
-                                    totalExerciciosConcluidos = exercicio.totalExerciciosConcluidos,
+                                    desbloqueada = exercicio.desbloqueada,
+                                    qtdExerciciosFase = exercicio.qtdExerciciosFase,
+                                    qtdExerciciosFaseConcluidos = exercicio.qtdExerciciosFaseConcluidos,
                                     onClick = {
                                         //exibir card
                                         // Mostra o pop-up ao clicar no card
@@ -218,7 +209,7 @@ fun Home(name: String = "a", fundo: String = "tema_padrao",extras: Bundle?, modi
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(Color(13,13,13).copy(alpha = 0.2f))
+                            .background(Color(13, 13, 13).copy(alpha = 0.2f))
                             .clickable {
                                 // Fecha o pop-up ao clicar no botão de fechar
                                 setShowPopup(false)
@@ -226,11 +217,11 @@ fun Home(name: String = "a", fundo: String = "tema_padrao",extras: Bundle?, modi
                                 selectedCardIndex = -1
                             },
                         contentAlignment = Alignment.Center
-                    ){
+                    ) {
                         CardPopup(
-                            bloqueado = listaExercicios[selectedCardIndex].bloqueado,
-                            totalExercicios = listaExercicios[selectedCardIndex].totalExercicios,
-                            totalExerciciosConcluidos = listaExercicios[selectedCardIndex].totalExerciciosConcluidos,
+                            desbloqueada = listaExercicios[selectedCardIndex].desbloqueada,
+                            qtdExerciciosFase = listaExercicios[selectedCardIndex].qtdExerciciosFase,
+                            qtdExerciciosFaseConcluidos = listaExercicios[selectedCardIndex].qtdExerciciosFaseConcluidos,
                         )
                     }
 

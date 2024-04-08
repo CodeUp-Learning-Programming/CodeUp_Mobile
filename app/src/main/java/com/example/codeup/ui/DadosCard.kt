@@ -1,7 +1,7 @@
 package com.example.codeup.ui
 
 data class DadosDoCard(
-    val bloqueado: Boolean,
-    val totalExercicios: Int,
-    val totalExerciciosConcluidos: Int
+    val desbloqueada: Boolean = false,
+    val qtdExerciciosFase: Int = 0,
+    val qtdExerciciosFaseConcluidos: Int = 0
 )

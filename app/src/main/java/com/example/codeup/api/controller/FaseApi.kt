@@ -7,5 +7,5 @@ import retrofit2.http.Path
 
 interface FaseApi {
     @GET("/fases/{idMateria}")
-    fun buscarFaseResultPorIdMateriaIdUsuario(@Path("idMateria") idMateria: Int): Call<List<Fase>>
+    fun buscarFasePelaMateria(@Path("idMateria") idMateria: Int): Call<List<Fase>>
 }

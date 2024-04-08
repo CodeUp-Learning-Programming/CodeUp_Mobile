@@ -5,18 +5,18 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun CardPopup(
-    bloqueado: Boolean = false,
-    totalExerciciosConcluidos: Int = 0,
-    totalExercicios: Int = 0,
+    desbloqueada: Boolean = false,
+    qtdExerciciosFase: Int = 0,
+    qtdExerciciosFaseConcluidos: Int = 0,
 
 ) {
     // Conteúdo do pop-up
     Surface{
-        if (!bloqueado) {
+        if (!desbloqueada) {
             CardAprenda(
-                bloqueado = false,
-                totalExerciciosConcluidos = totalExerciciosConcluidos,
-                totalExercicios = totalExercicios,
+                desbloqueada = desbloqueada,
+                qtdExerciciosFaseConcluidos = qtdExerciciosFaseConcluidos,
+                qtdExerciciosFase = qtdExerciciosFase,
             )
         }
     }
