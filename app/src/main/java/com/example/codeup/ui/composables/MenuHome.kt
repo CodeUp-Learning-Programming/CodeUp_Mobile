@@ -159,98 +159,98 @@ fun Menu(
 
 
         },
-        bottomBar = {
-            BottomAppBar(
-                containerColor = Color(R.color.black),
-                contentColor = MaterialTheme.colorScheme.primary,
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight(),
-                        horizontalArrangement = Arrangement.SpaceAround,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        val painter1: Painter = painterResource(id = R.drawable.icon_aprenda_selecionado)
-                        val painter2: Painter = painterResource(id = R.drawable.icon_medalha)
-                        val painter3: Painter = painterResource(id = R.drawable.icon_amigos)
-                        val painter4: Painter = painterResource(id = R.drawable.icon_usuario)
-                        val contentScale = ContentScale.FillBounds
-
-                        Column(
-                            modifier = Modifier,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Image(
-                                painter = painter1,
-                                contentDescription = stringResource(R.string.text_aprenda),
-                                modifier = Modifier
-
-                            )
-                            TextoBranco(
-                                texto = stringResource(R.string.text_aprenda),
-                                tamanhoFonte = 12,
-                                pesoFonte = "normal"
-                            )
-                        }
-                        Column(
-                            modifier = Modifier,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Image(
-                                painter = painter2,
-                                contentDescription = stringResource(R.string.text_ranking),
-
-                                )
-                            TextoBranco(
-                                texto = stringResource(R.string.text_ranking),
-                                tamanhoFonte = 12,
-                                pesoFonte = "normal"
-                            )
-                        }
-                        Column(
-                            modifier = Modifier,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Image(
-                                painter = painter3,
-                                contentDescription = stringResource(R.string.text_amigos),
-
-                                )
-                            TextoBranco(
-                                texto = stringResource(R.string.text_amigos),
-                                tamanhoFonte = 12,
-                                pesoFonte = "normal"
-                            )
-                        }
-                        Column(
-                            modifier = Modifier,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Image(
-                                painter = painter4,
-                                contentDescription = stringResource(R.string.text_perfil),
-
-                                )
-                            TextoBranco(
-                                texto = stringResource(R.string.text_perfil),
-                                tamanhoFonte = 12,
-                                pesoFonte = "normal"
-                            )
-                        }
-                    }
-                }
-            }
-        },
+//        bottomBar = {
+//            BottomAppBar(
+//                containerColor = Color(R.color.black),
+//                contentColor = MaterialTheme.colorScheme.primary,
+//            ) {
+//                Box(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .fillMaxHeight()
+//                ) {
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .fillMaxHeight(),
+//                        horizontalArrangement = Arrangement.SpaceAround,
+//                        verticalAlignment = Alignment.CenterVertically
+//                    ) {
+//                        val painter1: Painter = painterResource(id = R.drawable.icon_aprenda_selecionado)
+//                        val painter2: Painter = painterResource(id = R.drawable.icon_medalha)
+//                        val painter3: Painter = painterResource(id = R.drawable.icon_amigos)
+//                        val painter4: Painter = painterResource(id = R.drawable.icon_usuario)
+//                        val contentScale = ContentScale.FillBounds
+//
+//                        Column(
+//                            modifier = Modifier,
+//                            horizontalAlignment = Alignment.CenterHorizontally,
+//                            verticalArrangement = Arrangement.Center
+//                        ) {
+//                            Image(
+//                                painter = painter1,
+//                                contentDescription = stringResource(R.string.text_aprenda),
+//                                modifier = Modifier
+//
+//                            )
+//                            TextoBranco(
+//                                texto = stringResource(R.string.text_aprenda),
+//                                tamanhoFonte = 12,
+//                                pesoFonte = "normal"
+//                            )
+//                        }
+//                        Column(
+//                            modifier = Modifier,
+//                            horizontalAlignment = Alignment.CenterHorizontally,
+//                            verticalArrangement = Arrangement.Center
+//                        ) {
+//                            Image(
+//                                painter = painter2,
+//                                contentDescription = stringResource(R.string.text_ranking),
+//
+//                                )
+//                            TextoBranco(
+//                                texto = stringResource(R.string.text_ranking),
+//                                tamanhoFonte = 12,
+//                                pesoFonte = "normal"
+//                            )
+//                        }
+//                        Column(
+//                            modifier = Modifier,
+//                            horizontalAlignment = Alignment.CenterHorizontally,
+//                            verticalArrangement = Arrangement.Center
+//                        ) {
+//                            Image(
+//                                painter = painter3,
+//                                contentDescription = stringResource(R.string.text_amigos),
+//
+//                                )
+//                            TextoBranco(
+//                                texto = stringResource(R.string.text_amigos),
+//                                tamanhoFonte = 12,
+//                                pesoFonte = "normal"
+//                            )
+//                        }
+//                        Column(
+//                            modifier = Modifier,
+//                            horizontalAlignment = Alignment.CenterHorizontally,
+//                            verticalArrangement = Arrangement.Center
+//                        ) {
+//                            Image(
+//                                painter = painter4,
+//                                contentDescription = stringResource(R.string.text_perfil),
+//
+//                                )
+//                            TextoBranco(
+//                                texto = stringResource(R.string.text_perfil),
+//                                tamanhoFonte = 12,
+//                                pesoFonte = "normal"
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//        },
     ) { innerPadding ->
         Column(
             modifier = Modifier

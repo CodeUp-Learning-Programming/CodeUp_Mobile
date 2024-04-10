@@ -34,14 +34,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
 import com.example.codeup.R
 import com.example.codeup.api.RetrofitService
 import com.example.codeup.data.Fase
 import com.example.codeup.data.Usuario
 import com.example.codeup.ui.DadosDoCard
+import com.example.codeup.ui.composables.BarraNavegacao
 import com.example.codeup.ui.composables.CardExercicio
 import com.example.codeup.ui.composables.CardPopup
 import com.example.codeup.ui.composables.Menu
+import com.example.codeup.ui.composables.TelaMenuAprenda
 import com.example.codeup.ui.theme.CodeupTheme
 import retrofit2.Call
 import retrofit2.Callback
@@ -117,6 +120,46 @@ fun Home(
             erroApi.value = t.message.toString()
             var listaExerciciosMock = listOf(
                 DadosDoCard(
+                    desbloqueada = true,
+                    qtdExerciciosFase = 5,
+                    qtdExerciciosFaseConcluidos = 5
+                ),
+                DadosDoCard(
+                    desbloqueada = false,
+                    qtdExerciciosFase = 5,
+                    qtdExerciciosFaseConcluidos = 3
+                ),
+                DadosDoCard(
+                    desbloqueada = false,
+                    qtdExerciciosFase = 5,
+                    qtdExerciciosFaseConcluidos = 5
+                ),
+                DadosDoCard(
+                    desbloqueada = false,
+                    qtdExerciciosFase = 5,
+                    qtdExerciciosFaseConcluidos = 3
+                ),
+                DadosDoCard(
+                    desbloqueada = false,
+                    qtdExerciciosFase = 5,
+                    qtdExerciciosFaseConcluidos = 5
+                ),
+                DadosDoCard(
+                    desbloqueada = false,
+                    qtdExerciciosFase = 5,
+                    qtdExerciciosFaseConcluidos = 3
+                ),
+                DadosDoCard(
+                    desbloqueada = false,
+                    qtdExerciciosFase = 5,
+                    qtdExerciciosFaseConcluidos = 5
+                ),
+                DadosDoCard(
+                    desbloqueada = false,
+                    qtdExerciciosFase = 5,
+                    qtdExerciciosFaseConcluidos = 3
+                ),
+                DadosDoCard(
                     desbloqueada = false,
                     qtdExerciciosFase = 5,
                     qtdExerciciosFaseConcluidos = 5
@@ -127,107 +170,21 @@ fun Home(
                     qtdExerciciosFaseConcluidos = 3
                 ),
             )
+
+
+            listaExercicios = listaExerciciosMock.map { fase ->
+                DadosDoCard(
+                    desbloqueada = fase.desbloqueada,
+                    qtdExerciciosFase = fase.qtdExerciciosFase,
+                    qtdExerciciosFaseConcluidos = fase.qtdExerciciosFaseConcluidos
+                )
+            }
         }
     })
 
     if (user != null) {
-        Menu(
-            "${R.drawable.tema_pontos}",
-            user.nome,
-            totalCoracoes = 5,
-            totalMoedas = user.moedas,
-            totalSequencia = 5,
-            conteudo = {
-
-                // Variável de estado para controlar a visibilidade do pop-up
-                val (showPopup, setShowPopup) = remember { mutableStateOf(false) }
-                // Índice do card selecionado
-                var selectedCardIndex by remember { mutableStateOf(-1) }
-
-                var i = 0;
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 10.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    reverseLayout = false
-                ) {
-                    var alinharDireita = true;
-                    items(listaExercicios) { exercicio ->
-                        Column {
-                            //Linha reta
-                            Canvas(
-                                modifier = Modifier
-                                    .fillMaxHeight()
-                            ) {
-                                drawLine(
-                                    color = Color.Gray,
-                                    start = Offset(300f, 0f),
-                                    end = Offset(300f, 400f),
-                                    strokeWidth = 50f
-                                )
-                                drawLine(
-                                    color = Color.Black,
-                                    start = Offset(300f, 0f),
-                                    end = Offset(300f, 400f),
-                                    strokeWidth = 40f
-                                )
-                            }
-
-                            Row(
-                                modifier = Modifier
-                                    .width(200.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = if (alinharDireita) Arrangement.End else Arrangement.Start
-                            ) {
-                                CardExercicio(
-                                    desbloqueada = exercicio.desbloqueada,
-                                    qtdExerciciosFase = exercicio.qtdExerciciosFase,
-                                    qtdExerciciosFaseConcluidos = exercicio.qtdExerciciosFaseConcluidos,
-                                    onClick = {
-                                        //exibir card
-                                        // Mostra o pop-up ao clicar no card
-                                        setShowPopup(true)
-                                        // Salva o índice do card selecionado
-                                        selectedCardIndex = listaExercicios.indexOf(exercicio)
-                                    },
-                                )
-
-                            }
-
-                            Spacer(modifier = Modifier.height(40.dp))
-                            alinharDireita = !alinharDireita;
-
-
-                        }
-                    }
-
-                }
-                // Se o pop-up estiver visível, mostra o pop-up correspondente ao card selecionado
-                if (showPopup && selectedCardIndex != -1) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color(13, 13, 13).copy(alpha = 0.2f))
-                            .clickable {
-                                // Fecha o pop-up ao clicar no botão de fechar
-                                setShowPopup(false)
-                                // Reseta o índice do card selecionado
-                                selectedCardIndex = -1
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CardPopup(
-                            desbloqueada = listaExercicios[selectedCardIndex].desbloqueada,
-                            qtdExerciciosFase = listaExercicios[selectedCardIndex].qtdExerciciosFase,
-                            qtdExerciciosFaseConcluidos = listaExercicios[selectedCardIndex].qtdExerciciosFaseConcluidos,
-                        )
-                    }
-
-                }
-            }
-        )
+        TelaMenuAprenda(user = user, listaExercicios = listaExercicios)
+       BarraNavegacao(rememberNavController(), user, listaExercicios)
     }
 }
 
