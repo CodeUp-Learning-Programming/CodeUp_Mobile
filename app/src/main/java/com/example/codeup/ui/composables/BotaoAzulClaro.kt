@@ -12,7 +12,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -22,13 +21,13 @@ import androidx.compose.ui.unit.sp
 import com.example.codeup.R
 
 @Composable
-fun BotaoAzul(
+fun BotaoAzulClaro(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    altura: Int = 56,
-    largura: Int = 120,
-    tamanhoFonte: Int = 16
+    altura: Int = 36,
+    largura: Int = 250,
+    tamanhoFonte: Int = 14
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -37,25 +36,21 @@ fun BotaoAzul(
             .size(width = largura.dp, height = altura.dp)
             .shadow(4.dp, RoundedCornerShape(1.dp))
             .background(
-                brush = Brush.horizontalGradient(
-                    colors = listOf(
-                        Color(0, 225, 242),
-                        Color(0, 132, 249)
-                    )
-                ),
+                Color(1, 169, 247),
                 shape = RoundedCornerShape(8.dp)
             )
-            .clickable (
+            .clickable(
                 interactionSource = interactionSource,
                 indication = null,
                 onClick = {
                     onClick.invoke()
                 }
             )
+
     ) {
         Text(
             text = text,
-            color = Color.White,
+            color = Color.Black,
             modifier = Modifier.align(Alignment.Center),
             fontFamily = FontFamily(
                 Font(R.font.poppins_semi_bold, FontWeight.SemiBold)

@@ -82,10 +82,6 @@ fun Login(name: String, modifier: Modifier = Modifier) {
     val (usuarioLoginRequest, usuarioLoginRequestSetter) = remember {
         mutableStateOf(UsuarioLoginRequest())
     }
-    val (usuario, usuarioSetter) = remember {
-        mutableStateOf(Usuario())
-    }
-
     val erroApi = remember { mutableStateOf("") }
 
     Column(
@@ -212,6 +208,8 @@ fun Login(name: String, modifier: Modifier = Modifier) {
                         }
 
                         override fun onFailure(call: Call<Usuario>, t: Throwable) {
+                            erroApi.value = t.message.toString()
+
                             if (usuarioLoginRequest.email == "admin" && usuarioLoginRequest.senha == "123") {
                                 val telaHome = Intent(contexto, TelaHome::class.java)
                                 telaHome.putExtra(

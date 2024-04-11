@@ -27,7 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.codeup.ui.OpcoesPergunta
-import com.example.codeup.ui.composables.MenuExercicio
+import com.example.codeup.ui.composables.menu.MenuExercicio
 import com.example.codeup.ui.composables.TextOpcaoPergunta
 import com.example.codeup.ui.composables.TextoBranco
 import com.example.codeup.ui.screens.ui.theme.CodeupTheme

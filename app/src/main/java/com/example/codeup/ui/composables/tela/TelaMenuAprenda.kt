@@ -1,8 +1,9 @@
-package com.example.codeup.ui.composables
+package com.example.codeup.ui.composables.tela
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,17 +27,21 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
-import com.example.codeup.data.Fase
 import com.example.codeup.data.Usuario
 import com.example.codeup.ui.DadosDoCard
+import com.example.codeup.ui.composables.card.CardExercicio
+import com.example.codeup.ui.composables.card.CardPopup
+import com.example.codeup.ui.composables.menu.MenuHome
 
 @Composable
 fun TelaMenuAprenda(
   user: Usuario,
   listaExercicios: List<DadosDoCard>
+
 ) {
-    TextoBranco(texto = "AAAAAaaaaa", tamanhoFonte =30  , pesoFonte ="" )
-    Menu(
+    val interactionSource = remember { MutableInteractionSource() }
+
+    MenuHome(
         "${R.drawable.tema_pontos}",
         user.nome,
         totalCoracoes = 5,
@@ -53,7 +58,7 @@ fun TelaMenuAprenda(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 10.dp),
+                    .padding(top = 10.dp, end = 50.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 reverseLayout = false
@@ -111,16 +116,23 @@ fun TelaMenuAprenda(
             }
             // Se o pop-up estiver visível, mostra o pop-up correspondente ao card selecionado
             if (showPopup && selectedCardIndex != -1) {
+
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color(13, 13, 13).copy(alpha = 0.2f))
-                        .clickable {
-                            // Fecha o pop-up ao clicar no botão de fechar
-                            setShowPopup(false)
-                            // Reseta o índice do card selecionado
-                            selectedCardIndex = -1
-                        },
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = null,
+                            onClick = {
+                                // Fecha o pop-up ao clicar no botão de fechar
+                                setShowPopup(false)
+                                // Reseta o índice do card selecionado
+                                selectedCardIndex = -1
+                        }
+
+
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
                     CardPopup(

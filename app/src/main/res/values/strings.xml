@@ -26,4 +26,6 @@
     <string name="text_cadastrar">Cadastrar</string>
     <string name="title_activity_tela_exercicio">TelaExercicio</string>
     <string name="icon_config">Icone de uma engrenagem</string>
+    <string name="text_icon_fogo_azul">Icone de um fogo azul</string>
+    <string name="dashboard">DASHBOARD</string>
 </resources>

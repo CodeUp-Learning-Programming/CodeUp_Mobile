@@ -1,4 +1,4 @@
-package com.example.codeup.ui.composables
+package com.example.codeup.ui.composables.menu
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,6 +28,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
+import com.example.codeup.ui.composables.BotaoAzul
+import com.example.codeup.ui.composables.ImagemFundo
+import com.example.codeup.ui.composables.card.CardSair
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -130,7 +133,7 @@ fun MenuExercicio(
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            ImageBackgroundExample(backgroundImageResId = R.drawable.tema_padrao) {
+            ImagemFundo(backgroundImageResId = R.drawable.tema_padrao) {
                 //Colocar conteudo aqui dinamicamente
                 conteudo(
 

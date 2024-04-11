@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.sp
 import com.example.codeup.R
 
 @Composable
-fun TextoBranco(texto: String, tamanhoFonte: Int, pesoFonte: String) {
+fun TextoBranco(texto: String, tamanhoFonte: Int, pesoFonte: String = "") {
     if (pesoFonte == "Titulo") {
         Text(
             text = texto,

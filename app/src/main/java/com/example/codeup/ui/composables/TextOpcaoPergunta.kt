@@ -3,6 +3,7 @@ package com.example.codeup.ui.composables
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -24,8 +26,9 @@ fun TextOpcaoPergunta(
     isSelected: Boolean,
     onOptionSelected: () -> Unit,
     dado_incorreto: Boolean = false,
-    ) {
+) {
 
+    val interactionSource = remember { MutableInteractionSource() }
 
     //selecionado
     val corDaBorda = if (isSelected) {
@@ -48,7 +51,13 @@ fun TextOpcaoPergunta(
     Row(
         modifier = Modifier
             .fillMaxSize()
-            .clickable { onOptionSelected() }
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = {
+                    onOptionSelected()
+                }
+            )
             .height(35.dp)
             .background(
                 Color(0, 166, 247).copy(0.1f),

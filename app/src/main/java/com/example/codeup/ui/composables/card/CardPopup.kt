@@ -1,7 +1,8 @@
-package com.example.codeup.ui.composables
+package com.example.codeup.ui.composables.card
 
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import com.example.codeup.ui.composables.card.CardAprenda
 
 @Composable
 fun CardPopup(

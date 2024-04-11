@@ -1,4 +1,4 @@
-package com.example.codeup.ui.composables
+package com.example.codeup.ui.composables.card
 
 import android.content.Intent
 import androidx.compose.foundation.background
@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.codeup.ui.composables.TextoBranco
 import com.example.codeup.ui.screens.TelaHome
 
 @Composable
