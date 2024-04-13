@@ -54,54 +54,60 @@ fun BarraNavegacao(
             .fillMaxSize(),
         contentAlignment = Alignment.BottomCenter
     ) {
-        NavHost(
-            navController = navController,
-            startDestination = TelasFragmentos.TELA_MENU_APRENDA.name
+        Column(
+            Modifier.padding(bottom = 60.dp)
         ) {
-            composable(TelasFragmentos.TELA_MENU_APRENDA.name) {
-                estadoAprendaAtivo = true
-                estadoRankingAtivo = false
-                estadoAmigosAtivo = false
-                estadoLojaAtivo = false
-                estadoPerfilAtivo = false
 
-                TelaMenuAprenda(user = user, listaExercicios = listaExercicio)
-            }
-            composable(TelasFragmentos.TELA_MENU_RANKING.name) {
-                estadoAprendaAtivo = false
-                estadoRankingAtivo = true
-                estadoAmigosAtivo = false
-                estadoLojaAtivo = false
-                estadoPerfilAtivo = false
+            NavHost(
+                modifier = Modifier,
+                navController = navController,
+                startDestination = TelasFragmentos.TELA_MENU_APRENDA.name
+            ) {
+                composable(TelasFragmentos.TELA_MENU_APRENDA.name) {
+                    estadoAprendaAtivo = true
+                    estadoRankingAtivo = false
+                    estadoAmigosAtivo = false
+                    estadoLojaAtivo = false
+                    estadoPerfilAtivo = false
 
-                TelaMenuRanking(user = user, listaExercicios = listaExercicio)
-            }
-            composable(TelasFragmentos.TELA_MENU_AMIGOS.name) {
-                estadoAprendaAtivo = false
-                estadoRankingAtivo = false
-                estadoAmigosAtivo = true
-                estadoLojaAtivo = false
-                estadoPerfilAtivo = false
+                    TelaMenuAprenda(user = user, listaExercicios = listaExercicio)
+                }
+                composable(TelasFragmentos.TELA_MENU_RANKING.name) {
+                    estadoAprendaAtivo = false
+                    estadoRankingAtivo = true
+                    estadoAmigosAtivo = false
+                    estadoLojaAtivo = false
+                    estadoPerfilAtivo = false
 
-                TelaMenuAmigos(user = user, listaExercicios = listaExercicio)
-            }
-            composable(TelasFragmentos.TELA_MENU_LOJA.name) {
-                estadoAprendaAtivo = false
-                estadoRankingAtivo = false
-                estadoAmigosAtivo = false
-                estadoLojaAtivo = true
-                estadoPerfilAtivo = false
+                    TelaMenuRanking(user = user, listaExercicios = listaExercicio)
+                }
+                composable(TelasFragmentos.TELA_MENU_AMIGOS.name) {
+                    estadoAprendaAtivo = false
+                    estadoRankingAtivo = false
+                    estadoAmigosAtivo = true
+                    estadoLojaAtivo = false
+                    estadoPerfilAtivo = false
 
-                TelaMenuLoja(user = user, listaExercicios = listaExercicio)
-            }
-            composable(TelasFragmentos.TELA_MENU_PERFIL.name) {
-                estadoAprendaAtivo = false
-                estadoRankingAtivo = false
-                estadoAmigosAtivo = false
-                estadoLojaAtivo = false
-                estadoPerfilAtivo = true
+                    TelaMenuAmigos(user = user)
+                }
+                composable(TelasFragmentos.TELA_MENU_LOJA.name) {
+                    estadoAprendaAtivo = false
+                    estadoRankingAtivo = false
+                    estadoAmigosAtivo = false
+                    estadoLojaAtivo = true
+                    estadoPerfilAtivo = false
 
-                TelaMenuPerfil(user = user, listaExercicios = listaExercicio)
+                    TelaMenuLoja(user = user)
+                }
+                composable(TelasFragmentos.TELA_MENU_PERFIL.name) {
+                    estadoAprendaAtivo = false
+                    estadoRankingAtivo = false
+                    estadoAmigosAtivo = false
+                    estadoLojaAtivo = false
+                    estadoPerfilAtivo = true
+
+                    TelaMenuPerfil(user = user, listaExercicios = listaExercicio)
+                }
             }
         }
 

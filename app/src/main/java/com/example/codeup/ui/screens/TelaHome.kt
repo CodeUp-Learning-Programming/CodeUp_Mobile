@@ -30,16 +30,11 @@ import retrofit2.Response
 class TelaHome : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         val extras = intent.extras
         enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.light(
-                0, 0
-            ),
-            navigationBarStyle = SystemBarStyle.light(
-                0, 0
-            )
+            statusBarStyle = SystemBarStyle.light(0, 0),
+            navigationBarStyle = SystemBarStyle.light(0, 0)
         )
 
         setContent {
@@ -48,29 +43,24 @@ class TelaHome : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
                     Home(extras = extras)
-
                 }
             }
         }
     }
 }
 
-
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun Home(
-    name: String = "a",
-    fundo: String = "tema_padrao",
     extras: Bundle?,
     modifier: Modifier = Modifier
 ) {
-
     val user = extras?.getSerializable("usuario") as? Usuario
+
     val erroApi = remember { mutableStateOf("") }
     val ApiUsuarios = RetrofitService.getApiFaseService(user?.token)
-    val get = ApiUsuarios.buscarFasePelaMateria(1);
+    val get = ApiUsuarios.buscarFasePelaMateria(1)
     var listaExercicios by remember { mutableStateOf<List<DadosDoCard>>(emptyList()) }
 
     get.enqueue(object : Callback<List<Fase>> {
@@ -95,60 +85,20 @@ fun Home(
 
         override fun onFailure(call: Call<List<Fase>>, t: Throwable) {
             erroApi.value = t.message.toString()
-            var listaExerciciosMock = listOf(
-                DadosDoCard(
-                    desbloqueada = true,
-                    qtdExerciciosFase = 5,
-                    qtdExerciciosFaseConcluidos = 5
-                ),
-                DadosDoCard(
-                    desbloqueada = false,
-                    qtdExerciciosFase = 5,
-                    qtdExerciciosFaseConcluidos = 3
-                ),
-                DadosDoCard(
-                    desbloqueada = false,
-                    qtdExerciciosFase = 5,
-                    qtdExerciciosFaseConcluidos = 5
-                ),
-                DadosDoCard(
-                    desbloqueada = false,
-                    qtdExerciciosFase = 5,
-                    qtdExerciciosFaseConcluidos = 3
-                ),
-                DadosDoCard(
-                    desbloqueada = false,
-                    qtdExerciciosFase = 5,
-                    qtdExerciciosFaseConcluidos = 5
-                ),
-                DadosDoCard(
-                    desbloqueada = false,
-                    qtdExerciciosFase = 5,
-                    qtdExerciciosFaseConcluidos = 3
-                ),
-                DadosDoCard(
-                    desbloqueada = false,
-                    qtdExerciciosFase = 5,
-                    qtdExerciciosFaseConcluidos = 5
-                ),
-                DadosDoCard(
-                    desbloqueada = false,
-                    qtdExerciciosFase = 5,
-                    qtdExerciciosFaseConcluidos = 3
-                ),
-                DadosDoCard(
-                    desbloqueada = false,
-                    qtdExerciciosFase = 5,
-                    qtdExerciciosFaseConcluidos = 5
-                ),
-                DadosDoCard(
-                    desbloqueada = false,
-                    qtdExerciciosFase = 5,
-                    qtdExerciciosFaseConcluidos = 3
-                ),
+
+            //Colocando dados para execução em modo offline
+            val listaExerciciosMock = listOf(
+                DadosDoCard(true, 5, 5),
+                DadosDoCard(false, 5, 3),
+                DadosDoCard(false, 5, 5),
+                DadosDoCard(false, 5, 3),
+                DadosDoCard(false, 5, 5),
+                DadosDoCard(false, 5, 3),
+                DadosDoCard(false, 5, 5),
+                DadosDoCard(false, 5, 3),
+                DadosDoCard(false, 5, 5),
+                DadosDoCard(false, 5, 3)
             )
-
-
             listaExercicios = listaExerciciosMock.map { fase ->
                 DadosDoCard(
                     desbloqueada = fase.desbloqueada,
@@ -160,7 +110,6 @@ fun Home(
     })
 
     if (user != null) {
-       BarraNavegacao(rememberNavController(), user, listaExercicios)
+        BarraNavegacao(rememberNavController(), user, listaExercicios)
     }
 }
-

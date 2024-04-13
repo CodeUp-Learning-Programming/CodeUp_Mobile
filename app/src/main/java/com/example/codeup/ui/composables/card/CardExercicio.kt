@@ -73,7 +73,7 @@ fun CardExercicio(
                 val painter1: Painter = painterResource(id = R.drawable.icon_cadeado)
                 Image(
                     painter = painter1,
-                    contentDescription = stringResource(R.string.text_descricao_materia),
+                    contentDescription = stringResource(R.string.text_exercicio_bloqueado),
                 )
             } else {
                 Row() {

@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.codeup"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -63,12 +63,17 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
+
+    implementation ("co.yml:ycharts:2.1.0")
+
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
 
     implementation("androidx.navigation:navigation-runtime-ktx:2.7.7")
     implementation("androidx.navigation:navigation-compose:2.7.7")

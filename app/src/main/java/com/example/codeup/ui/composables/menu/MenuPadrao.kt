@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,6 +32,7 @@ import com.example.codeup.ui.composables.TextoBranco
 @Composable
 fun MenuPadrao(
     texto: String = "",
+    imagem: Int = R.drawable.icon_adicionar_amigo,
     conteudo: @Composable () -> Unit
 ) {
     var presses by remember { mutableIntStateOf(0) }
@@ -54,7 +56,7 @@ fun MenuPadrao(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val fotoEngrenagem: Painter = painterResource(id = R.drawable.icon_configurar)
+                        val fotoEngrenagem: Painter = painterResource(id = imagem)
                         TextoBranco(texto = texto, tamanhoFonte = 24, pesoFonte = "normal")
                         Image(
                             modifier = Modifier,
@@ -72,7 +74,8 @@ fun MenuPadrao(
     ) { innerPadding ->
         Column(
             modifier = Modifier
-                .padding(innerPadding),
+                .padding(innerPadding)
+                .fillMaxHeight(),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             ImagemFundo(backgroundImageResId = R.drawable.tema_padrao) {

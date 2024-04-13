@@ -1,22 +1,23 @@
 package com.example.codeup.ui.composables.tela
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -28,6 +29,7 @@ import com.example.codeup.ui.DadosDoCard
 import com.example.codeup.ui.composables.BotaoAzulClaro
 import com.example.codeup.ui.composables.TextoBranco
 import com.example.codeup.ui.composables.card.CardPerfil
+import com.example.codeup.ui.composables.card.GraficoLinha
 import com.example.codeup.ui.composables.card.GraficoTrilhaRecente
 import com.example.codeup.ui.composables.menu.MenuPadrao
 
@@ -38,114 +40,125 @@ fun TelaMenuPerfil(
 ) {
     MenuPadrao(
         texto = "Perfil",
+        imagem = R.drawable.icon_configurar,
         conteudo = ({
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(Color(40, 40, 40))
-            )
-            //Geral
-            Column {
-                //Perfil
-                Spacer(modifier = Modifier.height(20.dp))
+
+
+                //Geral
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(250.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.SpaceBetween
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
                 ) {
-                    //Foto
-                    Box(
+                    //Perfil
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Column(
                         modifier = Modifier
+                            .fillMaxWidth()
+                            .height(250.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        //Foto
+                        Box(
+                            modifier = Modifier
+                                .height(150.dp)
+                                .width(150.dp)
+                                .clip(CircleShape)
+                        ) {
+                            AsyncImage(
+                                model = "https://helpia.ai/wp-content/uploads/2023/11/bing-creator.jpeg",
+                                contentDescription = "astronauta",
+                            )
+                        }
+                        //
+                        TextoBranco(texto = user.nome, tamanhoFonte = 16, pesoFonte = "Titulo")
+                        BotaoAzulClaro(
+                            modifier = Modifier,
+                            text = "EXPERIMENTE O PRO DE GRAÇA",
+                            onClick = {
+                                //Exibir pop up
+                            })
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .height(150.dp)
-                            .width(150.dp)
-                            .clip(CircleShape)
+                            .padding(10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceAround
                     ) {
-                        AsyncImage(
-                            model = "https://helpia.ai/wp-content/uploads/2023/11/bing-creator.jpeg",
-                            contentDescription = "astronauta",
+                        CardPerfil(
+                            R.drawable.icon_fogo_azul,
+                            R.string.text_icon_fogo_azul,
+                            "2",
+                            "SEQUÊNCIA"
+                        )
+                        CardPerfil(
+                            R.drawable.icon_estrela,
+                            R.string.text_icon_fogo_azul,
+                            "2",
+                            "SEQUÊNCIA"
+                        )
+                        CardPerfil(
+                            R.drawable.icon_moeda,
+                            R.string.text_icon_fogo_azul,
+                            "2",
+                            "SEQUÊNCIA"
                         )
                     }
-                    //
-                    TextoBranco(texto = user.nome, tamanhoFonte = 20, pesoFonte = "Titulo")
-                    BotaoAzulClaro(
-                        modifier = Modifier,
-                        text = "EXPERIMENTE O PRO DE GRAÇA",
-                        onClick = {
-                            //Exibir pop up
-                        })
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp)
-                        .padding(10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-                    CardPerfil(
-                        R.drawable.icon_fogo_azul,
-                        R.string.text_icon_fogo_azul,
-                        "2",
-                        "SEQUÊNCIA"
-                    )
-                    CardPerfil(
-                        R.drawable.icon_estrela,
-                        R.string.text_icon_fogo_azul,
-                        "2",
-                        "SEQUÊNCIA"
-                    )
-                    CardPerfil(
-                        R.drawable.icon_moeda,
-                        R.string.text_icon_fogo_azul,
-                        "2",
-                        "SEQUÊNCIA"
-                    )
-                }
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Canvas(
+                    Row(
                         modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        drawLine(
-                            color = Color(24, 24, 24),
-                            start = Offset(-20f, 0f),
-                            end = Offset(-330f, 0f),
-                            strokeWidth = 24f
+                        Spacer(
+                            modifier = Modifier.height(8.dp).width(100.dp)
+                                .background(Color(24, 24, 24))
                         )
-                        drawLine(
-                            color = Color(24, 24, 24),
-                            start = Offset(330f, 0f),
-                            end = Offset(640f, 0f),
-                            strokeWidth = 24f,
+                        Row(
+                            modifier = Modifier
+                                .width(100.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            TextoBranco(
+                                texto = stringResource(R.string.dashboard),
+                                tamanhoFonte = 12
+                            )
+                        }
+                        Spacer(
+                            modifier = Modifier.height(8.dp).width(100.dp)
+                                .background(Color(24, 24, 24))
                         )
+
                     }
-                    TextoBranco(texto = stringResource(R.string.dashboard), tamanhoFonte = 16)
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        GraficoTrilhaRecente(
+                            Materia(
+                                id = 1,
+                                titulo = "Algoritmo",
+                                fases = listOf()
+                            )
+                        )
+                        GraficoLinha(titulo = "Exercícios feitos")
+                        GraficoLinha(titulo = "Maior ranking")
+
+                    }
+
                 }
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ){
-
-                        GraficoTrilhaRecente(Materia(id = 1, titulo = "Algoritmo", fases = listOf()))
-
-
-
-                }
-            }
 
 
         })
+
     )
 }

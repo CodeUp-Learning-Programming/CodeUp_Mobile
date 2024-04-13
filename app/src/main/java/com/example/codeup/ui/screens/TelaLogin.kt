@@ -44,6 +44,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class TelaLogin : ComponentActivity() {
+//    private val loginViewModel: LoginViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -63,7 +65,9 @@ class TelaLogin : ComponentActivity() {
                         .fillMaxSize(),
                     color = Color(13, 13, 13)
                 ) {
-                    Login("extras")
+                    Login("extras",
+//                        loginViewModel = loginViewModel
+                    )
                 }
             }
         }
@@ -71,14 +75,18 @@ class TelaLogin : ComponentActivity() {
 }
 
 @Composable
-fun Login(name: String, modifier: Modifier = Modifier) {
+fun Login(name: String, modifier: Modifier = Modifier,
+//          loginViewModel: LoginViewModel
+) {
+
+    val context = LocalContext.current
+//    val loginViewModel: LoginViewModel = viewModel()
 
     var lembrar by remember { mutableStateOf(false) }
 
     var emailInputValido by remember { mutableStateOf(false) }
     var senhaInputValido by remember { mutableStateOf(false) }
 
-    val contexto = LocalContext.current
     val (usuarioLoginRequest, usuarioLoginRequestSetter) = remember {
         mutableStateOf(UsuarioLoginRequest())
     }
@@ -86,214 +94,227 @@ fun Login(name: String, modifier: Modifier = Modifier) {
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(all = 20.dp),
-        verticalArrangement = Arrangement.Top
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
-
-        Spacer(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp)
-        )
-        Row {
-            TextoBranco(
-                texto = stringResource(R.string.text_login),
-                tamanhoFonte = 36,
-                pesoFonte = "Titulo"
-            )
-        }
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(40.dp)
-        )
-        Column(modifier = Modifier.fillMaxWidth()) {
-            TextoBranco(
-                texto = stringResource(R.string.text_email),
-                tamanhoFonte = 14,
-                pesoFonte = "normal"
-            )
-            var isTextfieldFocused by remember { mutableStateOf(false) }
-
-            TextFieldBordaGradienteAzul(
-                isTextFieldFocused = isTextfieldFocused,
-                texto = usuarioLoginRequest.email,
-                label = stringResource(R.string.text_email_label),
-                onValueChanged = { usuarioLoginRequestSetter(usuarioLoginRequest.copy(email = it)) },
-                onFocusChanged = {
-                    isTextfieldFocused = it.isFocused
-                    emailInputValido = false
-                },
-                dadoIncorreto = emailInputValido
-            )
-        }
-
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(20.dp)
-        )
-
-        Column(modifier = Modifier.fillMaxWidth()) {
-            TextoBranco(
-                texto = stringResource(R.string.text_senha),
-                tamanhoFonte = 14,
-                pesoFonte = "normal"
-            )
-            var isTextfieldFocused by remember { mutableStateOf(false) }
-
-            TextFieldBordaGradienteAzul(
-                isTextFieldFocused = isTextfieldFocused,
-                texto = usuarioLoginRequest.senha,
-                label = "********",
-                onValueChanged = { usuarioLoginRequestSetter(usuarioLoginRequest.copy(senha = it)) },
-                onFocusChanged = {
-                    isTextfieldFocused = it.isFocused
-                    senhaInputValido = false
-                },
-                dadoIncorreto = senhaInputValido
-            )
-        }
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .width(115.dp)
-                .height(60.dp)
+                .padding(all = 20.dp),
+            verticalArrangement = Arrangement.Top
         ) {
-            CheckboxComGradiente(lembrar = lembrar, onCheckedChange = { lembrar = it })
 
-            TextoBranco(
-                texto = stringResource(R.string.text_lembrar),
-                tamanhoFonte = 12,
-                pesoFonte = "normal"
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp)
             )
-        }
-
-
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(20.dp)
-        )
-
-        BotaoAzul(
-            text = stringResource(R.string.text_entrar),
-            onClick = {
-                if (usuarioLoginRequest.email.isEmpty() || usuarioLoginRequest.senha.isEmpty()) {
-                    emailInputValido = true
-                    senhaInputValido = true
-
-                } else {
-
-                    val ApiUsuarios = RetrofitService.getApiUsuarioService(null)
-                    val post = ApiUsuarios.login(usuarioLoginRequest);
-
-                    post.enqueue(object : Callback<Usuario> {
-                        override fun onResponse(call: Call<Usuario>, response: Response<Usuario>) {
-                            if (response.isSuccessful) {
-                                val usuarioResponse = response.body()
-                                if (usuarioResponse != null) {
-                                    val telaHome = Intent(contexto, TelaHome::class.java)
-                                    telaHome.putExtra("usuario", usuarioResponse)
-                                    contexto.startActivity(telaHome)
-                                } else {
-                                    erroApi.value = "Erro: Usuário não encontrado"
-                                }
-                            } else {
-                                erroApi.value = "Erro na resposta: ${response.code()}"
-                            }
-                        }
-
-                        override fun onFailure(call: Call<Usuario>, t: Throwable) {
-                            erroApi.value = t.message.toString()
-
-                            if (usuarioLoginRequest.email == "admin" && usuarioLoginRequest.senha == "123") {
-                                val telaHome = Intent(contexto, TelaHome::class.java)
-                                telaHome.putExtra(
-                                    "usuario", Usuario(
-                                        id = 1,
-                                        fotoPerfil = "", nome = "Administrador",
-                                        email = "admin@sptech.school",
-                                        token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkZXZAc3B0ZWNoLnNjaG9vbCIsImlhdCI6MTY5ODA4NDY1NCwiZXhwIjoxNzAxNjg0NjU0fQ._ByXuksiF9C2K2Xu5OrAhquC2SHNfiAO7uut0pGEXN8JKzY8bzGksmQJQ6ICZIJ3uhladvK7NoDJyeS7iMrA0A",
-                                        moedas = 500,
-                                        nivel = 950,
-                                        xp = 250,
-                                        itensAdquiridos = listOf(
-                                            ItemAdquirido(
-                                                id = 1,
-                                                nomeItem = "Item 1",
-                                                fotoItem = "!",
-                                                tipoItem = "Imagem",
-                                                precoItem = 20.0,
-                                                descricaoItem = "Item 1",
-                                                equipado = false
-                                            ),
-                                            ItemAdquirido(
-                                                id = 2,
-                                                nomeItem = "Item 2",
-                                                fotoItem = "?",
-                                                tipoItem = "Imagem2",
-                                                precoItem = 20.0,
-                                                descricaoItem = "Item 2",
-                                                equipado = false
-                                            )
-                                        )
-
-
-                                    )
-                                )
-                                contexto.startActivity(telaHome)
-                            }
-                        }
-                    })
-                }
-
-            },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        if (!erroApi.equals("")) {
-            TextoBranco(
-                texto = erroApi.value,
-                tamanhoFonte = 12,
-                pesoFonte = "normal"
+            Row {
+                TextoBranco(
+                    texto = stringResource(R.string.text_login),
+                    tamanhoFonte = 36,
+                    pesoFonte = "Titulo"
+                )
+            }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp)
             )
-        }
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(268.dp)
-        )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
+            Column(modifier = Modifier.fillMaxWidth()) {
+                TextoBranco(
+                    texto = stringResource(R.string.text_email),
+                    tamanhoFonte = 14,
+                    pesoFonte = "normal"
+                )
+                var isTextfieldFocused by remember { mutableStateOf(false) }
 
-        ) {
-            TextoBranco(
-                texto = stringResource(R.string.text_nao_tem_conta),
-                tamanhoFonte = 12,
-                pesoFonte = "normal"
+                TextFieldBordaGradienteAzul(
+                    isTextFieldFocused = isTextfieldFocused,
+                    texto = usuarioLoginRequest.email,
+                    label = stringResource(R.string.text_email_label),
+                    onValueChanged = { usuarioLoginRequestSetter(usuarioLoginRequest.copy(email = it)) },
+                    onFocusChanged = {
+                        isTextfieldFocused = it.isFocused
+                        emailInputValido = false
+                    },
+                    dadoIncorreto = emailInputValido
+                )
+            }
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(20.dp)
             )
-            TextButton(
-                onClick = {
-                    val intent = Intent(contexto, TelaCadastro::class.java)
-                    contexto.startActivity(intent)
-                },
+
+            Column(modifier = Modifier.fillMaxWidth()) {
+                TextoBranco(
+                    texto = stringResource(R.string.text_senha),
+                    tamanhoFonte = 14,
+                    pesoFonte = "normal"
+                )
+                var isTextfieldFocused by remember { mutableStateOf(false) }
+
+                TextFieldBordaGradienteAzul(
+                    isTextFieldFocused = isTextfieldFocused,
+                    texto = usuarioLoginRequest.senha,
+                    label = "********",
+                    onValueChanged = { usuarioLoginRequestSetter(usuarioLoginRequest.copy(senha = it)) },
+                    onFocusChanged = {
+                        isTextfieldFocused = it.isFocused
+                        senhaInputValido = false
+                    },
+                    dadoIncorreto = senhaInputValido
+                )
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp)
             ) {
-                TextoAzulGradienteSublinhado(
-                    texto = stringResource(R.string.text_cadastrar_se),
+                CheckboxComGradiente(lembrar = lembrar, onCheckedChange = { lembrar = it })
+                Spacer(
+                    modifier = Modifier
+                        .width(10.dp)
+                )
+                TextoBranco(
+                    texto = stringResource(R.string.text_lembrar),
                     tamanhoFonte = 12,
                     pesoFonte = "normal"
                 )
             }
+
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(20.dp)
+            )
+
+            BotaoAzul(
+                text = stringResource(R.string.text_entrar),
+                onClick = {
+                    if (usuarioLoginRequest.email.isEmpty() || usuarioLoginRequest.senha.isEmpty()) {
+                        emailInputValido = true
+                        senhaInputValido = true
+
+                    } else {
+//                        loginViewModel.fazerLogin(usuarioLoginRequest, lembrar, context)
+
+
+                        val ApiUsuarios = RetrofitService.getApiUsuarioService(null)
+                        val post = ApiUsuarios.login(usuarioLoginRequest);
+
+                        post.enqueue(object : Callback<Usuario> {
+                            override fun onResponse(call: Call<Usuario>, response: Response<Usuario>) {
+                                if (response.isSuccessful) {
+                                    val usuarioResponse = response.body()
+                                    if (usuarioResponse != null) {
+
+//                                        if(lembrar){
+//                                            salvarUsuarioNoDataStore(usuarioResponse)
+//                                        }
+
+                                        val telaHome = Intent(context, TelaHome::class.java)
+                                        telaHome.putExtra("usuario", usuarioResponse)
+                                        context.startActivity(telaHome)
+                                    }
+                                }
+                            }
+
+                            override fun onFailure(call: Call<Usuario>, t: Throwable) {
+
+                                if (usuarioLoginRequest.email == "admin" && usuarioLoginRequest.senha == "123") {
+                                    val telaHome = Intent(context, TelaHome::class.java)
+                                    telaHome.putExtra(
+                                        "usuario", Usuario(
+                                            id = 1,
+                                            fotoPerfil = "", nome = "Administrador",
+                                            email = "admin@sptech.school",
+                                            token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkZXZAc3B0ZWNoLnNjaG9vbCIsImlhdCI6MTY5ODA4NDY1NCwiZXhwIjoxNzAxNjg0NjU0fQ._ByXuksiF9C2K2Xu5OrAhquC2SHNfiAO7uut0pGEXN8JKzY8bzGksmQJQ6ICZIJ3uhladvK7NoDJyeS7iMrA0A",
+                                            moedas = 500,
+                                            nivel = 950,
+                                            xp = 250,
+                                            itensAdquiridos = listOf(
+                                                ItemAdquirido(
+                                                    id = 1,
+                                                    nomeItem = "Item 1",
+                                                    fotoItem = "!",
+                                                    tipoItem = "Imagem",
+                                                    precoItem = 20.0,
+                                                    descricaoItem = "Item 1",
+                                                    equipado = false
+                                                ),
+                                                ItemAdquirido(
+                                                    id = 2,
+                                                    nomeItem = "Item 2",
+                                                    fotoItem = "?",
+                                                    tipoItem = "Imagem2",
+                                                    precoItem = 20.0,
+                                                    descricaoItem = "Item 2",
+                                                    equipado = false
+                                                )
+                                            )
+
+
+                                        )
+                                    )
+                                    context.startActivity(telaHome)
+                                }
+                            }
+                        })
+
+                    }
+
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            if (!erroApi.equals("")) {
+                TextoBranco(
+                    texto = erroApi.value,
+                    tamanhoFonte = 12,
+                    pesoFonte = "normal"
+                )
+            }
+
         }
+        Column(
+            modifier = Modifier
+                .padding(bottom = 30.dp)
+        ) {
 
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+                TextoBranco(
+                    texto = stringResource(R.string.text_nao_tem_conta),
+                    tamanhoFonte = 12,
+                    pesoFonte = "normal"
+                )
+                TextButton(
+                    onClick = {
+                        val intent = Intent(context, TelaCadastro::class.java)
+                        context.startActivity(intent)
+                    },
+                ) {
+                    TextoAzulGradienteSublinhado(
+                        texto = stringResource(R.string.text_cadastrar_se),
+                        tamanhoFonte = 12,
+                        pesoFonte = "normal"
+                    )
+                }
+            }
+
+        }
     }
-
 
 }

@@ -1,5 +1,6 @@
 package com.example.codeup
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -10,8 +11,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.example.codeup.ui.screens.Login
 import com.example.codeup.ui.theme.CodeupTheme
+
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_preferences")
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,4 +47,14 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Login("")
+}
+
+fun login(username: String, password: String) {
+    // Lógica de login aqui
+    if (username == "usuario" && password == "senha") {
+        // Login bem-sucedido, navegar para a próxima tela
+        // Exemplo: startActivity(Intent(this, ProximaActivity::class.java))
+    } else {
+        // Login falhou
+    }
 }

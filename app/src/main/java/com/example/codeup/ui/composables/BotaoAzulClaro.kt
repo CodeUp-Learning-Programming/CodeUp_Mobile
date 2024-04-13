@@ -27,7 +27,7 @@ fun BotaoAzulClaro(
     modifier: Modifier = Modifier,
     altura: Int = 36,
     largura: Int = 250,
-    tamanhoFonte: Int = 14
+    tamanhoFonte: Int = 12
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
