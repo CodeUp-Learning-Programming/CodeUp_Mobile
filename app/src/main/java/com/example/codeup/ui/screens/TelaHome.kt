@@ -70,6 +70,7 @@ fun Home(
                 if (faseResponse != null) {
                     listaExercicios = faseResponse.map { fase ->
                         DadosDoCard(
+                            tituloFase = fase.tituloFase,
                             desbloqueada = fase.desbloqueada,
                             qtdExerciciosFase = fase.qtdExerciciosFase,
                             qtdExerciciosFaseConcluidos = fase.qtdExerciciosFaseConcluidos
@@ -88,19 +89,15 @@ fun Home(
 
             //Colocando dados para execução em modo offline
             val listaExerciciosMock = listOf(
-                DadosDoCard(true, 5, 5),
-                DadosDoCard(false, 5, 3),
-                DadosDoCard(false, 5, 5),
-                DadosDoCard(false, 5, 3),
-                DadosDoCard(false, 5, 5),
-                DadosDoCard(false, 5, 3),
-                DadosDoCard(false, 5, 5),
-                DadosDoCard(false, 5, 3),
-                DadosDoCard(false, 5, 5),
-                DadosDoCard(false, 5, 3)
+                DadosDoCard("Aprenda",true, 5, 5),
+                DadosDoCard("Aprenda",false, 5, 3),
+                DadosDoCard("Aprenda",false, 5, 3),
+                DadosDoCard("Aprenda",false, 5, 3),
+                DadosDoCard("Aprenda",false, 5, 3),
             )
             listaExercicios = listaExerciciosMock.map { fase ->
                 DadosDoCard(
+                    tituloFase = fase.tituloFase,
                     desbloqueada = fase.desbloqueada,
                     qtdExerciciosFase = fase.qtdExerciciosFase,
                     qtdExerciciosFaseConcluidos = fase.qtdExerciciosFaseConcluidos

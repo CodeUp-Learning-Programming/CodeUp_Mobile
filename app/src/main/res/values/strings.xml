@@ -30,4 +30,6 @@
     <string name="dashboard">DASHBOARD</string>
     <string name="text_exercicio_bloqueado">exercicio bloqueado</string>
     <string name="text_loja">Loja</string>
+    <string name="text_sequencia">sequência</string>
+    <string name="text_moedas">moedas</string>
 </resources>

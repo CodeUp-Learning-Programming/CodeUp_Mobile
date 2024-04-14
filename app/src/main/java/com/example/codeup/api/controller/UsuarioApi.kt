@@ -2,6 +2,7 @@ package com.example.codeup.api.controller
 
 import com.example.codeup.data.Usuario
 import com.example.codeup.data.UsuarioLoginRequest
+import com.example.codeup.data.UsuarioRegisterRequest
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -19,7 +20,7 @@ interface UsuarioApi {
     fun atualizarListaItensPorId(@Path("id") id: Int): Call<Usuario>
 
     @POST("/usuarios/cadastrar")
-    fun cadastrar(@Body usuario: Usuario): Call<Usuario>
+    fun cadastrar(@Body usuarioRegisterRequest: UsuarioRegisterRequest): Call<Usuario>
 
     @POST("api/usuarios/login")
     fun login(@Body usuarioLoginRequest: UsuarioLoginRequest): Call<Usuario>

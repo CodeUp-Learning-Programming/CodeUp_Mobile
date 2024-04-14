@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -46,21 +47,45 @@ fun CardPerfil(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            val painter: Painter = painterResource(id = imagem)
-            Image(
-                painter = painter,
-                contentDescription = stringResource(altImagem),
-            )
-            TextoBranco(texto = texto, tamanhoFonte = 20, pesoFonte =  "normal")
-            Text(
-                text = titulo,
-                color = Color(194,194,194),
-                fontFamily = FontFamily(
-                    Font(R.font.poppins_bold, FontWeight.Bold)
-                ),
-                fontSize = 13.sp,
-                textAlign = TextAlign.Start
-            )
+
+            Row(
+                modifier = Modifier
+                    .height(33.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val painter: Painter = painterResource(id = imagem)
+                Image(
+                    painter = painter,
+                    contentDescription = stringResource(altImagem),
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .height(33.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TextoBranco(texto = texto, tamanhoFonte = 20, pesoFonte = "normal")
+
+            }
+            Row(
+                modifier = Modifier
+                    .height(33.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = titulo.uppercase(),
+                    color = Color(194, 194, 194),
+                    fontFamily = FontFamily(
+                        Font(R.font.poppins_bold, FontWeight.Bold)
+                    ),
+                    fontSize = 13.sp,
+                    textAlign = TextAlign.Start
+                )
+            }
+
 
         }
 

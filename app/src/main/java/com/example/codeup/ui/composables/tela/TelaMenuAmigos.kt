@@ -2,6 +2,8 @@ package com.example.codeup.ui.composables.tela
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
+import com.example.codeup.R
 import com.example.codeup.data.ItemAdquirido
 import com.example.codeup.data.Usuario
 import com.example.codeup.ui.composables.listas.ListaAmigos
@@ -250,7 +252,7 @@ fun TelaMenuAmigos(
             )
     }
     MenuPadrao(
-        texto = "Ranking",
+        texto = stringResource(R.string.text_amigos),
         conteudo = ({
             ListaAmigos(listaAmigos)
         })

@@ -2,10 +2,10 @@ package com.example.codeup.ui.composables.card
 
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import com.example.codeup.ui.composables.card.CardAprenda
 
 @Composable
 fun CardPopup(
+    tituloFase: String,
     desbloqueada: Boolean = false,
     qtdExerciciosFase: Int = 0,
     qtdExerciciosFaseConcluidos: Int = 0,
@@ -13,8 +13,9 @@ fun CardPopup(
 ) {
     // Conteúdo do pop-up
     Surface{
-        if (!desbloqueada) {
+        if (desbloqueada) {
             CardAprenda(
+                tituloFase = tituloFase,
                 desbloqueada = desbloqueada,
                 qtdExerciciosFaseConcluidos = qtdExerciciosFaseConcluidos,
                 qtdExerciciosFase = qtdExerciciosFase,

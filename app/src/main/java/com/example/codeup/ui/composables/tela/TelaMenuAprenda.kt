@@ -35,8 +35,8 @@ import com.example.codeup.ui.composables.menu.MenuHome
 
 @Composable
 fun TelaMenuAprenda(
-  user: Usuario,
-  listaExercicios: List<DadosDoCard>
+    user: Usuario,
+    listaExercicios: List<DadosDoCard>
 
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -129,13 +129,12 @@ fun TelaMenuAprenda(
                                 setShowPopup(false)
                                 // Reseta o índice do card selecionado
                                 selectedCardIndex = -1
-                        }
-
-
+                            }
                         ),
                     contentAlignment = Alignment.Center
                 ) {
                     CardPopup(
+                        tituloFase = listaExercicios[selectedCardIndex].tituloFase,
                         desbloqueada = listaExercicios[selectedCardIndex].desbloqueada,
                         qtdExerciciosFase = listaExercicios[selectedCardIndex].qtdExerciciosFase,
                         qtdExerciciosFaseConcluidos = listaExercicios[selectedCardIndex].qtdExerciciosFaseConcluidos,

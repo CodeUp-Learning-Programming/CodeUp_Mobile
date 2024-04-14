@@ -34,6 +34,7 @@ import com.example.codeup.ui.screens.TelaExercicio
 
 @Composable
 fun CardAprenda(
+    tituloFase: String,
     desbloqueada: Boolean,
     qtdExerciciosFaseConcluidos: Int,
     qtdExerciciosFase: Int,
@@ -49,7 +50,7 @@ fun CardAprenda(
 
     Box(
         modifier = Modifier
-            .width(230.dp)
+            .width(270.dp)
             .height(150.dp)
             .background(Color.Black) // Cor de fundo do cartão
             .border(1.dp, borderGradient, shape = RoundedCornerShape(8F)) // Borda com gradiente
@@ -66,7 +67,7 @@ fun CardAprenda(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                TextoBranco(texto = "APRENDA", tamanhoFonte = 12, pesoFonte = "regular")
+                TextoBranco(texto = "APRENDA", tamanhoFonte = 12)
 
                 val painter1: Painter = painterResource(id = R.drawable.icon_aprenda_selecionado)
                 Image(
@@ -79,7 +80,7 @@ fun CardAprenda(
                 modifier = Modifier
                     .fillMaxWidth(),
             ) {
-                TextoBranco(texto = "Váriaveis", tamanhoFonte = 24, pesoFonte = "normal")
+                TextoBranco(texto = tituloFase, tamanhoFonte = 20, pesoFonte = "normal")
             }
             Column {
                 //Parte e quantidade

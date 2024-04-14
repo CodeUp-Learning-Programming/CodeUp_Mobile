@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 import com.example.codeup.api.RetrofitService
@@ -124,7 +125,6 @@ fun Login(name: String, modifier: Modifier = Modifier,
                 TextoBranco(
                     texto = stringResource(R.string.text_email),
                     tamanhoFonte = 14,
-                    pesoFonte = "normal"
                 )
                 var isTextfieldFocused by remember { mutableStateOf(false) }
 
@@ -132,12 +132,13 @@ fun Login(name: String, modifier: Modifier = Modifier,
                     isTextFieldFocused = isTextfieldFocused,
                     texto = usuarioLoginRequest.email,
                     label = stringResource(R.string.text_email_label),
-                    onValueChanged = { usuarioLoginRequestSetter(usuarioLoginRequest.copy(email = it)) },
+                    onValueChange = { usuarioLoginRequestSetter(usuarioLoginRequest.copy(email = it)) },
                     onFocusChanged = {
                         isTextfieldFocused = it.isFocused
                         emailInputValido = false
                     },
-                    dadoIncorreto = emailInputValido
+                    dadoIncorreto = emailInputValido,
+                    keyboardType = KeyboardType.Email
                 )
             }
 
@@ -151,7 +152,6 @@ fun Login(name: String, modifier: Modifier = Modifier,
                 TextoBranco(
                     texto = stringResource(R.string.text_senha),
                     tamanhoFonte = 14,
-                    pesoFonte = "normal"
                 )
                 var isTextfieldFocused by remember { mutableStateOf(false) }
 
@@ -159,12 +159,13 @@ fun Login(name: String, modifier: Modifier = Modifier,
                     isTextFieldFocused = isTextfieldFocused,
                     texto = usuarioLoginRequest.senha,
                     label = "********",
-                    onValueChanged = { usuarioLoginRequestSetter(usuarioLoginRequest.copy(senha = it)) },
+                    onValueChange = { usuarioLoginRequestSetter(usuarioLoginRequest.copy(senha = it)) },
                     onFocusChanged = {
                         isTextfieldFocused = it.isFocused
                         senhaInputValido = false
                     },
-                    dadoIncorreto = senhaInputValido
+                    dadoIncorreto = senhaInputValido,
+                    keyboardType = KeyboardType.Password
                 )
             }
 
@@ -183,7 +184,6 @@ fun Login(name: String, modifier: Modifier = Modifier,
                 TextoBranco(
                     texto = stringResource(R.string.text_lembrar),
                     tamanhoFonte = 12,
-                    pesoFonte = "normal"
                 )
             }
 
@@ -277,7 +277,6 @@ fun Login(name: String, modifier: Modifier = Modifier,
                 TextoBranco(
                     texto = erroApi.value,
                     tamanhoFonte = 12,
-                    pesoFonte = "normal"
                 )
             }
 
@@ -298,7 +297,6 @@ fun Login(name: String, modifier: Modifier = Modifier,
                 TextoBranco(
                     texto = stringResource(R.string.text_nao_tem_conta),
                     tamanhoFonte = 12,
-                    pesoFonte = "normal"
                 )
                 TextButton(
                     onClick = {

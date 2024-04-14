@@ -29,7 +29,6 @@ import com.example.codeup.ui.DadosDoCard
 import com.example.codeup.ui.composables.BotaoAzulClaro
 import com.example.codeup.ui.composables.TextoBranco
 import com.example.codeup.ui.composables.card.CardPerfil
-import com.example.codeup.ui.composables.card.GraficoLinha
 import com.example.codeup.ui.composables.card.GraficoTrilhaRecente
 import com.example.codeup.ui.composables.menu.MenuPadrao
 
@@ -92,19 +91,19 @@ fun TelaMenuPerfil(
                             R.drawable.icon_fogo_azul,
                             R.string.text_icon_fogo_azul,
                             "2",
-                            "SEQUÊNCIA"
+                            stringResource(R.string.text_sequencia)
                         )
                         CardPerfil(
                             R.drawable.icon_estrela,
                             R.string.text_icon_fogo_azul,
                             "2",
-                            "SEQUÊNCIA"
+                            stringResource(R.string.text_ranking)
                         )
                         CardPerfil(
                             R.drawable.icon_moeda,
                             R.string.text_icon_fogo_azul,
                             "2",
-                            "SEQUÊNCIA"
+                            stringResource(R.string.text_moedas)
                         )
                     }
 
@@ -115,7 +114,9 @@ fun TelaMenuPerfil(
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         Spacer(
-                            modifier = Modifier.height(8.dp).width(100.dp)
+                            modifier = Modifier
+                                .height(8.dp)
+                                .width(100.dp)
                                 .background(Color(24, 24, 24))
                         )
                         Row(
@@ -130,7 +131,9 @@ fun TelaMenuPerfil(
                             )
                         }
                         Spacer(
-                            modifier = Modifier.height(8.dp).width(100.dp)
+                            modifier = Modifier
+                                .height(8.dp)
+                                .width(100.dp)
                                 .background(Color(24, 24, 24))
                         )
 
@@ -150,9 +153,9 @@ fun TelaMenuPerfil(
                                 fases = listOf()
                             )
                         )
-                        GraficoLinha(titulo = "Exercícios feitos")
-                        GraficoLinha(titulo = "Maior ranking")
+                        Column(){
 
+                        }
                     }
 
                 }
