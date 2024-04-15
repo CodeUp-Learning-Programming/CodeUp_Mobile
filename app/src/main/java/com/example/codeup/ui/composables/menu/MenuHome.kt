@@ -1,4 +1,4 @@
-package com.example.codeup.ui.composables
+package com.example.codeup.ui.composables.menu
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -6,15 +6,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,10 +26,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
+import com.example.codeup.ui.composables.ImagemFundo
+import com.example.codeup.ui.composables.TextoBranco
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Menu(
+fun MenuHome(
     imagem: String,
     nomeMateria: String,
     totalCoracoes: Int,
@@ -159,105 +157,13 @@ fun Menu(
 
 
         },
-        bottomBar = {
-            BottomAppBar(
-                containerColor = Color(R.color.black),
-                contentColor = MaterialTheme.colorScheme.primary,
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight(),
-                        horizontalArrangement = Arrangement.SpaceAround,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        val painter1: Painter = painterResource(id = R.drawable.icon_aprenda_selecionado)
-                        val painter2: Painter = painterResource(id = R.drawable.icon_medalha)
-                        val painter3: Painter = painterResource(id = R.drawable.icon_amigos)
-                        val painter4: Painter = painterResource(id = R.drawable.icon_usuario)
-                        val contentScale = ContentScale.FillBounds
-
-                        Column(
-                            modifier = Modifier,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Image(
-                                painter = painter1,
-                                contentDescription = stringResource(R.string.text_aprenda),
-                                modifier = Modifier
-
-                            )
-                            TextoBranco(
-                                texto = stringResource(R.string.text_aprenda),
-                                tamanhoFonte = 12,
-                                pesoFonte = "normal"
-                            )
-                        }
-                        Column(
-                            modifier = Modifier,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Image(
-                                painter = painter2,
-                                contentDescription = stringResource(R.string.text_ranking),
-
-                                )
-                            TextoBranco(
-                                texto = stringResource(R.string.text_ranking),
-                                tamanhoFonte = 12,
-                                pesoFonte = "normal"
-                            )
-                        }
-                        Column(
-                            modifier = Modifier,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Image(
-                                painter = painter3,
-                                contentDescription = stringResource(R.string.text_amigos),
-
-                                )
-                            TextoBranco(
-                                texto = stringResource(R.string.text_amigos),
-                                tamanhoFonte = 12,
-                                pesoFonte = "normal"
-                            )
-                        }
-                        Column(
-                            modifier = Modifier,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Image(
-                                painter = painter4,
-                                contentDescription = stringResource(R.string.text_perfil),
-
-                                )
-                            TextoBranco(
-                                texto = stringResource(R.string.text_perfil),
-                                tamanhoFonte = 12,
-                                pesoFonte = "normal"
-                            )
-                        }
-                    }
-                }
-            }
-        },
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            ImageBackgroundExample(backgroundImageResId = R.drawable.tema_pontos) {
+            ImagemFundo(backgroundImageResId = R.drawable.tema_pontos) {
                 //Colocar conteudo aqui dinamicamente
                 conteudo()
             }
@@ -266,23 +172,3 @@ fun Menu(
 }
 
 
-@Composable
-fun ImageBackgroundExample(
-    backgroundImageResId: Int,
-    content: @Composable () -> Unit
-) {
-    val painter: Painter = painterResource(id = backgroundImageResId)
-    val contentScale = ContentScale.FillBounds
-
-    Box(
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        Image(
-            painter = painter,
-            contentDescription = null, // A descrição é opcional
-            contentScale = contentScale,
-            modifier = Modifier.fillMaxSize()
-        )
-        content()
-    }
-}

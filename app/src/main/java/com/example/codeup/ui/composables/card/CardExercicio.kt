@@ -1,9 +1,10 @@
-package com.example.codeup.ui.composables
+package com.example.codeup.ui.composables.card
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -22,29 +24,32 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
+import com.example.codeup.ui.composables.TextoBranco
 
 @Composable
 fun CardExercicio(
-    bloqueado: Boolean,
-    totalExerciciosConcluidos: Int,
-    totalExercicios: Int,
+    desbloqueada: Boolean = false,
+    qtdExerciciosFaseConcluidos: Int = 0,
+    qtdExerciciosFase: Int = 0,
     onClick: () -> Unit
 ) {
-    val borderGradient = Brush.horizontalGradient(
+    val interactionSource = remember { MutableInteractionSource() }
+
+    val borderGradientdesbloqueada = Brush.horizontalGradient(
         colors = listOf(
             Color(0, 225, 242),
             Color(0, 132, 249)
         )
     )
 
-    val borderGradientBloqueado = Brush.horizontalGradient(
+    val borderGradient = Brush.horizontalGradient(
         colors = listOf(
             Color(92, 92, 92),
             Color(92, 92, 92),
         )
     )
 
-    val borda = if (bloqueado) borderGradientBloqueado else borderGradient
+    val borda = if (desbloqueada) borderGradientdesbloqueada else borderGradient
 
     Box(
         modifier = Modifier
@@ -52,7 +57,11 @@ fun CardExercicio(
             .height(100.dp)
             .background(Color.Black) // Cor de fundo do cartão
             .border(2.dp, borda, shape = RoundedCornerShape(8F)) // Borda com gradiente
-            .clickable(onClick = onClick)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClick
+            )
     ) {
         Column(
             modifier = Modifier
@@ -60,15 +69,15 @@ fun CardExercicio(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (bloqueado) {
+            if (!desbloqueada) {
                 val painter1: Painter = painterResource(id = R.drawable.icon_cadeado)
                 Image(
                     painter = painter1,
-                    contentDescription = stringResource(R.string.text_descricao_materia),
+                    contentDescription = stringResource(R.string.text_exercicio_bloqueado),
                 )
             } else {
                 Row() {
-                    TextoBranco("$totalExerciciosConcluidos/$totalExercicios", 36, "normal")
+                    TextoBranco("$qtdExerciciosFaseConcluidos/$qtdExerciciosFase", 36, "normal")
                 }
             }
 

@@ -19,27 +19,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextFieldBordaGradienteAzul(
+fun TextFieldDataBordaGradienteAzul(
     modifier: Modifier = Modifier,
     isTextFieldFocused: Boolean,
-    texto: String,
-    label: String,
+    texto: LocalDate,
     enabled: Boolean = true,
     dadoIncorreto: Boolean = false,
-    onValueChange: (String) -> Unit,
+    onValueChange: (LocalDate) -> Unit,
     onFocusChanged: (FocusState) -> Unit,
+
     maxLines: Int = 1,
     keyboardType: KeyboardType = KeyboardType.Text
 ) {
     val focusManager = LocalFocusManager.current
-
 
     val corDaBorda = if (isTextFieldFocused) {
         Brush.horizontalGradient(
@@ -70,18 +69,24 @@ fun TextFieldBordaGradienteAzul(
                 .height(55.dp)
                 .onFocusChanged { onFocusChanged(it) }
                 .background(
-               Color(0, 0, 0), shape = RoundedCornerShape(8.dp)
-           )),
-        value = if(texto.isEmpty() && !isTextFieldFocused) label else texto,
-        onValueChange = { onValueChange(it) },
+                    Color(0, 0, 0), shape = RoundedCornerShape(8.dp)
+                )
+        ),
+        value = texto.format(DateTimeFormatter.ISO_LOCAL_DATE),
+        onValueChange = { newValue ->
+            try {
+                val parsedDate = LocalDate.parse(newValue, DateTimeFormatter.ISO_LOCAL_DATE)
+                onValueChange(parsedDate)
+            } catch (e: Exception) {
+                // Handle parsing error, if needed
+            }
+        },
         textStyle = TextStyle(
-            color = if(texto.isEmpty()) Color.Gray else Color.White,
-            textAlign = TextAlign.Start,
-
+            color = Color.Gray,
+            textAlign = TextAlign.Start
         ),
         enabled = enabled,
         shape = RoundedCornerShape(8.dp),
-
         colors = TextFieldDefaults.outlinedTextFieldColors(
             disabledTextColor = Color.Transparent, // Cor do texto quando desativado
             cursorColor = Color.White, // Cor do cursor
@@ -99,9 +104,5 @@ fun TextFieldBordaGradienteAzul(
         ),
         singleLine = maxLines == 1,
         maxLines = maxLines,
-
-
-        visualTransformation = if(keyboardType == KeyboardType.Password) PasswordVisualTransformation() else VisualTransformation.None
-
-        )
+    )
 }

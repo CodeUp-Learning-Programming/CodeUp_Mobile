@@ -20,9 +20,18 @@
     <string name="text_nome">Nome</string>
     <string name="text_ja_tem_conta">Já possui uma conta?</string>
     <string name="text_email_label">seu-email@gmail.com</string>
-    <string name="text_data_label">25/03//2001</string>
+    <string name="text_data_label">25/03/2001</string>
     <string name="text_nome_label">Seu nome</string>
     <string name="text_amigos">Amigos</string>
     <string name="text_cadastrar">Cadastrar</string>
     <string name="title_activity_tela_exercicio">TelaExercicio</string>
+    <string name="icon_config">Icone de uma engrenagem</string>
+    <string name="text_icon_fogo_azul">Icone de um fogo azul</string>
+    <string name="dashboard">DASHBOARD</string>
+    <string name="text_exercicio_bloqueado">exercicio bloqueado</string>
+    <string name="text_loja">Loja</string>
+    <string name="text_sequencia">sequência</string>
+    <string name="text_moedas">moedas</string>
+    <string name="text_exercicios_feitos">Exercícios feitos</string>
+    <string name="text_maior_ranking">Maior ranking</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.codeup.ui.composables
+package com.example.codeup.ui.composables.card
 
 import android.content.Intent
 import androidx.compose.foundation.Image
@@ -26,17 +26,18 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
+import com.example.codeup.ui.composables.BotaoAzul
+import com.example.codeup.ui.composables.TextoBranco
 import com.example.codeup.ui.screens.TelaExercicio
-import com.example.codeup.ui.theme.CodeupTheme
 
 @Composable
 fun CardAprenda(
-    bloqueado: Boolean,
-    totalExerciciosConcluidos: Int,
-    totalExercicios: Int,
+    tituloFase: String,
+    desbloqueada: Boolean,
+    qtdExerciciosFaseConcluidos: Int,
+    qtdExerciciosFase: Int,
     ) {
     val contexto = LocalContext.current
 
@@ -49,7 +50,7 @@ fun CardAprenda(
 
     Box(
         modifier = Modifier
-            .width(230.dp)
+            .width(270.dp)
             .height(150.dp)
             .background(Color.Black) // Cor de fundo do cartão
             .border(1.dp, borderGradient, shape = RoundedCornerShape(8F)) // Borda com gradiente
@@ -66,7 +67,7 @@ fun CardAprenda(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                TextoBranco(texto = "APRENDA", tamanhoFonte = 12, pesoFonte = "regular")
+                TextoBranco(texto = "APRENDA", tamanhoFonte = 12)
 
                 val painter1: Painter = painterResource(id = R.drawable.icon_aprenda_selecionado)
                 Image(
@@ -79,7 +80,7 @@ fun CardAprenda(
                 modifier = Modifier
                     .fillMaxWidth(),
             ) {
-                TextoBranco(texto = "Váriaveis", tamanhoFonte = 24, pesoFonte = "normal")
+                TextoBranco(texto = tituloFase, tamanhoFonte = 20, pesoFonte = "normal")
             }
             Column {
                 //Parte e quantidade
@@ -91,7 +92,7 @@ fun CardAprenda(
                 ) {
                     TextoBranco(texto = "PARTE", tamanhoFonte = 10, pesoFonte = "normal")
                     TextoBranco(
-                        texto = "$totalExerciciosConcluidos/$totalExercicios",
+                        texto = "$qtdExerciciosFaseConcluidos/$qtdExerciciosFase",
                         tamanhoFonte = 10,
                         pesoFonte = "normal"
                     )
@@ -102,7 +103,7 @@ fun CardAprenda(
                         .fillMaxWidth()
                 ) {
                     LinearProgressIndicator(
-                        progress = totalExerciciosConcluidos.toFloat() / totalExercicios.toFloat(),
+                        progress = qtdExerciciosFaseConcluidos.toFloat() / qtdExerciciosFase.toFloat(),
                         modifier = Modifier
                             .fillMaxWidth(),
                         trackColor = Color(49, 49, 49),
@@ -137,10 +138,10 @@ fun CardAprenda(
 
 }
 
-@Preview(showBackground = true)
-@Composable
-fun CardPreview() {
-    CodeupTheme {
-        CardAprenda(false, 2, 10)
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun CardPreview() {
+//    CodeupTheme {
+//        CardAprenda(false, 2, 10)
+//    }
+//}
