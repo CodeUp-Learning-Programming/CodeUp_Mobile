@@ -13,10 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,7 +21,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
-import com.example.codeup.ui.composables.ImagemFundo
 import com.example.codeup.ui.composables.TextoBranco
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,7 +30,6 @@ fun MenuPadrao(
     imagem: Int = R.drawable.icon_adicionar_amigo,
     conteudo: @Composable () -> Unit
 ) {
-    var presses by remember { mutableIntStateOf(0) }
 
     Scaffold(
         topBar = {
@@ -75,13 +69,19 @@ fun MenuPadrao(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxHeight(),
+                .fillMaxHeight()
+                .background(Color(13, 13, 13)),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            ImagemFundo(backgroundImageResId = R.drawable.tema_padrao) {
-                //Colocar conteudo aqui dinamicamente
-                conteudo()
-            }
+            //Colocar conteudo aqui dinamicamente
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(Color(40,40,40))
+            )
+            conteudo()
+
         }
     }
 }

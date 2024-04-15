@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -34,9 +36,14 @@ import com.example.codeup.data.Usuario
 import com.example.codeup.data.UsuarioRegisterRequest
 import com.example.codeup.ui.composables.BotaoAzul
 import com.example.codeup.ui.composables.TextFieldBordaGradienteAzul
+import com.example.codeup.ui.composables.TextFieldDataBordaGradienteAzul
 import com.example.codeup.ui.composables.TextoAzulGradienteSublinhado
 import com.example.codeup.ui.composables.TextoBranco
 import com.example.codeup.ui.theme.CodeupTheme
+import com.maxkeppeker.sheets.core.models.base.rememberSheetState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarConfig
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -47,27 +54,25 @@ class TelaCadastro : ComponentActivity() {
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.light(
                 0, 0
-            ),
-            navigationBarStyle = SystemBarStyle.light(
+            ), navigationBarStyle = SystemBarStyle.light(
                 0, 0
             )
         )
         setContent {
             CodeupTheme {
                 Surface(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    color = Color(13, 13, 13)
+                    modifier = Modifier.fillMaxSize(), color = Color(13, 13, 13)
                 ) {
-                    Cadastro("Android")
+                    Cadastro()
                 }
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Cadastro(name: String, modifier: Modifier = Modifier) {
+fun Cadastro() {
     val contexto = LocalContext.current
     val (usuario, usuarioSetter) = remember {
         mutableStateOf(UsuarioRegisterRequest())
@@ -81,15 +86,20 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
 
     val erroApi = remember { mutableStateOf("") }
 
+    val calendarState = rememberSheetState()
+
+
+    CalendarDialog(state = calendarState, config = CalendarConfig(
+        monthSelection = true, yearSelection = true
+    ), selection = CalendarSelection.Date { date ->
+        usuarioSetter(usuario.copy(dtNascimento = date))
+    })
+
     Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween
+        modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
-            modifier = Modifier
-                .padding(all = 20.dp),
-            verticalArrangement = Arrangement.Top
+            modifier = Modifier.padding(all = 20.dp), verticalArrangement = Arrangement.Top
         ) {
             Spacer(
                 modifier = Modifier
@@ -117,10 +127,11 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
                 var isTextfieldFocused by remember { mutableStateOf(false) }
 
                 TextFieldBordaGradienteAzul(
+                    modifier = Modifier.fillMaxWidth(),
                     isTextFieldFocused = isTextfieldFocused,
-                    texto = usuario.nome.toString(),
+                    texto = usuario.nome,
                     label = stringResource(R.string.text_nome_label),
-                    onValueChange = { usuarioSetter(usuario.copy(nome = it.toString())) },
+                    onValueChange = { usuarioSetter(usuario.copy(nome = it)) },
                     onFocusChanged = { isTextfieldFocused = it.isFocused },
                 )
             }
@@ -138,12 +149,15 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
                 )
                 var isTextfieldFocused by remember { mutableStateOf(false) }
 
-                TextFieldBordaGradienteAzul(
+
+                TextFieldDataBordaGradienteAzul(modifier = Modifier
+                    .clickable { calendarState.show() }
+                    .fillMaxWidth(),
                     isTextFieldFocused = isTextfieldFocused,
-                    texto = usuario.dtNascimento.toString(),
-                    label = stringResource(R.string.text_data_label),
-                    onValueChange = { usuarioSetter(usuario.copy(dtNascimento = it.toString())) },
+                    texto = usuario.dtNascimento,
+                    onValueChange = { },
                     onFocusChanged = { isTextfieldFocused = it.isFocused },
+                    enabled = false
                 )
             }
 
@@ -161,10 +175,11 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
                 var isTextfieldFocused by remember { mutableStateOf(false) }
 
                 TextFieldBordaGradienteAzul(
+                    modifier = Modifier.fillMaxWidth(),
                     isTextFieldFocused = isTextfieldFocused,
-                    texto = usuario.email.toString(),
+                    texto = usuario.email,
                     label = stringResource(R.string.text_email_label),
-                    onValueChange = { usuarioSetter(usuario.copy(email = it.toString())) },
+                    onValueChange = { usuarioSetter(usuario.copy(email = it)) },
                     onFocusChanged = { isTextfieldFocused = it.isFocused },
                     keyboardType = KeyboardType.Email
                 )
@@ -185,10 +200,11 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
                 var isTextfieldFocused by remember { mutableStateOf(false) }
 
                 TextFieldBordaGradienteAzul(
+                    modifier = Modifier.fillMaxWidth(),
                     isTextFieldFocused = isTextfieldFocused,
-                    texto = usuario.senha.toString(),
+                    texto = usuario.senha,
                     label = "********",
-                    onValueChange = { usuarioSetter(usuario.copy(senha = it.toString())) },
+                    onValueChange = { usuarioSetter(usuario.copy(senha = it)) },
                     onFocusChanged = { isTextfieldFocused = it.isFocused },
                     keyboardType = KeyboardType.Password
                 )
@@ -201,9 +217,7 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
             )
 
             BotaoAzul(
-                text = stringResource(R.string.text_cadastrar),
-                onClick = {
-
+                text = stringResource(R.string.text_cadastrar), onClick = {
                     if (usuario.email.isEmpty() || usuario.senha.isEmpty()) {
                         emailInputValido = true
                         senhaInputValido = true
@@ -211,42 +225,45 @@ fun Cadastro(name: String, modifier: Modifier = Modifier) {
                         dtNascimentoInputValido = true
                     } else {
                         val ApiUsuarios = RetrofitService.getApiUsuarioService(null)
-                        val post = ApiUsuarios.cadastrar(usuario);
+                        val post = ApiUsuarios.cadastrar(usuario)
 
                         post.enqueue(object : Callback<Usuario> {
                             override fun onResponse(
-                                call: Call<Usuario>,
-                                response: Response<Usuario>
+                                call: Call<Usuario>, response: Response<Usuario>
                             ) {
                                 if (response.isSuccessful) {
                                     val usuarioResponse = response.body()
                                     if (usuarioResponse != null) {
                                         val telaLogin = Intent(contexto, TelaLogin::class.java)
                                         contexto.startActivity(telaLogin)
+                                    } else {
+                                        erroApi.value = "Cadastro não realizado"
+
                                     }
+                                } else {
+                                    erroApi.value = "Erro na resposta: ${response.code()}"
                                 }
                             }
 
                             override fun onFailure(call: Call<Usuario>, t: Throwable) {
+                                erroApi.value = t.message.toString()
 
                             }
                         })
 
                     }
 
-                },
-                modifier = Modifier.fillMaxWidth()
+                }, modifier = Modifier.fillMaxWidth()
             )
         }
+
         Column(
-            modifier = Modifier
-                .padding(bottom = 30.dp)
+            modifier = Modifier.padding(bottom = 30.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
 
 

@@ -97,7 +97,7 @@ fun BarraNavegacao(
                     estadoLojaAtivo = true
                     estadoPerfilAtivo = false
 
-                    TelaMenuLoja(user = user)
+                    TelaMenuLoja()
                 }
                 composable(TelasFragmentos.TELA_MENU_PERFIL.name) {
                     estadoAprendaAtivo = false
@@ -106,7 +106,7 @@ fun BarraNavegacao(
                     estadoLojaAtivo = false
                     estadoPerfilAtivo = true
 
-                    TelaMenuPerfil(user = user, listaExercicios = listaExercicio)
+                    TelaMenuPerfil(user = user)
                 }
             }
         }

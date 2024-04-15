@@ -43,7 +43,7 @@ fun GraficoTrilhaRecente(
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(all = 15.dp),
+                .padding(all = 10.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             // Primeira linha
@@ -69,12 +69,12 @@ fun GraficoTrilhaRecente(
                     modifier = Modifier
                 ) {
                     LinearProgressIndicator(
-                        progress = 40.toFloat() / 100.toFloat(),
+                        progress = { 40.toFloat() / 100.toFloat() },
                         modifier = Modifier
                             .width(300.dp)
                             .height(8.dp),
-                        trackColor = Color(49, 49, 49),
                         color = Color(1, 167, 247),
+                        trackColor = Color(49, 49, 49),
                     )
 
                 }

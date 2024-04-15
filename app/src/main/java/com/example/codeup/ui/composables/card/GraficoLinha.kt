@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,6 +34,7 @@ fun GraficoLinha(
     Box(
         modifier = Modifier
             .height(300.dp)
+            .width(320.dp)
             .background(Color.Black, shape = RoundedCornerShape(8F))
             .border(1.dp, borderGradient, shape = RoundedCornerShape(8F)),
         contentAlignment = Alignment.Center

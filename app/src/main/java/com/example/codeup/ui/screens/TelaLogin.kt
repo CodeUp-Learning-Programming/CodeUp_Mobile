@@ -66,9 +66,7 @@ class TelaLogin : ComponentActivity() {
                         .fillMaxSize(),
                     color = Color(13, 13, 13)
                 ) {
-                    Login("extras",
-//                        loginViewModel = loginViewModel
-                    )
+                    Login()
                 }
             }
         }
@@ -76,13 +74,8 @@ class TelaLogin : ComponentActivity() {
 }
 
 @Composable
-fun Login(name: String, modifier: Modifier = Modifier,
-//          loginViewModel: LoginViewModel
-) {
-
+fun Login() {
     val context = LocalContext.current
-//    val loginViewModel: LoginViewModel = viewModel()
-
     var lembrar by remember { mutableStateOf(false) }
 
     var emailInputValido by remember { mutableStateOf(false) }
@@ -129,6 +122,7 @@ fun Login(name: String, modifier: Modifier = Modifier,
                 var isTextfieldFocused by remember { mutableStateOf(false) }
 
                 TextFieldBordaGradienteAzul(
+                    modifier = Modifier.fillMaxWidth(),
                     isTextFieldFocused = isTextfieldFocused,
                     texto = usuarioLoginRequest.email,
                     label = stringResource(R.string.text_email_label),
@@ -156,6 +150,7 @@ fun Login(name: String, modifier: Modifier = Modifier,
                 var isTextfieldFocused by remember { mutableStateOf(false) }
 
                 TextFieldBordaGradienteAzul(
+                    modifier = Modifier.fillMaxWidth(),
                     isTextFieldFocused = isTextfieldFocused,
                     texto = usuarioLoginRequest.senha,
                     label = "********",
@@ -206,10 +201,13 @@ fun Login(name: String, modifier: Modifier = Modifier,
 
 
                         val ApiUsuarios = RetrofitService.getApiUsuarioService(null)
-                        val post = ApiUsuarios.login(usuarioLoginRequest);
+                        val post = ApiUsuarios.login(usuarioLoginRequest)
 
                         post.enqueue(object : Callback<Usuario> {
-                            override fun onResponse(call: Call<Usuario>, response: Response<Usuario>) {
+                            override fun onResponse(
+                                call: Call<Usuario>,
+                                response: Response<Usuario>
+                            ) {
                                 if (response.isSuccessful) {
                                     val usuarioResponse = response.body()
                                     if (usuarioResponse != null) {

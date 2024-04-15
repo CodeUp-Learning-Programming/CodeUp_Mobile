@@ -49,7 +49,7 @@ fun LineChartScreen() {
         .axisLineColor(Color.White)
         .axisLabelColor(Color.White)
         .backgroundColor(Color.Black)
-        .startDrawPadding(100.dp) // Aumentando o padding inicial
+        .startDrawPadding(0.dp) // Aumentando o padding inicial
         .build()
 
     val yAxisData = AxisData.Builder()
@@ -59,7 +59,7 @@ fun LineChartScreen() {
         .backgroundColor(Color.Black)
         .labelAndAxisLinePadding(20.dp)
         .labelData { i ->
-            "".toString()
+            "100"
         }.build()
 
     val lineChartData = LineChartData(
@@ -91,7 +91,7 @@ fun LineChartScreen() {
                     ),
                     selectionHighlightPopUp = SelectionHighlightPopUp(
                         popUpLabel = { _, y ->
-                            "${String.format("%.0f", y)}"
+                            String.format("%.0f", y)
                         },
                         backgroundColor = Color.Black,
                         labelColor = Color.White,

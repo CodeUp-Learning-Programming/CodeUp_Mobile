@@ -8,7 +8,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.datastore.core.DataStore
@@ -37,24 +36,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = Color(13, 13, 13)
                 ) {
-                    Login("Android")
+                    Login()
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Login("")
-}
-
-fun login(username: String, password: String) {
-    // Lógica de login aqui
-    if (username == "usuario" && password == "senha") {
-        // Login bem-sucedido, navegar para a próxima tela
-        // Exemplo: startActivity(Intent(this, ProximaActivity::class.java))
-    } else {
-        // Login falhou
     }
 }
