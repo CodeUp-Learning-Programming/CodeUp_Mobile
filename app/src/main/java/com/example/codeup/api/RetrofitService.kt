@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitService {
 
-    private const val BASE_URL = "http://192.168.0.113:8080/"
+    private const val BASE_URL = "http://34.238.58.124/"
 
     fun getApiExercicioService(token: String?): ExercicioApi {
         return createApiService(ExercicioApi::class.java, token)

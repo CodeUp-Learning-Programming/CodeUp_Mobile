@@ -63,7 +63,8 @@ dependencies {
 //    implementation(platform("androidx.compose:compose-bom:2023.08.00"))
 //    implementation(platform("androidx.compose:compose-bom:2023.08.00"))
 //    implementation(platform("androidx.compose:compose-bom:2023.08.00"))
-//    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
+
+    //    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
 //    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
 //    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
 //    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
@@ -92,6 +93,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("androidx.compose.material3:material3-android:1.2.1")
+    implementation("androidx.datastore:datastore-core:1.0.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

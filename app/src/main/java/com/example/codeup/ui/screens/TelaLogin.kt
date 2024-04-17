@@ -78,6 +78,7 @@ fun Login() {
     val context = LocalContext.current
     var lembrar by remember { mutableStateOf(false) }
 
+
     var emailInputValido by remember { mutableStateOf(false) }
     var senhaInputValido by remember { mutableStateOf(false) }
 
@@ -233,7 +234,7 @@ fun Login() {
                                             fotoPerfil = "", nome = "Administrador",
                                             email = "admin@sptech.school",
                                             token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkZXZAc3B0ZWNoLnNjaG9vbCIsImlhdCI6MTY5ODA4NDY1NCwiZXhwIjoxNzAxNjg0NjU0fQ._ByXuksiF9C2K2Xu5OrAhquC2SHNfiAO7uut0pGEXN8JKzY8bzGksmQJQ6ICZIJ3uhladvK7NoDJyeS7iMrA0A",
-                                            moedas = 500,
+                                            moedas = 1000,
                                             nivel = 950,
                                             xp = 250,
                                             itensAdquiridos = listOf(

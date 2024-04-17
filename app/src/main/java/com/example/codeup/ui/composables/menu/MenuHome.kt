@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -61,15 +62,19 @@ fun MenuHome(
                     //Linha de cima
                     Row(
                         modifier = Modifier
-                            .width(350.dp),
+                            .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         //materia
-                        Row {
+                        Spacer(Modifier.width(10.dp))
+                        Row(
+                            Modifier.width(100.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start
+                        ) {
                             val painter: Painter =
                                 painterResource(id = R.drawable.icon_javascript_logo)
-                            val contentScale = ContentScale.FillBounds
 
                             Image(
                                 painter = painter,
@@ -78,8 +83,8 @@ fun MenuHome(
                         }
                         Row(
                             modifier = Modifier
-                                .width(170.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.End,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             //coracao
@@ -89,10 +94,34 @@ fun MenuHome(
                                 painterResource(id = R.drawable.icon_coracao_cheio)
                             val painter2: Painter = painterResource(id = R.drawable.icon_fogo_azul)
                             val painter3: Painter = painterResource(id = R.drawable.icon_moeda)
-                            val contentScale = ContentScale.FillBounds
+
+                            Row(
+                                modifier = Modifier.width(100.dp),
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Row(
+                                    modifier = Modifier.width(100.dp),
+                                    horizontalArrangement = Arrangement.End,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    TextoBranco(
+                                        texto = "${totalMoedas}",
+                                        tamanhoFonte = 24,
+                                        pesoFonte = "normal"
+                                    )
+                                    Spacer(Modifier.width(5.dp))
+                                    Image(
+                                        painter = painter3,
+                                        contentDescription = stringResource(R.string.text_descricao_materia),
+                                    )
+                                }
+                            }
+                            Spacer(Modifier.width(10.dp))
+
                             Row(
                                 modifier = Modifier.width(50.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
+                                horizontalArrangement = Arrangement.SpaceAround,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 TextoBranco(
@@ -105,9 +134,10 @@ fun MenuHome(
                                     contentDescription = stringResource(R.string.text_descricao_materia),
                                 )
                             }
+                            Spacer(Modifier.width(10.dp))
                             Row(
                                 modifier = Modifier.width(50.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
+                                horizontalArrangement = Arrangement.SpaceAround,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 TextoBranco(
@@ -120,22 +150,8 @@ fun MenuHome(
                                     contentDescription = stringResource(R.string.text_descricao_materia),
                                 )
                             }
-                            Row(
-                                modifier = Modifier.width(50.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                TextoBranco(
-                                    texto = "${totalMoedas}",
-                                    tamanhoFonte = 24,
-                                    pesoFonte = "normal"
-                                )
-                                Image(
-                                    painter = painter3,
-                                    contentDescription = stringResource(R.string.text_descricao_materia),
-                                )
-                            }
 
+                            Spacer(Modifier.width(10.dp))
                         }
                     }
                     //Linha de baixo

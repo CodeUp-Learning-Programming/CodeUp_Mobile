@@ -47,6 +47,8 @@ import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.LocalDate
+import android.util.Log
 
 class TelaCadastro : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -218,20 +220,23 @@ fun Cadastro() {
 
             BotaoAzul(
                 text = stringResource(R.string.text_cadastrar), onClick = {
-                    if (usuario.email.isEmpty() || usuario.senha.isEmpty()) {
+                    if (usuario.email.isEmpty() || usuario.senha.isEmpty() || usuario.nome.isEmpty() || usuario.dtNascimento == LocalDate.now()) {
                         emailInputValido = true
                         senhaInputValido = true
                         nomeInputValido = true
                         dtNascimentoInputValido = true
                     } else {
+
+                                Log.d("LOG", usuario.dtNascimento.toString())
                         val ApiUsuarios = RetrofitService.getApiUsuarioService(null)
                         val post = ApiUsuarios.cadastrar(usuario)
-
                         post.enqueue(object : Callback<Usuario> {
                             override fun onResponse(
                                 call: Call<Usuario>, response: Response<Usuario>
                             ) {
                                 if (response.isSuccessful) {
+                                    Log.d("LOG", "MAT"+usuario.dtNascimento.toString() + "SENHA" +usuario.senha.toString())
+
                                     val usuarioResponse = response.body()
                                     if (usuarioResponse != null) {
                                         val telaLogin = Intent(contexto, TelaLogin::class.java)

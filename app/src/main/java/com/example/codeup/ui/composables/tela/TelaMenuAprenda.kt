@@ -58,7 +58,7 @@ fun TelaMenuAprenda(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 10.dp, end = 50.dp),
+                    .padding(top = 10.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 reverseLayout = false
@@ -74,13 +74,13 @@ fun TelaMenuAprenda(
                             drawLine(
                                 color = Color.Gray,
                                 start = Offset(300f, 0f),
-                                end = Offset(300f, 400f),
+                                end = Offset(300f, 500f),
                                 strokeWidth = 50f
                             )
                             drawLine(
                                 color = Color.Black,
                                 start = Offset(300f, 0f),
-                                end = Offset(300f, 400f),
+                                end = Offset(300f, 5500f),
                                 strokeWidth = 40f
                             )
                         }

@@ -65,7 +65,7 @@ fun TelaMenuPerfil(
                             .clip(CircleShape)
                     ) {
                         AsyncImage(
-                            model = "https://helpia.ai/wp-content/uploads/2023/11/bing-creator.jpeg",
+                            model = user.fotoPerfil,
                             contentDescription = "astronauta",
                         )
                     }
@@ -101,7 +101,7 @@ fun TelaMenuPerfil(
                     CardPerfil(
                         R.drawable.icon_moeda,
                         R.string.text_icon_fogo_azul,
-                        "2",
+                        user.moedas.toString(),
                         stringResource(R.string.text_moedas)
                     )
                 }
