@@ -40,7 +40,7 @@ import com.example.codeup.ui.composables.tela.TelaMenuRanking
 @Composable
 fun BarraNavegacao(
     navController: NavHostController,
-    user: Usuario,
+    usuario: Usuario,
     listaExercicio: List<DadosDoCard>,
 ) {
     var estadoAprendaAtivo by remember { mutableStateOf(false) }
@@ -70,7 +70,7 @@ fun BarraNavegacao(
                     estadoLojaAtivo = false
                     estadoPerfilAtivo = false
 
-                    TelaMenuAprenda(user = user, listaExercicios = listaExercicio)
+                    TelaMenuAprenda(usuario = usuario, listaExercicios = listaExercicio)
                 }
                 composable(TelasFragmentos.TELA_MENU_RANKING.name) {
                     estadoAprendaAtivo = false
@@ -79,7 +79,7 @@ fun BarraNavegacao(
                     estadoLojaAtivo = false
                     estadoPerfilAtivo = false
 
-                    TelaMenuRanking(user = user, listaExercicios = listaExercicio)
+                    TelaMenuRanking(usuario = usuario, listaExercicios = listaExercicio)
                 }
                 composable(TelasFragmentos.TELA_MENU_AMIGOS.name) {
                     estadoAprendaAtivo = false
@@ -88,7 +88,7 @@ fun BarraNavegacao(
                     estadoLojaAtivo = false
                     estadoPerfilAtivo = false
 
-                    TelaMenuAmigos(user = user)
+                    TelaMenuAmigos(usuario = usuario)
                 }
                 composable(TelasFragmentos.TELA_MENU_LOJA.name) {
                     estadoAprendaAtivo = false
@@ -97,7 +97,7 @@ fun BarraNavegacao(
                     estadoLojaAtivo = true
                     estadoPerfilAtivo = false
 
-                    TelaMenuLoja()
+                    TelaMenuLoja(usuario = usuario)
                 }
                 composable(TelasFragmentos.TELA_MENU_PERFIL.name) {
                     estadoAprendaAtivo = false
@@ -106,10 +106,11 @@ fun BarraNavegacao(
                     estadoLojaAtivo = false
                     estadoPerfilAtivo = true
 
-                    TelaMenuPerfil(user = user)
+                    TelaMenuPerfil(usuario = usuario)
                 }
             }
         }
+
 
         Box(
             modifier = Modifier

@@ -35,7 +35,7 @@ import com.example.codeup.ui.composables.menu.MenuHome
 
 @Composable
 fun TelaMenuAprenda(
-    user: Usuario,
+    usuario: Usuario,
     listaExercicios: List<DadosDoCard>
 
 ) {
@@ -43,9 +43,9 @@ fun TelaMenuAprenda(
 
     MenuHome(
         "${R.drawable.tema_pontos}",
-        user.nome,
-        totalCoracoes = 5,
-        totalMoedas = user.moedas,
+        usuario.nome,
+        totalCoracoes = usuario.vidas,
+        totalMoedas = usuario.moedas,
         totalSequencia = 5,
         conteudo = {
 

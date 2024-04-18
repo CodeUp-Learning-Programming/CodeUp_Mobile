@@ -40,7 +40,6 @@ fun MenuExercicio(
 ) {
 
     var mostrarPopup by remember { mutableStateOf(false) }
-
     val abrirPopup = { mostrarPopup = true }
     val fecharPopup = { mostrarPopup = false }
 
@@ -104,7 +103,7 @@ fun MenuExercicio(
         },
         bottomBar = {
             BottomAppBar(
-                containerColor = Color(R.color.black),
+                containerColor = Color(0,0,0),
                 contentColor = MaterialTheme.colorScheme.primary,
             ) {
                 Box(

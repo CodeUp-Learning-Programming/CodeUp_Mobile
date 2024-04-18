@@ -34,10 +34,10 @@ import com.example.codeup.ui.composables.menu.MenuPadrao
 
 @Composable
 fun TelaMenuPerfil(
-    user: Usuario,
+    usuario: Usuario,
 ) {
     MenuPadrao(
-        texto = "Perfil",
+        texto = stringResource(R.string.text_perfil),
         imagem = R.drawable.icon_configurar,
         conteudo = ({
 
@@ -65,12 +65,12 @@ fun TelaMenuPerfil(
                             .clip(CircleShape)
                     ) {
                         AsyncImage(
-                            model = user.fotoPerfil,
+                            model = usuario.fotoPerfil,
                             contentDescription = "astronauta",
                         )
                     }
                     //
-                    TextoBranco(texto = user.nome, tamanhoFonte = 16, pesoFonte = "Titulo")
+                    TextoBranco(texto = usuario.nome, tamanhoFonte = 16, pesoFonte = "Titulo")
                     BotaoAzulClaro(
                         modifier = Modifier,
                         text = "EXPERIMENTE O PRO DE GRAÇA",
@@ -101,7 +101,7 @@ fun TelaMenuPerfil(
                     CardPerfil(
                         R.drawable.icon_moeda,
                         R.string.text_icon_fogo_azul,
-                        user.moedas.toString(),
+                        usuario.moedas.toString(),
                         stringResource(R.string.text_moedas)
                     )
                 }
@@ -180,7 +180,10 @@ fun TelaMenuPerfil(
                         .height(50.dp)
                         .background(Color(24, 24, 24))
                 )
+
             }
         })
+
     )
+
 }

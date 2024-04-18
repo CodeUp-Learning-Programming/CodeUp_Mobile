@@ -1,7 +1,14 @@
 package com.example.codeup.ui.composables.tela
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.example.codeup.data.Usuario
 import com.example.codeup.data.UsuarioRanking
 import com.example.codeup.ui.DadosDoCard
@@ -10,7 +17,7 @@ import com.example.codeup.ui.composables.menu.MenuPadrao
 
 @Composable
 fun TelaMenuRanking(
-    user: Usuario,
+    usuario: Usuario,
     listaExercicios: List<DadosDoCard>
 ) {
 
@@ -104,6 +111,13 @@ fun TelaMenuRanking(
         texto = "Ranking",
         conteudo = ({
            ListaRanking(listaUsuariosRanking = listaUsuariosRanking)
+            Spacer(
+                modifier = Modifier
+                    .height(100.dp)
+                    .width(100.dp)
+                    .background(Color(24, 24, 24))
+            )
         })
     )
+
 }

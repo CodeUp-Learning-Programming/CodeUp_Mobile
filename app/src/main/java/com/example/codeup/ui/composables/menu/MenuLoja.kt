@@ -25,9 +25,10 @@ import com.example.codeup.ui.composables.TextoBranco
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuPadrao(
+fun MenuLoja(
     texto: String = "",
     imagem: Int = R.drawable.icon_adicionar_amigo,
+    moedas: Int,
     conteudo: @Composable () -> Unit
 ) {
 
@@ -38,28 +39,39 @@ fun MenuPadrao(
                     .fillMaxWidth()
                     .background(Color(0, 0, 0))
                     .height(80.dp)
-                    .padding(top = 30.dp)
+                    .padding(top = 40.dp, start = 10.dp, end = 10.dp)
             ) {
 
                 Column {
                     //Linha de cima
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(10.dp),
+                    Row(Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val fotoEngrenagem: Painter = painterResource(id = imagem)
-                        TextoBranco(texto = texto, tamanhoFonte = 24, pesoFonte = "normal")
+                        val sair: Painter = painterResource(id = R.drawable.icon_sair)
+                        val moeda: Painter = painterResource(id = R.drawable.icon_moeda)
+
                         Image(
                             modifier = Modifier,
-                            painter = fotoEngrenagem,
+                            painter = sair,
                             contentDescription = stringResource(R.string.text_descricao_materia),
                         )
+                        TextoBranco(texto = texto, tamanhoFonte = 24, pesoFonte = "normal")
+
+                        Row(
+                            horizontalArrangement = Arrangement.End,
+                            verticalAlignment = Alignment.CenterVertically){
+                            TextoBranco(texto = moedas.toString(), tamanhoFonte = 24, pesoFonte = "normal")
+
+                            Image(
+                                modifier = Modifier,
+                                painter = moeda,
+                                contentDescription = stringResource(R.string.text_descricao_materia),
+                            )
+                        }
+
 
                     }
-
                 }
 
             }
@@ -74,7 +86,9 @@ fun MenuPadrao(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             //Colocar conteudo aqui dinamicamente
+            Box(Modifier.fillMaxWidth().height(1.dp).background(Color(40,40,40)))
             conteudo()
+
         }
     }
 }

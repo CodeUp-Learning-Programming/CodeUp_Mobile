@@ -11,7 +11,7 @@ import com.example.codeup.ui.composables.menu.MenuPadrao
 
 @Composable
 fun TelaMenuAmigos(
-    user: Usuario,
+    usuario: Usuario,
 ) {
     val listaAmigos = remember {
         listOf(
