@@ -28,8 +28,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.codeup.R
+import com.example.codeup.data.Fase
+import com.example.codeup.data.Materia
 import com.example.codeup.data.Usuario
-import com.example.codeup.ui.DadosDoCard
 import com.example.codeup.ui.TelasFragmentos
 import com.example.codeup.ui.composables.tela.TelaMenuAmigos
 import com.example.codeup.ui.composables.tela.TelaMenuAprenda
@@ -41,7 +42,8 @@ import com.example.codeup.ui.composables.tela.TelaMenuRanking
 fun BarraNavegacao(
     navController: NavHostController,
     usuario: Usuario,
-    listaExercicio: List<DadosDoCard>,
+    listaExercicio: List<Fase>,
+    materia: Materia
 ) {
     var estadoAprendaAtivo by remember { mutableStateOf(false) }
     var estadoRankingAtivo by remember { mutableStateOf(false) }
@@ -70,7 +72,7 @@ fun BarraNavegacao(
                     estadoLojaAtivo = false
                     estadoPerfilAtivo = false
 
-                    TelaMenuAprenda(usuario = usuario, listaExercicios = listaExercicio)
+                    TelaMenuAprenda(usuario = usuario, listaExercicios = listaExercicio, materia)
                 }
                 composable(TelasFragmentos.TELA_MENU_RANKING.name) {
                     estadoAprendaAtivo = false
@@ -79,7 +81,7 @@ fun BarraNavegacao(
                     estadoLojaAtivo = false
                     estadoPerfilAtivo = false
 
-                    TelaMenuRanking(usuario = usuario, listaExercicios = listaExercicio)
+                    TelaMenuRanking(usuario = usuario)
                 }
                 composable(TelasFragmentos.TELA_MENU_AMIGOS.name) {
                     estadoAprendaAtivo = false
@@ -221,11 +223,11 @@ fun BarraNavegacao(
                 ) {
                     Image(
                         painter = if (estadoLojaAtivo) lojaSelecionado else lojaNaoSelecionado,
-                        contentDescription = stringResource(R.string.text_perfil),
+                        contentDescription = stringResource(R.string.text_loja),
 
                         )
                     TextoBranco(
-                        texto = stringResource(R.string.text_perfil),
+                        texto = stringResource(R.string.text_loja),
                         tamanhoFonte = 12,
                         pesoFonte = "normal"
                     )

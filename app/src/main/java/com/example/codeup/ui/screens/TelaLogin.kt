@@ -1,7 +1,9 @@
 package com.example.codeup.ui.screens
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -18,9 +20,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,19 +35,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
-import com.example.codeup.api.RetrofitService
-import com.example.codeup.data.ItemAdquirido
-import com.example.codeup.data.Usuario
 import com.example.codeup.data.UsuarioLoginRequest
 import com.example.codeup.ui.composables.BotaoAzul
 import com.example.codeup.ui.composables.CheckboxComGradiente
 import com.example.codeup.ui.composables.TextFieldBordaGradienteAzul
 import com.example.codeup.ui.composables.TextoAzulGradienteSublinhado
 import com.example.codeup.ui.composables.TextoBranco
+import com.example.codeup.ui.screens.viewmodels.UsuarioViewModel
 import com.example.codeup.ui.theme.CodeupTheme
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.codeup.util.StoreRememberUser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class TelaLogin : ComponentActivity() {
 //    private val loginViewModel: LoginViewModel by viewModels()
@@ -72,19 +76,40 @@ class TelaLogin : ComponentActivity() {
         }
     }
 }
+@SuppressLint("CoroutineCreationDuringComposition")
 
 @Composable
-fun Login() {
-    val context = LocalContext.current
+fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
+
+    var usuarioAtivo = usuarioViewModel.usuarioAtivo.observeAsState().value
+    val (usuarioLoginRequest, usuarioLoginRequestSetter) = remember {
+        mutableStateOf(UsuarioLoginRequest())
+    }
     var lembrar by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val dataStore = StoreRememberUser(context)
+
+    val emailSalvo = dataStore.getEmail.collectAsState(initial = "")
+    val senhaSalva = dataStore.getPassword.collectAsState(initial = "")
+
+    if(emailSalvo.value!! != "" && senhaSalva.value!! != "" ){
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                usuarioViewModel.login(UsuarioLoginRequest(emailSalvo.value!!, senhaSalva.value!!), context, scope, dataStore, true)
+            } catch (e:Exception) {
+                Log.e("LOGIN","Erro! ${e.message}")
+            }
+        }
+    }
+
 
 
     var emailInputValido by remember { mutableStateOf(false) }
     var senhaInputValido by remember { mutableStateOf(false) }
 
-    val (usuarioLoginRequest, usuarioLoginRequestSetter) = remember {
-        mutableStateOf(UsuarioLoginRequest())
-    }
+
     val erroApi = remember { mutableStateOf("") }
 
     Column(
@@ -198,75 +223,84 @@ fun Login() {
                         senhaInputValido = true
 
                     } else {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            try {
+                              usuarioViewModel.login(usuarioLoginRequest, context, scope, dataStore, lembrar)
+                            } catch (e:Exception) {
+                                Log.e("LOGIN","Erro! ${e.message}")
+                            }
+                        }
+
+
 //                        loginViewModel.fazerLogin(usuarioLoginRequest, lembrar, context)
 
-
-                        val ApiUsuarios = RetrofitService.getApiUsuarioService(null)
-                        val post = ApiUsuarios.login(usuarioLoginRequest)
-
-                        post.enqueue(object : Callback<Usuario> {
-                            override fun onResponse(
-                                call: Call<Usuario>,
-                                response: Response<Usuario>
-                            ) {
-                                if (response.isSuccessful) {
-                                    val usuarioResponse = response.body()
-                                    if (usuarioResponse != null) {
-
-//                                        if(lembrar){
-//                                            salvarUsuarioNoDataStore(usuarioResponse)
-//                                        }
-
-                                        val telaHome = Intent(context, TelaHome::class.java)
-                                        telaHome.putExtra("usuario", usuarioResponse)
-                                        context.startActivity(telaHome)
-                                    }
-                                }
-                            }
-
-                            override fun onFailure(call: Call<Usuario>, t: Throwable) {
-
-                                if (usuarioLoginRequest.email == "admin" && usuarioLoginRequest.senha == "123") {
-                                    val telaHome = Intent(context, TelaHome::class.java)
-                                    telaHome.putExtra(
-                                        "usuario", Usuario(
-                                            id = 1,
-                                            fotoPerfil = "", nome = "Administrador",
-                                            email = "admin@sptech.school",
-                                            token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkZXZAc3B0ZWNoLnNjaG9vbCIsImlhdCI6MTY5ODA4NDY1NCwiZXhwIjoxNzAxNjg0NjU0fQ._ByXuksiF9C2K2Xu5OrAhquC2SHNfiAO7uut0pGEXN8JKzY8bzGksmQJQ6ICZIJ3uhladvK7NoDJyeS7iMrA0A",
-                                            moedas = 1000,
-                                            nivel = 950,
-                                            xp = 250,
-                                            itensAdquiridos = listOf(
-                                                ItemAdquirido(
-                                                    id = 1,
-                                                    nomeItem = "Item 1",
-                                                    fotoItem = "!",
-                                                    tipoItem = "Imagem",
-                                                    precoItem = 20.0,
-                                                    descricaoItem = "Item 1",
-                                                    equipado = false
-                                                ),
-                                                ItemAdquirido(
-                                                    id = 2,
-                                                    nomeItem = "Item 2",
-                                                    fotoItem = "?",
-                                                    tipoItem = "Imagem2",
-                                                    precoItem = 20.0,
-                                                    descricaoItem = "Item 2",
-                                                    equipado = false
-                                                )
-                                            )
-
-
-                                        )
-                                    )
-                                    context.startActivity(telaHome)
-                                }
-                            }
-                        })
+//                        val ApiUsuarios = RetrofitService.getApiUsuarioService(null)
+//                        val post = ApiUsuarios.login(usuarioLoginRequest)
+//
+//                        post.enqueue(object : Callback<Usuario> {
+//                            override fun onResponse(
+//                                call: Call<Usuario>,
+//                                response: Response<Usuario>
+//                            ) {
+//                                if (response.isSuccessful) {
+//                                    val usuarioResponse = response.body()
+//                                    if (usuarioResponse != null) {
+//
+////                                        if(lembrar){
+////                                            salvarUsuarioNoDataStore(usuarioResponse)
+////                                        }
+//
+//                                        val telaHome = Intent(context, TelaHome::class.java)
+//                                        telaHome.putExtra("usuario", usuarioResponse)
+//                                        context.startActivity(telaHome)
+//                                    }
+//                                }
+//                            }
+//
+//                            override fun onFailure(call: Call<Usuario>, t: Throwable) {
+//
+//                                if (usuarioLoginRequest.email == "admin" && usuarioLoginRequest.senha == "123") {
+//                                    val telaHome = Intent(context, TelaHome::class.java)
+//                                    telaHome.putExtra(
+//                                        "usuario", Usuario(
+//                                            id = 1,
+//                                            fotoPerfil = "", nome = "Administrador",
+//                                            email = "admin@sptech.school",
+//                                            token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkZXZAc3B0ZWNoLnNjaG9vbCIsImlhdCI6MTY5ODA4NDY1NCwiZXhwIjoxNzAxNjg0NjU0fQ._ByXuksiF9C2K2Xu5OrAhquC2SHNfiAO7uut0pGEXN8JKzY8bzGksmQJQ6ICZIJ3uhladvK7NoDJyeS7iMrA0A",
+//                                            moedas = 1000,
+//                                            nivel = 950,
+//                                            xp = 250,
+//                                            itensAdquiridos = listOf(
+//                                                ItemAdquirido(
+//                                                    id = 1,
+//                                                    nomeItem = "Item 1",
+//                                                    fotoItem = "!",
+//                                                    tipoItem = "Imagem",
+//                                                    precoItem = 20.0,
+//                                                    descricaoItem = "Item 1",
+//                                                    equipado = false
+//                                                ),
+//                                                ItemAdquirido(
+//                                                    id = 2,
+//                                                    nomeItem = "Item 2",
+//                                                    fotoItem = "?",
+//                                                    tipoItem = "Imagem2",
+//                                                    precoItem = 20.0,
+//                                                    descricaoItem = "Item 2",
+//                                                    equipado = false
+//                                                )
+//                                            )
+//
+//
+//                                        )
+//                                    )
+//                                    context.startActivity(telaHome)
+//                                }
+//                            }
+//                        })
 
                     }
+
 
                 },
                 modifier = Modifier.fillMaxWidth()

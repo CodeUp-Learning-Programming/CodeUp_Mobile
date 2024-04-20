@@ -11,14 +11,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.codeup.data.Usuario
 import com.example.codeup.data.UsuarioRanking
-import com.example.codeup.ui.DadosDoCard
 import com.example.codeup.ui.composables.listas.ListaRanking
 import com.example.codeup.ui.composables.menu.MenuPadrao
 
 @Composable
 fun TelaMenuRanking(
     usuario: Usuario,
-    listaExercicios: List<DadosDoCard>
 ) {
 
     val listaUsuariosRanking = remember {

@@ -1,5 +1,6 @@
 package com.example.codeup.ui.composables.tela
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,10 +16,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -31,6 +34,9 @@ import com.example.codeup.ui.composables.card.CardPerfil
 import com.example.codeup.ui.composables.card.GraficoLinha
 import com.example.codeup.ui.composables.card.GraficoTrilhaRecente
 import com.example.codeup.ui.composables.menu.MenuPadrao
+import com.example.codeup.ui.screens.TelaLogin
+import com.example.codeup.util.StoreRememberUser
+import kotlinx.coroutines.launch
 
 @Composable
 fun TelaMenuPerfil(
@@ -40,7 +46,9 @@ fun TelaMenuPerfil(
         texto = stringResource(R.string.text_perfil),
         imagem = R.drawable.icon_configurar,
         conteudo = ({
-
+            val context = LocalContext.current
+            val scope = rememberCoroutineScope()
+            val dataStoreRememberUser = StoreRememberUser(context)
 
             //Geral
             Column(
@@ -77,6 +85,15 @@ fun TelaMenuPerfil(
                         onClick = {
                             //Exibir pop up
                         })
+                    BotaoAzulClaro("LOGOUT", onClick = {
+                        scope.launch {
+                            dataStoreRememberUser.saveEmail("")
+                            dataStoreRememberUser.savePassword("")
+                        }
+
+                        val telaLogin = Intent(context, TelaLogin::class.java)
+                        context.startActivity(telaLogin)
+                    })
                 }
                 Row(
                     modifier = Modifier
@@ -149,7 +166,7 @@ fun TelaMenuPerfil(
                         Materia(
                             id = 1,
                             titulo = "Algoritmo",
-                            fases = listOf()
+                            url= ""
                         )
                     )
                 }

@@ -27,8 +27,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
+import com.example.codeup.data.Fase
+import com.example.codeup.data.Materia
 import com.example.codeup.data.Usuario
-import com.example.codeup.ui.DadosDoCard
 import com.example.codeup.ui.composables.card.CardExercicio
 import com.example.codeup.ui.composables.card.CardPopup
 import com.example.codeup.ui.composables.menu.MenuHome
@@ -36,14 +37,14 @@ import com.example.codeup.ui.composables.menu.MenuHome
 @Composable
 fun TelaMenuAprenda(
     usuario: Usuario,
-    listaExercicios: List<DadosDoCard>
-
+    listaExercicios: List<Fase>,
+    materia: Materia
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
     MenuHome(
         "${R.drawable.tema_pontos}",
-        usuario.nome,
+        materia.titulo,
         totalCoracoes = usuario.vidas,
         totalMoedas = usuario.moedas,
         totalSequencia = 5,

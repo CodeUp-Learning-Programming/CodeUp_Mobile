@@ -14,7 +14,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -42,20 +45,39 @@ fun CardExercicio(
         )
     )
 
+    val borderGradientcompleta = Brush.horizontalGradient(
+        colors = listOf(
+            Color(1, 169, 247),
+            Color(1, 169, 247),
+        )
+    )
+
     val borderGradient = Brush.horizontalGradient(
         colors = listOf(
             Color(92, 92, 92),
             Color(92, 92, 92),
         )
     )
+    var faseCompleta by remember { mutableStateOf(false) }
 
-    val borda = if (desbloqueada) borderGradientdesbloqueada else borderGradient
+    if (qtdExerciciosFaseConcluidos > 0 && qtdExerciciosFase > 0 && qtdExerciciosFaseConcluidos == qtdExerciciosFase) {
+        faseCompleta = true
+    }
+
+    val borda = if (desbloqueada && !faseCompleta) borderGradientdesbloqueada else if(faseCompleta) borderGradientcompleta else borderGradient
+
 
     Box(
         modifier = Modifier
             .width(130.dp)
             .height(100.dp)
-            .background(Color.Black) // Cor de fundo do cartão
+            .background(
+                if (!faseCompleta) Color.Black else Color(
+                    1,
+                    169,
+                    247
+                ), shape = RoundedCornerShape(8F)
+            ) // Cor de fundo do cartão
             .border(2.dp, borda, shape = RoundedCornerShape(8F)) // Borda com gradiente
             .clickable(
                 interactionSource = interactionSource,
@@ -75,6 +97,12 @@ fun CardExercicio(
                     painter = painter1,
                     contentDescription = stringResource(R.string.text_exercicio_bloqueado),
                 )
+            } else if (faseCompleta) {
+                val painter1: Painter = painterResource(id = R.drawable.icon_check)
+                Image(
+                    painter = painter1,
+                    contentDescription = stringResource(R.string.text_check),
+                )
             } else {
                 Row() {
                     TextoBranco("$qtdExerciciosFaseConcluidos/$qtdExerciciosFase", 36, "normal")
@@ -84,6 +112,7 @@ fun CardExercicio(
         }
     }
 }
+
 
 /*
 @Preview(showBackground = true)

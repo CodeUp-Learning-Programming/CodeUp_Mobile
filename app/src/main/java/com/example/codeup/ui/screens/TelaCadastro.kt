@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,12 +30,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
-import com.example.codeup.api.RetrofitService
-import com.example.codeup.data.Usuario
 import com.example.codeup.data.UsuarioRegisterRequest
 import com.example.codeup.ui.composables.BotaoAzul
+import com.example.codeup.ui.composables.Date
 import com.example.codeup.ui.composables.TextFieldBordaGradienteAzul
-import com.example.codeup.ui.composables.TextFieldDataBordaGradienteAzul
 import com.example.codeup.ui.composables.TextoAzulGradienteSublinhado
 import com.example.codeup.ui.composables.TextoBranco
 import com.example.codeup.ui.theme.CodeupTheme
@@ -44,11 +41,7 @@ import com.maxkeppeker.sheets.core.models.base.rememberSheetState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.time.LocalDate
-import android.util.Log
 
 class TelaCadastro : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,6 +77,7 @@ fun Cadastro() {
     var senhaInputValido by remember { mutableStateOf(false) }
     var dtNascimentoInputValido by remember { mutableStateOf(false) }
     var nomeInputValido by remember { mutableStateOf(false) }
+   var dtNascimento by remember { mutableStateOf("") }
 
 
     val erroApi = remember { mutableStateOf("") }
@@ -152,14 +146,20 @@ fun Cadastro() {
                 var isTextfieldFocused by remember { mutableStateOf(false) }
 
 
-                TextFieldDataBordaGradienteAzul(modifier = Modifier
-                    .clickable { calendarState.show() }
-                    .fillMaxWidth(),
-                    isTextFieldFocused = isTextfieldFocused,
-                    texto = usuario.dtNascimento,
-                    onValueChange = { },
-                    onFocusChanged = { isTextfieldFocused = it.isFocused },
-                    enabled = false
+//                TextFieldDataBordaGradienteAzul(modifier = Modifier
+//                    .clickable { calendarState.show() }
+//                    .fillMaxWidth(),
+//                    isTextFieldFocused = isTextfieldFocused,
+//                    texto = usuario.dtNascimento,
+//                    onValueChange = { },
+//                    onFocusChanged = { isTextfieldFocused = it.isFocused },
+//                    enabled = false
+//                )
+
+                Date(
+                    onDateChange = { selectedDate ->
+                        dtNascimento = selectedDate
+                    }
                 )
             }
 
@@ -226,35 +226,35 @@ fun Cadastro() {
                         nomeInputValido = true
                         dtNascimentoInputValido = true
                     } else {
-
-                                Log.d("LOG", usuario.dtNascimento.toString())
-                        val ApiUsuarios = RetrofitService.getApiUsuarioService(null)
-                        val post = ApiUsuarios.cadastrar(usuario)
-                        post.enqueue(object : Callback<Usuario> {
-                            override fun onResponse(
-                                call: Call<Usuario>, response: Response<Usuario>
-                            ) {
-                                if (response.isSuccessful) {
-                                    Log.d("LOG", "MAT"+usuario.dtNascimento.toString() + "SENHA" +usuario.senha.toString())
-
-                                    val usuarioResponse = response.body()
-                                    if (usuarioResponse != null) {
-                                        val telaLogin = Intent(contexto, TelaLogin::class.java)
-                                        contexto.startActivity(telaLogin)
-                                    } else {
-                                        erroApi.value = "Cadastro não realizado"
-
-                                    }
-                                } else {
-                                    erroApi.value = "Erro na resposta: ${response.code()}"
-                                }
-                            }
-
-                            override fun onFailure(call: Call<Usuario>, t: Throwable) {
-                                erroApi.value = t.message.toString()
-
-                            }
-                        })
+//
+//                                Log.d("LOG", usuario.dtNascimento.toString())
+//                        val ApiUsuarios = RetrofitService.getApiUsuarioService(null)
+//                        val post = ApiUsuarios.cadastrar(usuario)
+//                        post.enqueue(object : Callback<Usuario> {
+//                            override fun onResponse(
+//                                call: Call<Usuario>, response: Response<Usuario>
+//                            ) {
+//                                if (response.isSuccessful) {
+//                                    Log.d("LOG", "MAT"+usuario.dtNascimento.toString() + "SENHA" +usuario.senha.toString())
+//
+//                                    val usuarioResponse = response.body()
+//                                    if (usuarioResponse != null) {
+//                                        val telaLogin = Intent(contexto, TelaLogin::class.java)
+//                                        contexto.startActivity(telaLogin)
+//                                    } else {
+//                                        erroApi.value = "Cadastro não realizado"
+//
+//                                    }
+//                                } else {
+//                                    erroApi.value = "Erro na resposta: ${response.code()}"
+//                                }
+//                            }
+//
+//                            override fun onFailure(call: Call<Usuario>, t: Throwable) {
+//                                erroApi.value = t.message.toString()
+//
+//                            }
+//                        })
 
                     }
 

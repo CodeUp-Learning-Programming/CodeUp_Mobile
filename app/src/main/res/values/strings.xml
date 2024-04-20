@@ -34,4 +34,5 @@
     <string name="text_moedas">moedas</string>
     <string name="text_exercicios_feitos">Exercícios feitos</string>
     <string name="text_maior_ranking">Maior ranking</string>
+    <string name="text_check">Imagem que representa um sinal de certo ou concluido</string>
 </resources>
