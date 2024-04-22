@@ -27,9 +27,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.codeup.ui.OpcoesPergunta
-import com.example.codeup.ui.composables.menu.MenuExercicio
 import com.example.codeup.ui.composables.TextOpcaoPergunta
 import com.example.codeup.ui.composables.TextoBranco
+import com.example.codeup.ui.composables.menu.MenuExercicio
 import com.example.codeup.ui.screens.ui.theme.CodeupTheme
 
 class TelaExercicio : ComponentActivity() {
@@ -52,8 +52,6 @@ class TelaExercicio : ComponentActivity() {
 
 @Composable
 fun Greeting2(name: String, modifier: Modifier = Modifier) {
-
-
     MenuExercicio(totalCoracoes = 5, conteudo = {
         val listaOpcoesPergunta = remember {
             mutableListOf(

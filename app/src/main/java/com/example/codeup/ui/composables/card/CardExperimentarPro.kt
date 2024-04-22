@@ -14,8 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.Surface
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,18 +23,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 import com.example.codeup.ui.composables.BotaoAzul
 import com.example.codeup.ui.composables.TextoBranco
 
 @Composable
-fun CardAprenda(
-    tituloFase: String,
-    desbloqueada: Boolean,
-    qtdExerciciosFaseConcluidos: Int,
-    qtdExerciciosFase: Int,
-    onClick: () -> Unit,
+fun CardExperimentarPro(
+    onClickFechar: () -> Unit,
+    onClickComprar: () -> Unit,
     ) {
 
     val borderGradient = Brush.horizontalGradient(
@@ -44,40 +41,61 @@ fun CardAprenda(
             Color(0, 132, 249)
         )
     )
-
     Box(
         modifier = Modifier
-            .width(270.dp)
-            .height(150.dp)
-            .background(Color.Black) // Cor de fundo do cartão
-            .border(1.dp, borderGradient, shape = RoundedCornerShape(8F)) // Borda com gradiente
+            .width(300.dp)
+            .height(300.dp)
+            .background(Color.Black)
+            .border(1.dp, borderGradient, shape = RoundedCornerShape(8F)),
+        contentAlignment = Alignment.BottomCenter
     ) {
+
         Column(
             modifier = Modifier
-                .padding(all = 15.dp)
+                .padding(start = 15.dp, end = 10.dp, bottom = 10.dp, top = 10.dp)
                 .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Primeira linha
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.End
             ) {
-                TextoBranco(texto = "APRENDA", tamanhoFonte = 12)
+                val painter: Painter = painterResource(id = R.drawable.icon_sair)
+                TextButton(onClick = onClickFechar) {
+                    Image(
+                        painter = painter,
+                        contentDescription = stringResource(id = R.string.text_fechar)
+                    )
+                }
+            }
+            // Primeira linha
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                    val painter: Painter = painterResource(id = R.drawable.icon_coracoes_infinitos)
 
-                val painter1: Painter = painterResource(id = R.drawable.icon_aprenda_selecionado)
-                Image(
-                    painter = painter1,
-                    contentDescription = stringResource(R.string.text_descricao_materia),
-                )
+                    Image(
+                        painter = painter,
+                        contentDescription = null, // A descrição é opcional
+                    )
             }
             //Segunda linha
             Row(
                 modifier = Modifier
+                    .height(50.dp)
                     .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
-                TextoBranco(texto = tituloFase, tamanhoFonte = 20, pesoFonte = "normal")
+                TextoBranco(texto = "Vidas ilimitadas", tamanhoFonte = 20)
             }
             Column {
                 //Parte e quantidade
@@ -85,29 +103,16 @@ fun CardAprenda(
                     modifier = Modifier
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    TextoBranco(texto = "PARTE", tamanhoFonte = 10, pesoFonte = "normal")
+                    TextoBranco(texto = stringResource(id = R.string.text_teste_gratuito), tamanhoFonte = 12, alinhamentoTexto = TextAlign.Center)
                     TextoBranco(
-                        texto = "$qtdExerciciosFaseConcluidos/$qtdExerciciosFase",
+                        texto = "",
                         tamanhoFonte = 10,
                         pesoFonte = "normal"
                     )
                 }
-                //Barra de progresso
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    LinearProgressIndicator(
-                        progress = qtdExerciciosFaseConcluidos.toFloat() / qtdExerciciosFase.toFloat(),
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        trackColor = Color(49, 49, 49),
-                        color = Color(1, 167, 247),
-                    )
 
-                }
 
             }
             Spacer(
@@ -115,10 +120,12 @@ fun CardAprenda(
                     .fillMaxWidth()
                     .height(10.dp)
             )
-            Row {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 BotaoAzul(
-                    text = "CONTINUE APRENDENDO",
-                    onClick = onClick,
+                    text = stringResource(id = R.string.text_iniciar_teste).uppercase() , onClick = onClickComprar,
                     modifier = Modifier.fillMaxWidth(),
                     altura = 30,
                     largura = 20,
@@ -137,6 +144,6 @@ fun CardAprenda(
 //@Composable
 //fun CardPreview() {
 //    CodeupTheme {
-//        CardAprenda(false, 2, 10)
+//        CardExperimentarPro()
 //    }
 //}

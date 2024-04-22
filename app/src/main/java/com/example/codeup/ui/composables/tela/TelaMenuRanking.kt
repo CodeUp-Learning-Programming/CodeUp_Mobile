@@ -1,5 +1,6 @@
 package com.example.codeup.ui.composables.tela
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -107,6 +108,9 @@ fun TelaMenuRanking(
 
     MenuPadrao(
         texto = "Ranking",
+        onClick = {
+                  Log.d("Tela Ranking","Menu")
+        },
         conteudo = ({
            ListaRanking(listaUsuariosRanking = listaUsuariosRanking)
             Spacer(

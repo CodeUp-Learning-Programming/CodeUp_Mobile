@@ -55,7 +55,6 @@ fun CheckboxComGradiente(
                 checkedColor = Color.Transparent,
                 uncheckedColor = Color.Transparent, // Define a cor não selecionada como transparente
                 checkmarkColor = Color.Black,
-//                        disabledIndeterminateColor = Color.LightGray
             )
         )
     }

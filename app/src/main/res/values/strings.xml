@@ -27,7 +27,7 @@
     <string name="title_activity_tela_exercicio">TelaExercicio</string>
     <string name="icon_config">Icone de uma engrenagem</string>
     <string name="text_icon_fogo_azul">Icone de um fogo azul</string>
-    <string name="dashboard">DASHBOARD</string>
+    <string name="text_dashboard">DASHBOARD</string>
     <string name="text_exercicio_bloqueado">exercicio bloqueado</string>
     <string name="text_loja">Loja</string>
     <string name="text_sequencia">sequência</string>
@@ -35,4 +35,25 @@
     <string name="text_exercicios_feitos">Exercícios feitos</string>
     <string name="text_maior_ranking">Maior ranking</string>
     <string name="text_check">Imagem que representa um sinal de certo ou concluido</string>
+    <string name="text_comprar_por">Comprar por</string>
+    <string name="text_comprar">comprar</string>
+    <string name="text_cancelar">cancelar</string>
+    <string name="text_teste_gratuito">Teste gratuito por 30 dias, depois apenas R$15/mês</string>
+    <string name="text_iniciar_teste">Iniciar teste</string>
+    <string name="text_fechar">Icone de fechar</string>
+    <string name="text_configuracoes">Configurações</string>
+    <string name="title_activity_tela_configuracoes">TelaConfiguracoes</string>
+    <string name="text_configuracoes_do_app">Configurações do aplicativo</string>
+    <string name="text_tema">Tema</string>
+    <string name="text_icone_tema">Icone de uma estrela, com uma lua dentro, representando um tema</string>
+    <string name="text_padrao">Padrão</string>
+    <string name="text_conta">Conta</string>
+    <string name="text_notificacoes">Notificações</string>
+    <string name="text_icone_sino">Icone de um sino</string>
+    <string name="text_icone_relogio">Icone de um relógio</string>
+    <string name="text_lembrete_diario">Lembrete diário</string>
+    <string name="text_icone_estrela_vazia">Icone de uma estrela vazia</string>
+    <string name="text_seja_pro">Seja Pro</string>
+    <string name="text_icone_cadeado">Icone de um cadeado</string>
+    <string name="text_alterar_senha">Alterar senha</string>
 </resources>

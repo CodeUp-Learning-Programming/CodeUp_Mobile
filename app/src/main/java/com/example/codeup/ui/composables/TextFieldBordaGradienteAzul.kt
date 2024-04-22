@@ -6,10 +6,22 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AlternateEmail
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusState
@@ -36,9 +48,10 @@ fun TextFieldBordaGradienteAzul(
     onValueChange: (String) -> Unit,
     onFocusChanged: (FocusState) -> Unit,
     maxLines: Int = 1,
-    keyboardType: KeyboardType = KeyboardType.Text
+    keyboardType: KeyboardType = KeyboardType.Text,
 ) {
     val focusManager = LocalFocusManager.current
+    var passwordVisible by remember { mutableStateOf(true) } // Password visibility state
 
 
     val corDaBorda = if (isTextFieldFocused) {
@@ -66,20 +79,20 @@ fun TextFieldBordaGradienteAzul(
 
     OutlinedTextField(
         modifier = modifier.then(
-            Modifier.border(1.dp, corDaBorda, RoundedCornerShape(8.dp))
+            Modifier
+                .border(1.dp, corDaBorda, RoundedCornerShape(8.dp))
                 .height(55.dp)
                 .onFocusChanged { onFocusChanged(it) }
                 .background(
-               Color(0, 0, 0), shape = RoundedCornerShape(8.dp)
-           )),
-        value = if(texto.isEmpty() && !isTextFieldFocused) label else texto,
+                    Color(0, 0, 0), shape = RoundedCornerShape(8.dp)
+                )),
+        value = if (texto.isEmpty() && !isTextFieldFocused) label else texto,
         onValueChange = { onValueChange(it) },
         textStyle = TextStyle(
-            color = if(texto.isEmpty()) Color.Gray else Color.White,
+            color = if (texto.isEmpty()) Color.Gray else Color.White,
             textAlign = TextAlign.Start,
 
-        ),
-        enabled = enabled,
+            ),
         shape = RoundedCornerShape(8.dp),
 
         colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -101,7 +114,34 @@ fun TextFieldBordaGradienteAzul(
         maxLines = maxLines,
 
 
-        visualTransformation = if(keyboardType == KeyboardType.Password) PasswordVisualTransformation() else VisualTransformation.None
+        visualTransformation = if (keyboardType == KeyboardType.Password && passwordVisible) PasswordVisualTransformation() else VisualTransformation.None,
+        trailingIcon = {
+            when {
+                keyboardType == KeyboardType.Password -> {
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(
+                            imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                            contentDescription = if (passwordVisible) "Hide password" else "Show password"
+                        )
+                    }
+                }
+
+                label == "Data de nascimento" -> {
+                    Icon(imageVector = Icons.Filled.CalendarMonth, contentDescription = "Calendar")
+
+                }
+
+                label == "Seu nome" -> {
+                    Icon(imageVector = Icons.Filled.Person, contentDescription = "Nome")
+                }
+
+                label == "seu-email@gmail.com" -> {
+                    Icon(imageVector = Icons.Filled.AlternateEmail, contentDescription = "Email")
+                }
+            }
+        },
+        enabled = enabled,
 
         )
+
 }

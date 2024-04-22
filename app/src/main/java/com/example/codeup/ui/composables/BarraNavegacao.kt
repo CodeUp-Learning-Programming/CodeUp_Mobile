@@ -37,6 +37,7 @@ import com.example.codeup.ui.composables.tela.TelaMenuAprenda
 import com.example.codeup.ui.composables.tela.TelaMenuLoja
 import com.example.codeup.ui.composables.tela.TelaMenuPerfil
 import com.example.codeup.ui.composables.tela.TelaMenuRanking
+import com.example.codeup.ui.screens.viewmodels.LojaViewModel
 
 @Composable
 fun BarraNavegacao(
@@ -93,13 +94,14 @@ fun BarraNavegacao(
                     TelaMenuAmigos(usuario = usuario)
                 }
                 composable(TelasFragmentos.TELA_MENU_LOJA.name) {
+                    val lojaViewModel = LojaViewModel(usuario.token)
                     estadoAprendaAtivo = false
                     estadoRankingAtivo = false
                     estadoAmigosAtivo = false
                     estadoLojaAtivo = true
                     estadoPerfilAtivo = false
 
-                    TelaMenuLoja(usuario = usuario)
+                    TelaMenuLoja(usuario = usuario, lojaViewModel)
                 }
                 composable(TelasFragmentos.TELA_MENU_PERFIL.name) {
                     estadoAprendaAtivo = false

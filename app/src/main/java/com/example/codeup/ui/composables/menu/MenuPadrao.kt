@@ -2,6 +2,7 @@ package com.example.codeup.ui.composables.menu
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,11 +23,11 @@ import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 import com.example.codeup.ui.composables.TextoBranco
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuPadrao(
     texto: String = "",
     imagem: Int = R.drawable.icon_adicionar_amigo,
+    onClick: () -> Unit,
     conteudo: @Composable () -> Unit
 ) {
 
@@ -49,14 +49,16 @@ fun MenuPadrao(
                             .padding(10.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
+
                     ) {
-                        val fotoEngrenagem: Painter = painterResource(id = imagem)
                         TextoBranco(texto = texto, tamanhoFonte = 24, pesoFonte = "normal")
-                        Image(
-                            modifier = Modifier,
-                            painter = fotoEngrenagem,
-                            contentDescription = stringResource(R.string.text_descricao_materia),
-                        )
+
+                            val fotoEngrenagem: Painter = painterResource(id = imagem)
+                            Image(
+                                modifier = Modifier.clickable (onClick = onClick),
+                                painter = fotoEngrenagem,
+                                contentDescription = stringResource(R.string.text_descricao_materia),
+                            )
 
                     }
 

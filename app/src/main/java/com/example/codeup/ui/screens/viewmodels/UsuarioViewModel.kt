@@ -10,6 +10,7 @@ import com.example.codeup.data.Usuario
 import com.example.codeup.data.UsuarioLoginRequest
 import com.example.codeup.data.UsuarioRegisterRequest
 import com.example.codeup.ui.screens.TelaHome
+import com.example.codeup.ui.screens.TelaLogin
 import com.example.codeup.util.StoreRememberUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,12 +23,13 @@ class UsuarioViewModel(private val bearerToken: String?): ViewModel(){
     val apiUsuario = RetrofitService.getApiUsuarioService(bearerToken)
     val erroApi = MutableLiveData("")
 
-    fun cadastrar(usuarioRegisterRequest: UsuarioRegisterRequest) {
+    fun cadastrar(usuarioRegisterRequest: UsuarioRegisterRequest, context: Context) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = apiUsuario.cadastrar(usuarioRegisterRequest)
                 if (response.isSuccessful) {
-
+                    val telaLogin = Intent(context, TelaLogin::class.java)
+                    context.startActivity(telaLogin)
                 } else {
                     Log.e("api", "Erro ao carregar loja: ${response.message()}")
                     erroApi.postValue("Erro ao carregar loja: ${response.message()}")

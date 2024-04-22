@@ -5,4 +5,8 @@ import java.io.Serializable
 data class Loja(
     val tipoDosItens: List<String> = emptyList(),
     val itensLoja: List<ItemLoja> = emptyList()
-): Serializable
+): Serializable {
+
+    val itensPorTipo: Map<String, List<ItemLoja>>
+        get() = itensLoja.groupBy { it.tipoItem }
+}

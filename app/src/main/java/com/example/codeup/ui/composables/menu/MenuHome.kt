@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 import com.example.codeup.ui.composables.ImagemFundo
 import com.example.codeup.ui.composables.TextoBranco
+import com.example.codeup.ui.composables.tela.MenuLateral
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,7 +36,7 @@ fun MenuHome(
     totalMoedas: Int,
     conteudo: @Composable () -> Unit
 ) {
-
+    MenuLateral()
     Scaffold(
         topBar = {
             Box(
@@ -150,11 +151,21 @@ fun MenuHome(
                     }
                     //Linha de baixo
                     Row(
-                        modifier = Modifier,
-                        horizontalArrangement = Arrangement.SpaceAround,
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         //menu hamburg
+//                        Row(
+//                            horizontalArrangement = Arrangement.Start,
+//                            verticalAlignment = Alignment.CenterVertically
+//                        ){
+//                            Icon(
+//                                imageVector = Icons.Rounded.Menu,
+//                                contentDescription = "Menu"  // Descrição para acessibilidade
+//                            )
+//                        }
+
                         //materia
                         TextoBranco(
                             texto = nomeMateria,

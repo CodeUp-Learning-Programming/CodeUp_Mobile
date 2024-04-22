@@ -66,7 +66,6 @@ fun CardExercicio(
 
     val borda = if (desbloqueada && !faseCompleta) borderGradientdesbloqueada else if(faseCompleta) borderGradientcompleta else borderGradient
 
-
     Box(
         modifier = Modifier
             .width(130.dp)

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Codeup</string>
+    <string name="text_senha">Password</string>
+    <string name="text_lembrar">Remember-me</string>
+    <string name="text_cadastrar_se">Sign up</string>
+    <string name="text_login">Sing in</string>
+    <string name="text_entrar">Enter</string>
+</resources>

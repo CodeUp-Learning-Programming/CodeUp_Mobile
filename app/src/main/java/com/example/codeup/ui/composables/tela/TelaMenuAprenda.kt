@@ -1,5 +1,6 @@
 package com.example.codeup.ui.composables.tela
 
+import android.content.Intent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,14 +26,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 import com.example.codeup.data.Fase
 import com.example.codeup.data.Materia
 import com.example.codeup.data.Usuario
+import com.example.codeup.ui.composables.card.CardAprenda
 import com.example.codeup.ui.composables.card.CardExercicio
-import com.example.codeup.ui.composables.card.CardPopup
 import com.example.codeup.ui.composables.menu.MenuHome
+import com.example.codeup.ui.screens.TelaExercicio
 
 @Composable
 fun TelaMenuAprenda(
@@ -40,8 +43,6 @@ fun TelaMenuAprenda(
     listaExercicios: List<Fase>,
     materia: Materia
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-
     MenuHome(
         "${R.drawable.tema_pontos}",
         materia.titulo,
@@ -49,13 +50,13 @@ fun TelaMenuAprenda(
         totalMoedas = usuario.moedas,
         totalSequencia = 5,
         conteudo = {
+            val context = LocalContext.current
 
             // Variável de estado para controlar a visibilidade do pop-up
             val (showPopup, setShowPopup) = remember { mutableStateOf(false) }
             // Índice do card selecionado
             var selectedCardIndex by remember { mutableStateOf(-1) }
 
-            var i = 0;
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -97,7 +98,6 @@ fun TelaMenuAprenda(
                                 qtdExerciciosFase = exercicio.qtdExerciciosFase,
                                 qtdExerciciosFaseConcluidos = exercicio.qtdExerciciosFaseConcluidos,
                                 onClick = {
-                                    //exibir card
                                     // Mostra o pop-up ao clicar no card
                                     setShowPopup(true)
                                     // Salva o índice do card selecionado
@@ -117,31 +117,37 @@ fun TelaMenuAprenda(
             }
             // Se o pop-up estiver visível, mostra o pop-up correspondente ao card selecionado
             if (showPopup && selectedCardIndex != -1) {
-
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color(13, 13, 13).copy(alpha = 0.2f))
+                        .background(Color.Black.copy(alpha = 0.5f))
                         .clickable(
-                            interactionSource = interactionSource,
+                            interactionSource = remember { MutableInteractionSource() },
                             indication = null,
-                            onClick = {
-                                // Fecha o pop-up ao clicar no botão de fechar
-                                setShowPopup(false)
-                                // Reseta o índice do card selecionado
-                                selectedCardIndex = -1
-                            }
+                            onClick = { setShowPopup(false) }
                         ),
                     contentAlignment = Alignment.Center
                 ) {
-                    CardPopup(
-                        tituloFase = listaExercicios[selectedCardIndex].tituloFase,
-                        desbloqueada = listaExercicios[selectedCardIndex].desbloqueada,
-                        qtdExerciciosFase = listaExercicios[selectedCardIndex].qtdExerciciosFase,
-                        qtdExerciciosFaseConcluidos = listaExercicios[selectedCardIndex].qtdExerciciosFaseConcluidos,
-                    )
+                    // Interceptador de cliques para o pop-up
+                    Box(
+                        modifier = Modifier
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                onClick = {}) // Vazio para não fazer nada quando o pop-up é clicado.
+                    ) {
+                        CardAprenda(
+                            tituloFase = listaExercicios[selectedCardIndex].tituloFase,
+                            desbloqueada = listaExercicios[selectedCardIndex].desbloqueada,
+                            qtdExerciciosFase = listaExercicios[selectedCardIndex].qtdExerciciosFase,
+                            qtdExerciciosFaseConcluidos = listaExercicios[selectedCardIndex].qtdExerciciosFaseConcluidos,
+                            onClick = {
+                                val telaExercicio = Intent(context, TelaExercicio::class.java)
+                                context.startActivity(telaExercicio)
+                            }
+                        )
+                    }
                 }
-
             }
         }
     )

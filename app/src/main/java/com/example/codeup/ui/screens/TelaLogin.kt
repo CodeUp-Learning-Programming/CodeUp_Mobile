@@ -22,7 +22,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -49,16 +48,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TelaLogin : ComponentActivity() {
-//    private val loginViewModel: LoginViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.light(
                 0, 0
-            ),
-            navigationBarStyle = SystemBarStyle.light(
+            ), navigationBarStyle = SystemBarStyle.light(
                 0, 0
             )
         )
@@ -66,9 +62,7 @@ class TelaLogin : ComponentActivity() {
         setContent {
             CodeupTheme {
                 Surface(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    color = Color(13, 13, 13)
+                    modifier = Modifier.fillMaxSize(), color = Color(13, 13, 13)
                 ) {
                     Login()
                 }
@@ -76,12 +70,11 @@ class TelaLogin : ComponentActivity() {
         }
     }
 }
-@SuppressLint("CoroutineCreationDuringComposition")
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
 
-    var usuarioAtivo = usuarioViewModel.usuarioAtivo.observeAsState().value
     val (usuarioLoginRequest, usuarioLoginRequestSetter) = remember {
         mutableStateOf(UsuarioLoginRequest())
     }
@@ -94,16 +87,21 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
     val emailSalvo = dataStore.getEmail.collectAsState(initial = "")
     val senhaSalva = dataStore.getPassword.collectAsState(initial = "")
 
-    if(emailSalvo.value!! != "" && senhaSalva.value!! != "" ){
+    if (emailSalvo.value!! != "" && senhaSalva.value!! != "") {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                usuarioViewModel.login(UsuarioLoginRequest(emailSalvo.value!!, senhaSalva.value!!), context, scope, dataStore, true)
-            } catch (e:Exception) {
-                Log.e("LOGIN","Erro! ${e.message}")
+                usuarioViewModel.login(
+                    UsuarioLoginRequest(emailSalvo.value!!, senhaSalva.value!!),
+                    context,
+                    scope,
+                    dataStore,
+                    true
+                )
+            } catch (e: Exception) {
+                Log.e("LOGIN", "Erro! ${e.message}")
             }
         }
     }
-
 
 
     var emailInputValido by remember { mutableStateOf(false) }
@@ -113,18 +111,14 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
     val erroApi = remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween
+        Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
-            modifier = Modifier
-                .padding(all = 20.dp),
-            verticalArrangement = Arrangement.Top
+            Modifier.padding(all = 20.dp), verticalArrangement = Arrangement.Top
         ) {
 
             Spacer(
-                modifier = Modifier
+                Modifier
                     .fillMaxWidth()
                     .height(100.dp)
             )
@@ -136,11 +130,11 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
                 )
             }
             Spacer(
-                modifier = Modifier
+                Modifier
                     .fillMaxWidth()
                     .height(40.dp)
             )
-            Column(modifier = Modifier.fillMaxWidth()) {
+            Column(Modifier.fillMaxWidth()) {
                 TextoBranco(
                     texto = stringResource(R.string.text_email),
                     tamanhoFonte = 14,
@@ -163,12 +157,12 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
             }
 
             Spacer(
-                modifier = Modifier
+                Modifier
                     .fillMaxWidth()
                     .height(20.dp)
             )
 
-            Column(modifier = Modifier.fillMaxWidth()) {
+            Column(Modifier.fillMaxWidth()) {
                 TextoBranco(
                     texto = stringResource(R.string.text_senha),
                     tamanhoFonte = 14,
@@ -179,7 +173,7 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
                     modifier = Modifier.fillMaxWidth(),
                     isTextFieldFocused = isTextfieldFocused,
                     texto = usuarioLoginRequest.senha,
-                    label = "********",
+                    label = "Sua senha",
                     onValueChange = { usuarioLoginRequestSetter(usuarioLoginRequest.copy(senha = it)) },
                     onFocusChanged = {
                         isTextfieldFocused = it.isFocused
@@ -191,17 +185,16 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
             }
 
             Row(
+                Modifier
+                    .fillMaxWidth()
+                    .height(60.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-            ) {
+
+                ) {
                 CheckboxComGradiente(lembrar = lembrar, onCheckedChange = { lembrar = it })
-                Spacer(
-                    modifier = Modifier
-                        .width(10.dp)
-                )
+
+                Spacer(Modifier.width(10.dp))
                 TextoBranco(
                     texto = stringResource(R.string.text_lembrar),
                     tamanhoFonte = 12,
@@ -210,14 +203,13 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
 
 
             Spacer(
-                modifier = Modifier
+                Modifier
                     .fillMaxWidth()
                     .height(20.dp)
             )
 
             BotaoAzul(
-                text = stringResource(R.string.text_entrar),
-                onClick = {
+                text = stringResource(R.string.text_entrar), onClick = {
                     if (usuarioLoginRequest.email.isEmpty() || usuarioLoginRequest.senha.isEmpty()) {
                         emailInputValido = true
                         senhaInputValido = true
@@ -225,85 +217,15 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
                     } else {
                         CoroutineScope(Dispatchers.IO).launch {
                             try {
-                              usuarioViewModel.login(usuarioLoginRequest, context, scope, dataStore, lembrar)
-                            } catch (e:Exception) {
-                                Log.e("LOGIN","Erro! ${e.message}")
+                                usuarioViewModel.login(
+                                    usuarioLoginRequest, context, scope, dataStore, lembrar
+                                )
+                            } catch (e: Exception) {
+                                Log.e("LOGIN", "Erro! ${e.message}")
                             }
                         }
-
-
-//                        loginViewModel.fazerLogin(usuarioLoginRequest, lembrar, context)
-
-//                        val ApiUsuarios = RetrofitService.getApiUsuarioService(null)
-//                        val post = ApiUsuarios.login(usuarioLoginRequest)
-//
-//                        post.enqueue(object : Callback<Usuario> {
-//                            override fun onResponse(
-//                                call: Call<Usuario>,
-//                                response: Response<Usuario>
-//                            ) {
-//                                if (response.isSuccessful) {
-//                                    val usuarioResponse = response.body()
-//                                    if (usuarioResponse != null) {
-//
-////                                        if(lembrar){
-////                                            salvarUsuarioNoDataStore(usuarioResponse)
-////                                        }
-//
-//                                        val telaHome = Intent(context, TelaHome::class.java)
-//                                        telaHome.putExtra("usuario", usuarioResponse)
-//                                        context.startActivity(telaHome)
-//                                    }
-//                                }
-//                            }
-//
-//                            override fun onFailure(call: Call<Usuario>, t: Throwable) {
-//
-//                                if (usuarioLoginRequest.email == "admin" && usuarioLoginRequest.senha == "123") {
-//                                    val telaHome = Intent(context, TelaHome::class.java)
-//                                    telaHome.putExtra(
-//                                        "usuario", Usuario(
-//                                            id = 1,
-//                                            fotoPerfil = "", nome = "Administrador",
-//                                            email = "admin@sptech.school",
-//                                            token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkZXZAc3B0ZWNoLnNjaG9vbCIsImlhdCI6MTY5ODA4NDY1NCwiZXhwIjoxNzAxNjg0NjU0fQ._ByXuksiF9C2K2Xu5OrAhquC2SHNfiAO7uut0pGEXN8JKzY8bzGksmQJQ6ICZIJ3uhladvK7NoDJyeS7iMrA0A",
-//                                            moedas = 1000,
-//                                            nivel = 950,
-//                                            xp = 250,
-//                                            itensAdquiridos = listOf(
-//                                                ItemAdquirido(
-//                                                    id = 1,
-//                                                    nomeItem = "Item 1",
-//                                                    fotoItem = "!",
-//                                                    tipoItem = "Imagem",
-//                                                    precoItem = 20.0,
-//                                                    descricaoItem = "Item 1",
-//                                                    equipado = false
-//                                                ),
-//                                                ItemAdquirido(
-//                                                    id = 2,
-//                                                    nomeItem = "Item 2",
-//                                                    fotoItem = "?",
-//                                                    tipoItem = "Imagem2",
-//                                                    precoItem = 20.0,
-//                                                    descricaoItem = "Item 2",
-//                                                    equipado = false
-//                                                )
-//                                            )
-//
-//
-//                                        )
-//                                    )
-//                                    context.startActivity(telaHome)
-//                                }
-//                            }
-//                        })
-
                     }
-
-
-                },
-                modifier = Modifier.fillMaxWidth()
+                }, modifier = Modifier.fillMaxWidth()
             )
 
             if (!erroApi.equals("")) {
@@ -315,17 +237,13 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
 
         }
         Column(
-            modifier = Modifier
-                .padding(bottom = 30.dp)
+            Modifier.padding(bottom = 30.dp)
         ) {
 
-
             Row(
+                Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-
             ) {
                 TextoBranco(
                     texto = stringResource(R.string.text_nao_tem_conta),

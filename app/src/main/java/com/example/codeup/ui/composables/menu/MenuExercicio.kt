@@ -29,7 +29,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 import com.example.codeup.ui.composables.BotaoAzul
-import com.example.codeup.ui.composables.ImagemFundo
 import com.example.codeup.ui.composables.card.CardSair
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -83,8 +82,6 @@ fun MenuExercicio(
                             painter = painter1,
                             contentDescription = stringResource(R.string.text_descricao_materia),
                         )
-
-
                         Image(
                             painter = painter2,
                             contentDescription = stringResource(R.string.text_descricao_materia),
@@ -93,17 +90,13 @@ fun MenuExercicio(
                             painter = painter3,
                             contentDescription = stringResource(R.string.text_descricao_materia),
                         )
-
                     }
-
                 }
-
             }
-
         },
         bottomBar = {
             BottomAppBar(
-                containerColor = Color(0,0,0),
+                containerColor = Color(0, 0, 0),
                 contentColor = MaterialTheme.colorScheme.primary,
             ) {
                 Box(
@@ -129,15 +122,12 @@ fun MenuExercicio(
 
         Column(
             modifier = Modifier
-                .padding(innerPadding),
+                .padding(innerPadding)
+                .background(Color(13, 13, 13)),
+
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            ImagemFundo(backgroundImageResId = R.drawable.tema_padrao) {
-                //Colocar conteudo aqui dinamicamente
-                conteudo(
-
-                )
-            }
+            conteudo()
         }
     }
 
@@ -148,5 +138,4 @@ fun MenuExercicio(
             onConfirm = { /* Lógica para confirmar a ação */ }
         )
     }
-
 }
