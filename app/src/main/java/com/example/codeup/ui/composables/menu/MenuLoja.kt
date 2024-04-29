@@ -50,12 +50,12 @@ fun MenuLoja(
                     ) {
                         val moeda: Painter = painterResource(id = R.drawable.icon_moeda)
 
-                        TextoBranco(texto = texto, tamanhoFonte = 24, pesoFonte = "normal")
+                        TextoBranco(texto = texto, tamanhoFonte = 24)
 
                         Row(
                             horizontalArrangement = Arrangement.End,
                             verticalAlignment = Alignment.CenterVertically){
-                            TextoBranco(texto = moedas.toString(), tamanhoFonte = 24, pesoFonte = "normal")
+                            TextoBranco(texto = moedas.toString(), tamanhoFonte = 24)
 
                             Image(
                                 modifier = Modifier,

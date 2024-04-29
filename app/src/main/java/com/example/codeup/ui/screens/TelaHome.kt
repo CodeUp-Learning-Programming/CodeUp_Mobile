@@ -1,9 +1,9 @@
 package com.example.codeup.ui.screens
 
+import BarraNavegacao
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -15,23 +15,26 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
 import com.example.codeup.data.Materia
 import com.example.codeup.data.Usuario
-import com.example.codeup.ui.composables.BarraNavegacao
 import com.example.codeup.ui.screens.viewmodels.FaseViewModel
+import com.example.codeup.ui.screens.viewmodels.LojaViewModel
 import com.example.codeup.ui.theme.CodeupTheme
+import com.example.codeup.util.StoreUser
+import kotlinx.coroutines.launch
 
 class TelaHome : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val extras = intent.extras
+//        val extras = intent.extras
 
 
         enableEdgeToEdge(
@@ -45,7 +48,7 @@ class TelaHome : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Home(extras = extras)
+                    Home()
                 }
             }
         }
@@ -55,26 +58,36 @@ class TelaHome : ComponentActivity() {
 @SuppressLint("CoroutineCreationDuringComposition")
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-fun Home(
-    extras: Bundle?,
-    modifier: Modifier = Modifier
-) {
-    val user = extras?.getSerializable("usuario") as? Usuario
-    val faseViewModel = FaseViewModel(user?.token, 1)
-    val fasesState = faseViewModel.fases.observeAsState()
+fun Home() {
+    val navController = rememberNavController()
 
-    var fasesCarregadas by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    var usuario by remember { mutableStateOf<Usuario?>(null) }
+    val materia = remember { Materia(id = 1, titulo = "Algoritmos", url = "") }
 
-    Log.d("Home", "fasesCarregadas: $fasesCarregadas, fasesState: ${fasesState.value}")
+    val coroutineScope = rememberCoroutineScope()
+    val storeUser = StoreUser.getInstance(context)
 
-    if (!fasesCarregadas && fasesState.value.isNullOrEmpty()) {
-        LaunchedEffect(faseViewModel) {
-            Log.d("Home", "Buscando fases...")
-//            faseViewModel.buscarFasePelaMateria(2)
-            fasesCarregadas = true
+    // Observe and collect user data from DataStore
+    LaunchedEffect(key1 = true) {
+        coroutineScope.launch {
+            storeUser.getUsuario.collect { retrievedUser ->
+                usuario = retrievedUser
+            }
         }
     }
 
-    val fases = fasesState.value ?: emptyList()
-    BarraNavegacao(rememberNavController(), user!!, fases, Materia(id = 1, titulo = "Algoritmos", url = ""))
+    usuario?.let { usuario ->
+        val faseViewModel = FaseViewModel(usuario.token)
+        faseViewModel.buscarFasePelaMateria(1, context)
+
+        val lojaViewModel = LojaViewModel(usuario.token)
+        lojaViewModel.carregarLoja(context)
+
+        BarraNavegacao(
+            navController = navController,
+            usuario = usuario,
+            materia = materia,
+        )
+    }
 }

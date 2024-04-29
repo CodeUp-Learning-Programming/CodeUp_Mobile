@@ -1,7 +1,7 @@
 package com.example.codeup.api.controller
 
 import com.example.codeup.data.Loja
-import com.example.codeup.data.Usuario
+import com.example.codeup.data.UsuarioAtualizado
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -12,5 +12,5 @@ interface LojaApi {
     suspend fun buscarLojaCompleta(): Response<Loja>
 
     @POST("api/loja/comprar/{idItem}")
-    suspend fun comprarItem(@Path("idItem") idItem: Int): Response<Usuario>
+    suspend fun comprarItem(@Path("idItem") idItem: Int): Response<UsuarioAtualizado>
 }

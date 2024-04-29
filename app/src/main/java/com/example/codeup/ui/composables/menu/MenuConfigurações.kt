@@ -2,6 +2,7 @@ package com.example.codeup.ui.composables.menu
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,8 +29,9 @@ import com.example.codeup.ui.composables.TextoBranco
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuConfiguracoes(
-    conteudo: @Composable () -> Unit
-) {
+    conteudo: @Composable () -> Unit,
+    onClick: () -> Unit,
+    ) {
 
     Scaffold(
         topBar = {
@@ -49,7 +51,7 @@ fun MenuConfiguracoes(
                     ) {
                         val seta: Painter = painterResource(id = R.drawable.icon_seta)
                         Image(
-                            modifier = Modifier,
+                            modifier = Modifier.clickable (onClick = onClick),
                             painter = seta,
                             contentDescription = stringResource(R.string.text_descricao_materia),
                         )

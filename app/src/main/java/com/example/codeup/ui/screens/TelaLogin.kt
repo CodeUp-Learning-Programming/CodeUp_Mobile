@@ -22,9 +22,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,9 +43,6 @@ import com.example.codeup.ui.composables.TextoBranco
 import com.example.codeup.ui.screens.viewmodels.UsuarioViewModel
 import com.example.codeup.ui.theme.CodeupTheme
 import com.example.codeup.util.StoreRememberUser
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class TelaLogin : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,40 +72,40 @@ class TelaLogin : ComponentActivity() {
 @Composable
 fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
 
-    val (usuarioLoginRequest, usuarioLoginRequestSetter) = remember {
-        mutableStateOf(UsuarioLoginRequest())
-    }
-    var lembrar by remember { mutableStateOf(false) }
+    //ViewModel
+    val carregando by usuarioViewModel.carregando.observeAsState(false)
+    val loginStatus by usuarioViewModel.loginStatus.observeAsState()
 
+    //DataStore
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
     val dataStore = StoreRememberUser(context)
 
     val emailSalvo = dataStore.getEmail.collectAsState(initial = "")
     val senhaSalva = dataStore.getPassword.collectAsState(initial = "")
 
+
+    //Objeto Usuario
+    val (usuarioLoginRequest, usuarioLoginRequestSetter) = remember {
+        mutableStateOf(UsuarioLoginRequest())
+    }
+
+
+    var lembrar by remember { mutableStateOf(false) }
+
+    //Logando automaticamente caso o usuário tenha selecionado lembrar anteriormente
     if (emailSalvo.value!! != "" && senhaSalva.value!! != "") {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
                 usuarioViewModel.login(
                     UsuarioLoginRequest(emailSalvo.value!!, senhaSalva.value!!),
                     context,
-                    scope,
                     dataStore,
                     true
                 )
-            } catch (e: Exception) {
-                Log.e("LOGIN", "Erro! ${e.message}")
-            }
-        }
     }
-
 
     var emailInputValido by remember { mutableStateOf(false) }
     var senhaInputValido by remember { mutableStateOf(false) }
 
 
-    val erroApi = remember { mutableStateOf("") }
 
     Column(
         Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween
@@ -173,7 +170,7 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
                     modifier = Modifier.fillMaxWidth(),
                     isTextFieldFocused = isTextfieldFocused,
                     texto = usuarioLoginRequest.senha,
-                    label = "Sua senha",
+                    label = stringResource(R.string.text_sua_senha),
                     onValueChange = { usuarioLoginRequestSetter(usuarioLoginRequest.copy(senha = it)) },
                     onFocusChanged = {
                         isTextfieldFocused = it.isFocused
@@ -209,30 +206,23 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
             )
 
             BotaoAzul(
+                loading = carregando,
                 text = stringResource(R.string.text_entrar), onClick = {
                     if (usuarioLoginRequest.email.isEmpty() || usuarioLoginRequest.senha.isEmpty()) {
                         emailInputValido = true
                         senhaInputValido = true
 
                     } else {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            try {
-                                usuarioViewModel.login(
-                                    usuarioLoginRequest, context, scope, dataStore, lembrar
-                                )
-                            } catch (e: Exception) {
-                                Log.e("LOGIN", "Erro! ${e.message}")
-                            }
-                        }
+                        usuarioViewModel.login(usuarioLoginRequest, context, dataStore, lembrar)
+
                     }
                 }, modifier = Modifier.fillMaxWidth()
+
             )
 
-            if (!erroApi.equals("")) {
-                TextoBranco(
-                    texto = erroApi.value,
-                    tamanhoFonte = 12,
-                )
+            loginStatus?.let {
+                TextoBranco(it,20)  // Mostrar o status do login
+                Log.d("aaaaaa", loginStatus!!)
             }
 
         }

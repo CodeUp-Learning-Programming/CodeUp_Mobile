@@ -21,7 +21,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,7 +40,6 @@ import com.example.codeup.ui.composables.card.GraficoLinha
 import com.example.codeup.ui.composables.card.GraficoTrilhaRecente
 import com.example.codeup.ui.composables.menu.MenuPadrao
 import com.example.codeup.ui.screens.TelaConfiguracoes
-import com.example.codeup.util.StoreRememberUser
 
 @Composable
 fun TelaMenuPerfil(
@@ -54,14 +52,9 @@ fun TelaMenuPerfil(
         imagem = R.drawable.icon_configurar,
         onClick = {
             val telaConfiguracoes = Intent(context, TelaConfiguracoes::class.java)
-            telaConfiguracoes.putExtra("usuario", usuario)
             context.startActivity(telaConfiguracoes)
         },
         conteudo = ({
-            val scope = rememberCoroutineScope()
-            val dataStoreRememberUser = StoreRememberUser(context)
-
-            val interactionSource = remember { MutableInteractionSource() }
             val (showPopup, setShowPopup) = remember { mutableStateOf(false) }
             Box(modifier = Modifier.fillMaxSize()) {
 
@@ -89,14 +82,14 @@ fun TelaMenuPerfil(
                         ) {
                             AsyncImage(
                                 model = usuario.fotoPerfil,
-                                contentDescription = "astronauta",
+                                contentDescription = stringResource(R.string.text_foto_perfil),
                             )
                         }
                         //
                         TextoBranco(texto = usuario.nome, tamanhoFonte = 16, pesoFonte = "Titulo")
                         BotaoAzulClaro(
                             modifier = Modifier,
-                            text = "EXPERIMENTE O PRO DE GRAÇA",
+                            text = stringResource(R.string.text_experimente_pro).uppercase(),
                             onClick = {
                                 setShowPopup(true)
                                 Log.d("PERFIL", "Exibindo pop up")
@@ -113,7 +106,7 @@ fun TelaMenuPerfil(
                         CardPerfil(
                             R.drawable.icon_fogo_azul,
                             R.string.text_icon_fogo_azul,
-                            "2",
+                            usuario.sequencia.toString(),
                             stringResource(R.string.text_sequencia)
                         )
                         CardPerfil(
@@ -219,13 +212,12 @@ fun TelaMenuPerfil(
                             ),
                         contentAlignment = Alignment.Center
                     ) {
-                        // Interceptador de cliques para o pop-up
                         Box(
                             modifier = Modifier
                                 .clickable(
                                     interactionSource = remember { MutableInteractionSource() },
                                     indication = null,
-                                    onClick = {}) // Vazio para não fazer nada quando o pop-up é clicado.
+                                    onClick = {})
                         ) {
                             CardExperimentarPro(
                                 onClickFechar = { setShowPopup(false) },

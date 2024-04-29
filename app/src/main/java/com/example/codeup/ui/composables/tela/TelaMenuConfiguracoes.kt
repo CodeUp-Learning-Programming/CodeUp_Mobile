@@ -48,6 +48,7 @@ import com.example.codeup.ui.composables.TextFieldBordaGradienteAzul
 import com.example.codeup.ui.composables.TextoBranco
 import com.example.codeup.ui.composables.card.CardExperimentarPro
 import com.example.codeup.ui.composables.menu.MenuConfiguracoes
+import com.example.codeup.ui.screens.TelaHome
 import com.example.codeup.ui.screens.TelaLogin
 import com.example.codeup.util.StoreRememberUser
 import kotlinx.coroutines.launch
@@ -56,12 +57,16 @@ import kotlinx.coroutines.launch
 fun TelaMenuConfiguracoes(
     usuario: Usuario,
 ) {
+    val context = LocalContext.current
+
     MenuConfiguracoes(
+        onClick = {
+            val telaHome = Intent(context, TelaHome::class.java)
+            context.startActivity(telaHome)
+        },
         conteudo = ({
-            val context = LocalContext.current
             val scope = rememberCoroutineScope()
             val dataStoreRememberUser = StoreRememberUser(context)
-            val interactionSource = remember { MutableInteractionSource() }
             val (showPopup, setShowPopup) = remember { mutableStateOf(false) }
             Box(modifier = Modifier.fillMaxSize()) {
 
@@ -89,7 +94,7 @@ fun TelaMenuConfiguracoes(
                         ) {
                             AsyncImage(
                                 model = usuario.fotoPerfil,
-                                contentDescription = "foto de perfil",
+                                contentDescription = stringResource(R.string.text_foto_perfil),
                             )
                         }
                     }
@@ -122,7 +127,7 @@ fun TelaMenuConfiguracoes(
                     ) {
                         Column(Modifier.padding(start = 10.dp, end = 10.dp)) {
                             TextoBranco(
-                                texto = stringResource(R.string.text_nome),
+                                texto = stringResource(R.string.text_email),
                                 tamanhoFonte = 14,
                             )
                             var isTextfieldFocused by remember { mutableStateOf(false) }
@@ -247,9 +252,11 @@ fun TelaMenuConfiguracoes(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Row(
-                                    Modifier.width(150.dp).clickable {
-                                        setShowPopup(true)
-                                       },
+                                    Modifier
+                                        .width(150.dp)
+                                        .clickable {
+                                            setShowPopup(true)
+                                        },
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.Start,
 
@@ -439,7 +446,7 @@ fun TelaMenuConfiguracoes(
                     }
                     Spacer(modifier = Modifier.height(20.dp))
                     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center ) {
-                        BotaoPretoBordaBranca("LOGOUT", onClick = {
+                        BotaoPretoBordaBranca(stringResource(R.string.text_sair).uppercase(), onClick = {
                             scope.launch {
                                 dataStoreRememberUser.saveEmail("")
                                 dataStoreRememberUser.savePassword("")
@@ -464,11 +471,10 @@ fun TelaMenuConfiguracoes(
                                 onClick = { setShowPopup(false) }),
                         contentAlignment = Alignment.Center
                     ) {
-                        // Interceptador de cliques para o pop-up
                         Box(
                             modifier = Modifier.clickable(interactionSource = remember { MutableInteractionSource() },
                                 indication = null,
-                                onClick = {}) // Vazio para não fazer nada quando o pop-up é clicado.
+                                onClick = {})
                         ) {
                             CardExperimentarPro(onClickFechar = { setShowPopup(false) },
                                 onClickComprar = { setShowPopup(false) })

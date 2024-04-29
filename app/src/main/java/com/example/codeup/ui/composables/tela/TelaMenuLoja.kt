@@ -16,118 +16,172 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 import com.example.codeup.data.ItemLoja
+import com.example.codeup.data.Loja
 import com.example.codeup.data.Usuario
 import com.example.codeup.ui.composables.TextoBranco
 import com.example.codeup.ui.composables.card.CardComprarItem
 import com.example.codeup.ui.composables.card.CardItemLoja
 import com.example.codeup.ui.composables.menu.MenuLoja
 import com.example.codeup.ui.screens.viewmodels.LojaViewModel
+import com.example.codeup.ui.screens.viewmodels.UsuarioViewModel
+import com.example.codeup.util.StoreLoja
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun TelaMenuLoja(
     usuario: Usuario,
-    lojaViewModel: LojaViewModel = LojaViewModel(usuario.token)
 ) {
-    val loja = lojaViewModel.loja.observeAsState().value ?: return
-    val itensPorTipo = loja.itensPorTipo
+    val context = LocalContext.current
+
+    var loja by remember { mutableStateOf<Loja?>(null) }
+    val coroutineScope = rememberCoroutineScope()
+    val storeLoja = StoreLoja.getInstance(context)
+
+    LaunchedEffect(key1 = true) {
+        coroutineScope.launch {
+            storeLoja.getLoja.collect { lojaAtual ->
+                loja = lojaAtual
+            }
+        }
+    }
+
+
+    var atualizar by remember { mutableStateOf(true) }
 
     val interactionSource = remember { MutableInteractionSource() }
     val (showPopup, setShowPopup) = remember { mutableStateOf(false) }
     var selectedItem by remember { mutableStateOf<ItemLoja?>(null) }
 
-    MenuLoja(
-        texto = stringResource(R.string.text_loja),
-        moedas = usuario.moedas
-    ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            LazyColumn {
-                itensPorTipo.forEach { (tipo, itens) ->
-                    stickyHeader {
-                        Box(
-                            Modifier
-                                .height(50.dp)
-                                .fillMaxWidth()
-                                .background(Color(13, 13, 13)),
-                        ) {
-                            Row(
+
+    // Observe and collect user data from DataStore
+
+    if(loja == null && atualizar){
+        atualizar = false
+        val lojaViewModel = LojaViewModel(usuario.token)
+//        lojaViewModel.carregarLoja(context)
+    }
+
+    val itensPorTipo = loja?.itensPorTipo
+    itensPorTipo?.let {
+        MenuLoja(
+            texto = stringResource(R.string.text_loja),
+            moedas = usuario.moedas
+        ) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                LazyColumn {
+                    itensPorTipo.forEach { (tipo, itens) ->
+                        stickyHeader {
+                            Box(
                                 Modifier
                                     .height(50.dp)
                                     .fillMaxWidth()
-                                    .background(Color(13, 13, 13))
-                                    .padding(start = 5.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Start
+                                    .background(Color(13, 13, 13)),
                             ) {
-                                TextoBranco(texto = tipo, tamanhoFonte = 20)
+                                Row(
+                                    Modifier
+                                        .height(50.dp)
+                                        .fillMaxWidth()
+                                        .background(Color(13, 13, 13))
+                                        .padding(start = 5.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Start
+                                ) {
+                                    TextoBranco(texto = tipo, tamanhoFonte = 20)
+                                }
                             }
                         }
-                    }
-                    items(itens) { item ->
-                        CardItemLoja(
-                            modifier = Modifier.fillMaxWidth(),
-                            itemLoja = item,
-                            cor = if (itens.indexOf(item) % 2 == 0) Color(33, 33, 33) else Color(
-                                22,
-                                22,
-                                22
-                            ),
-                            onClick = {
-                                setShowPopup(true)
-                                selectedItem = item
+                        items(itens) { item ->
+                            var equipado by remember { mutableStateOf(false) }
+
+                            if(item.tipoItem == "Imagem" && item.fotoItem != usuario.fotoPerfil){
+                                equipado = false
+                            }else if(item.tipoItem == "Tema"){
+                                equipado = false
+                            }else{
+                                equipado = true
                             }
-                        )
-                        Log.d("LISTALOJA", "clicando $tipo e $item")
+
+                            CardItemLoja(
+                                modifier = Modifier.fillMaxWidth(),
+                                itemLoja = item,
+                                cor = if (itens.indexOf(item) % 2 == 0) Color(
+                                    33,
+                                    33,
+                                    33
+                                ) else Color(
+                                    22,
+                                    22,
+                                    22
+                                ),
+                                onClick = {
+                                    setShowPopup(true)
+                                    selectedItem = item
+                                },
+                                onClickEquipar = {
+                                    if(!equipado){
+                                        val usuarioViewModel = UsuarioViewModel(usuario.token)
+                                        usuarioViewModel.equiparItem(item.fotoItem, item.tipoItem,context)
+                                    }
+                                },
+                                equipado = equipado
+                            )
+                            Log.d("LISTALOJA", "clicando $tipo e $item")
+                        }
                     }
                 }
-            }
 
-            if (showPopup && selectedItem != null) {
+                if (showPopup && selectedItem != null) {
 
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.5f))
-                        .clickable(interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            onClick = { setShowPopup(false) }),
-                    contentAlignment = Alignment.Center
-                ) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(Color(13, 13, 13).copy(alpha = 0.2f))
+                            .background(Color.Black.copy(alpha = 0.5f))
                             .clickable(
-                                interactionSource = interactionSource,
+                                interactionSource = remember { MutableInteractionSource() },
                                 indication = null,
-                                onClick = {}
+                                onClick = { setShowPopup(false) }
                             ),
-
                         contentAlignment = Alignment.Center
                     ) {
-                        selectedItem?.let {
-                            CardComprarItem(
-                                itemLoja = it,
-                                onClick = {
-                                    setShowPopup(false)
-                                    selectedItem = null
-                                },
-                                lojaViewModel
-                            )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color(13, 13, 13).copy(alpha = 0.2f))
+                                .clickable(
+                                    interactionSource = interactionSource,
+                                    indication = null,
+                                    onClick = {}
+                                ),
+
+                            contentAlignment = Alignment.Center
+                        ) {
+                            selectedItem?.let {
+                                CardComprarItem(
+                                    itemLoja = it,
+                                    onClick = {
+                                        setShowPopup(false)
+                                        selectedItem = null
+                                    },
+                                    isVisible = showPopup,
+                                    lojaViewModel = LojaViewModel(bearerToken = usuario.token)
+                                )
+                            }
                         }
                     }
                 }

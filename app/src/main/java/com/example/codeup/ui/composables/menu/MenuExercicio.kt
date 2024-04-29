@@ -1,5 +1,6 @@
 package com.example.codeup.ui.composables.menu
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,12 +25,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 import com.example.codeup.ui.composables.BotaoAzul
 import com.example.codeup.ui.composables.card.CardSair
+import com.example.codeup.ui.screens.TelaHome
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,6 +44,7 @@ fun MenuExercicio(
     var mostrarPopup by remember { mutableStateOf(false) }
     val abrirPopup = { mostrarPopup = true }
     val fecharPopup = { mostrarPopup = false }
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -73,8 +77,7 @@ fun MenuExercicio(
                             else -> R.drawable.icon_cinco_coracoes_vazios
                         }
 
-                        val painter2: Painter =
-                            painterResource(id = imagemCoracoes) // isso tem que ser dinamico
+                        val painter2: Painter = painterResource(id = imagemCoracoes) // isso tem que ser dinamico
                         val painter3: Painter = painterResource(id = R.drawable.icon_bandeira)
 
                         Image(
@@ -113,7 +116,7 @@ fun MenuExercicio(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         BotaoAzul(modifier = Modifier
-                            .fillMaxWidth(), text = "ENVIAR", onClick = { /*TODO*/ })
+                            .fillMaxWidth(), text = stringResource(R.string.text_enviar).uppercase(), onClick = { /**/ })
                     }
                 }
             }
@@ -135,7 +138,10 @@ fun MenuExercicio(
     if (mostrarPopup) {
         CardSair(
             onCancel = fecharPopup,
-            onConfirm = { /* Lógica para confirmar a ação */ }
+            onConfirm = {
+                val home = Intent(context, TelaHome::class.java)
+                context.startActivity(home)
+            }
         )
     }
 }

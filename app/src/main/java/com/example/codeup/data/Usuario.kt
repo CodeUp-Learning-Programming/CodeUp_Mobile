@@ -13,5 +13,6 @@ data class Usuario(
     var nivel: Int = 0,
     var xp: Int = 0,
     var vidas: Int = 0,
-    @SerializedName("itensAdquiridos") var itensAdquiridos:List<ItemAdquirido>? = null
+    var sequencia: Int = 0,
+    @SerializedName("itensAdquiridos") var itensAdquiridos:List<ItemAdquirido> = emptyList()
 ): Serializable

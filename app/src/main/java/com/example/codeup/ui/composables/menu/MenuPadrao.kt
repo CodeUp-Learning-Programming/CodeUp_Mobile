@@ -26,7 +26,7 @@ import com.example.codeup.ui.composables.TextoBranco
 @Composable
 fun MenuPadrao(
     texto: String = "",
-    imagem: Int = R.drawable.icon_adicionar_amigo,
+    imagem: Int = 0,
     onClick: () -> Unit,
     conteudo: @Composable () -> Unit
 ) {
@@ -37,7 +37,7 @@ fun MenuPadrao(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color(0, 0, 0))
-                    .height(80.dp)
+                    .height(90.dp)
                     .padding(top = 30.dp)
             ) {
 
@@ -51,15 +51,18 @@ fun MenuPadrao(
                         verticalAlignment = Alignment.CenterVertically
 
                     ) {
-                        TextoBranco(texto = texto, tamanhoFonte = 24, pesoFonte = "normal")
+                        TextoBranco(texto = texto, tamanhoFonte = 24)
+                        if(imagem != 0){
+                            val fotoEngrenagem: Painter = painterResource(imagem)
 
-                            val fotoEngrenagem: Painter = painterResource(id = imagem)
                             Image(
                                 modifier = Modifier.clickable (onClick = onClick),
                                 painter = fotoEngrenagem,
                                 contentDescription = stringResource(R.string.text_descricao_materia),
                             )
+                        }else{
 
+                        }
                     }
 
                 }

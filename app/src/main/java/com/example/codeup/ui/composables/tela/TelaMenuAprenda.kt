@@ -18,9 +18,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,27 +38,41 @@ import com.example.codeup.ui.composables.card.CardAprenda
 import com.example.codeup.ui.composables.card.CardExercicio
 import com.example.codeup.ui.composables.menu.MenuHome
 import com.example.codeup.ui.screens.TelaExercicio
+import com.example.codeup.util.StoreFase
+import kotlinx.coroutines.launch
 
 @Composable
 fun TelaMenuAprenda(
     usuario: Usuario,
-    listaExercicios: List<Fase>,
     materia: Materia
 ) {
+    val context = LocalContext.current
+    val storeFase = StoreFase.getInstance(context)
+
+    // Utilizando remember para evitar chamadas desnecessárias
+    var listaExercicios by remember { mutableStateOf(emptyList<Fase>()) }
+    val coroutineScope = rememberCoroutineScope()
+
+    // Coleta de dados deve ser controlada por condições específicas
+    LaunchedEffect(key1 = true) {
+        coroutineScope.launch {
+            storeFase.getFases.collect { exercicios ->
+                listaExercicios = exercicios
+            }
+        }
+    }
+
+    val (showPopup, setShowPopup) = remember { mutableStateOf(false) }
+    var selectedCardIndex by remember { mutableStateOf(-1) }
+
+
     MenuHome(
         "${R.drawable.tema_pontos}",
         materia.titulo,
         totalCoracoes = usuario.vidas,
         totalMoedas = usuario.moedas,
-        totalSequencia = 5,
+        totalSequencia = usuario.sequencia,
         conteudo = {
-            val context = LocalContext.current
-
-            // Variável de estado para controlar a visibilidade do pop-up
-            val (showPopup, setShowPopup) = remember { mutableStateOf(false) }
-            // Índice do card selecionado
-            var selectedCardIndex by remember { mutableStateOf(-1) }
-
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -98,9 +114,7 @@ fun TelaMenuAprenda(
                                 qtdExerciciosFase = exercicio.qtdExerciciosFase,
                                 qtdExerciciosFaseConcluidos = exercicio.qtdExerciciosFaseConcluidos,
                                 onClick = {
-                                    // Mostra o pop-up ao clicar no card
                                     setShowPopup(true)
-                                    // Salva o índice do card selecionado
                                     selectedCardIndex = listaExercicios.indexOf(exercicio)
                                 },
                             )
@@ -115,7 +129,6 @@ fun TelaMenuAprenda(
                 }
 
             }
-            // Se o pop-up estiver visível, mostra o pop-up correspondente ao card selecionado
             if (showPopup && selectedCardIndex != -1) {
                 Box(
                     modifier = Modifier
@@ -128,13 +141,12 @@ fun TelaMenuAprenda(
                         ),
                     contentAlignment = Alignment.Center
                 ) {
-                    // Interceptador de cliques para o pop-up
                     Box(
                         modifier = Modifier
                             .clickable(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = null,
-                                onClick = {}) // Vazio para não fazer nada quando o pop-up é clicado.
+                                onClick = {})
                     ) {
                         CardAprenda(
                             tituloFase = listaExercicios[selectedCardIndex].tituloFase,

@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -34,15 +35,17 @@ import com.example.codeup.ui.screens.viewmodels.LojaViewModel
 fun CardComprarItem(
     itemLoja: ItemLoja,
     onClick: () -> Unit,
-    lojaViewModel: LojaViewModel
-    ) {
-
+    isVisible: Boolean,
+    lojaViewModel: LojaViewModel,
+) {
+    var context = LocalContext.current
     val borderGradient = Brush.horizontalGradient(
         colors = listOf(
             Color(0, 225, 242),
             Color(0, 132, 249)
         )
     )
+
     Box(
         modifier = Modifier
             .width(300.dp)
@@ -92,8 +95,11 @@ fun CardComprarItem(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    TextoBranco(texto = stringResource(id = R.string.text_comprar_por) +" "+ itemLoja.precoItem.toInt() +" " + stringResource(
-                        id = R.string.text_moedas), tamanhoFonte = 10)
+                    TextoBranco(
+                        texto = stringResource(id = R.string.text_comprar_por) + " " + itemLoja.precoItem.toInt() + " " + stringResource(
+                            id = R.string.text_moedas
+                        ), tamanhoFonte = 10
+                    )
                     TextoBranco(
                         texto = "",
                         tamanhoFonte = 10,
@@ -113,8 +119,9 @@ fun CardComprarItem(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 BotaoAzul(
-                    text = stringResource(id = R.string.text_comprar).uppercase() , onClick = {
-                        lojaViewModel.comprarItem(itemLoja.id)
+                    text = stringResource(id = R.string.text_comprar).uppercase(), onClick = {
+                        lojaViewModel.comprarItem(itemLoja.id, context = context)
+                        lojaViewModel.carregarLoja(context = context)
                     },
                     modifier = Modifier.fillMaxWidth(),
                     altura = 30,
@@ -122,15 +129,16 @@ fun CardComprarItem(
                     tamanhoFonte = 12
                 )
                 TextButton(onClick = onClick) {
-                    TextoBranco(texto = stringResource(id = R.string.text_cancelar).uppercase(), tamanhoFonte =12 )
+                    TextoBranco(
+                        texto = stringResource(id = R.string.text_cancelar).uppercase(),
+                        tamanhoFonte = 12
+                    )
                 }
             }
 
 
         }
-
     }
-
 }
 
 //@Preview(showBackground = true)

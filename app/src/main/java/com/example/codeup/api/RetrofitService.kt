@@ -5,6 +5,7 @@ import com.example.codeup.api.controller.FaseApi
 import com.example.codeup.api.controller.LojaApi
 import com.example.codeup.api.controller.MateriaApi
 import com.example.codeup.api.controller.UsuarioApi
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -35,25 +36,34 @@ object RetrofitService {
         return createApiService(UsuarioApi::class.java, token)
     }
 
-    private inline fun <reified T> createApiService(apiClass: Class<*>, token: String? = null): T {
-        val httpClient = OkHttpClient.Builder()
-        if (token != null) {
-            httpClient.addInterceptor { chain ->
+    private val okHttpClient: OkHttpClient by lazy {
+        val builder = OkHttpClient.Builder()
+        builder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        builder.build()
+    }
+
+    private fun <T> createApiService(apiClass: Class<T>, token: String? = null): T {
+        val client = if (token != null) {
+            okHttpClient.newBuilder().addInterceptor { chain ->
                 val originalRequest = chain.request()
                 val authenticatedRequest = originalRequest.newBuilder()
                     .header("Authorization", "Bearer $token")
                     .build()
                 chain.proceed(authenticatedRequest)
-            }
+            }.build()
+        } else {
+            okHttpClient
         }
-        httpClient.addInterceptor(HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        })
-        val retrofit = Retrofit.Builder()
+
+        var gson = GsonBuilder()
+            .disableHtmlEscaping()
+            .create()
+
+        return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(httpClient.build())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .client(client)
             .build()
-        return retrofit.create(T::class.java)
+            .create(apiClass)
     }
 }

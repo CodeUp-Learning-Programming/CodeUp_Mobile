@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 import com.example.codeup.ui.composables.ImagemFundo
 import com.example.codeup.ui.composables.TextoBranco
-import com.example.codeup.ui.composables.tela.MenuLateral
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,7 +35,7 @@ fun MenuHome(
     totalMoedas: Int,
     conteudo: @Composable () -> Unit
 ) {
-    MenuLateral()
+//    MenuLateral()
     Scaffold(
         topBar = {
             Box(
@@ -82,11 +81,7 @@ fun MenuHome(
                             horizontalArrangement = Arrangement.End,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            //coracao
-                            //fogo
-                            //moedas
-                            val painter1: Painter =
-                                painterResource(id = R.drawable.icon_coracao_cheio)
+                            val painter1: Painter = painterResource(id = R.drawable.icon_coracao_cheio)
                             val painter2: Painter = painterResource(id = R.drawable.icon_fogo_azul)
                             val painter3: Painter = painterResource(id = R.drawable.icon_moeda)
 
@@ -103,7 +98,6 @@ fun MenuHome(
                                     TextoBranco(
                                         texto = "${totalMoedas}",
                                         tamanhoFonte = 24,
-                                        pesoFonte = "normal"
                                     )
                                     Spacer(Modifier.width(5.dp))
                                     Image(
@@ -122,7 +116,6 @@ fun MenuHome(
                                 TextoBranco(
                                     texto = "${totalCoracoes}",
                                     tamanhoFonte = 24,
-                                    pesoFonte = "normal"
                                 )
                                 Image(
                                     painter = painter1,
@@ -138,7 +131,6 @@ fun MenuHome(
                                 TextoBranco(
                                     texto = "${totalSequencia}",
                                     tamanhoFonte = 24,
-                                    pesoFonte = "normal"
                                 )
                                 Image(
                                     painter = painter2,
@@ -170,7 +162,6 @@ fun MenuHome(
                         TextoBranco(
                             texto = nomeMateria,
                             tamanhoFonte = 20,
-                            pesoFonte = "normal"
                         )
                     }
                 }

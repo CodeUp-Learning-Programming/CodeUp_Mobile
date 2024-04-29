@@ -20,7 +20,7 @@
     <string name="text_nome">Nome</string>
     <string name="text_ja_tem_conta">Já possui uma conta?</string>
     <string name="text_email_label">seu-email@gmail.com</string>
-    <string name="text_data_label">25/03/2001</string>
+    <string name="text_data_label">25/03/2000</string>
     <string name="text_nome_label">Seu nome</string>
     <string name="text_amigos">Amigos</string>
     <string name="text_cadastrar">Cadastrar</string>
@@ -56,4 +56,11 @@
     <string name="text_seja_pro">Seja Pro</string>
     <string name="text_icone_cadeado">Icone de um cadeado</string>
     <string name="text_alterar_senha">Alterar senha</string>
+    <string name="text_sua_senha">Sua senha</string>
+    <string name="text_experimente_pro">experimente o pro de graça</string>
+    <string name="text_foto_perfil">Foto de perfil</string>
+    <string name="text_sair">sair</string>
+    <string name="text_enviar">enviar</string>
+    <string name="text_equipar_item">equipar</string>
+    <string name="text_equipado">Equipado</string>
 </resources>

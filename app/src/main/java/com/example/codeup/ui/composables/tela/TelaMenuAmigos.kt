@@ -257,6 +257,7 @@ fun TelaMenuAmigos(
         onClick = {
                   Log.d("Amigos","Adicionar amigos")
         },
+        imagem = R.drawable.icon_adicionar_amigo,
         conteudo = ({
             ListaAmigos(listaAmigos)
         })

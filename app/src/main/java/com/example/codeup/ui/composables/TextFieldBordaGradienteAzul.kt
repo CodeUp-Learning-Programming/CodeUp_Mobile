@@ -29,12 +29,14 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.codeup.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -126,16 +128,16 @@ fun TextFieldBordaGradienteAzul(
                     }
                 }
 
-                label == "Data de nascimento" -> {
+                label == stringResource(R.string.text_data_nascimento) -> {
                     Icon(imageVector = Icons.Filled.CalendarMonth, contentDescription = "Calendar")
 
                 }
 
-                label == "Seu nome" -> {
+                label == stringResource(R.string.text_nome_label) -> {
                     Icon(imageVector = Icons.Filled.Person, contentDescription = "Nome")
                 }
 
-                label == "seu-email@gmail.com" -> {
+                label == stringResource(R.string.text_email_label) -> {
                     Icon(imageVector = Icons.Filled.AlternateEmail, contentDescription = "Email")
                 }
             }

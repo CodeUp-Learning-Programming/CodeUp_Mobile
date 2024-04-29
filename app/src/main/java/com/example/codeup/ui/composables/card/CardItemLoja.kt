@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.codeup.R
 import com.example.codeup.data.ItemLoja
+import com.example.codeup.ui.composables.BotaoAzulClaro
+import com.example.codeup.ui.composables.BotaoPretoBordaBranca
 import com.example.codeup.ui.composables.TextoBranco
 
 @Composable
@@ -32,7 +34,9 @@ fun CardItemLoja(
     modifier: Modifier,
     itemLoja: ItemLoja,
     cor: Color,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onClickEquipar: () -> Unit,
+    equipado: Boolean = false
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -88,26 +92,52 @@ fun CardItemLoja(
 
                 }
             }
+            if (itemLoja.adquirido && equipado) {
+                Row(
+                    modifier = Modifier
+                        .padding(end = 20.dp)
+                        .height(30.dp)
+                        .width(100.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    BotaoAzulClaro(text = stringResource(id =R.string.text_equipado).uppercase(), onClick = { })
+                }
+            } else if (itemLoja.adquirido ) {
+                Row(
+                    modifier = Modifier
+                        .padding(end = 20.dp)
+                        .height(30.dp)
+                        .width(100.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    BotaoPretoBordaBranca(
+                        text = stringResource(id = R.string.text_equipar_item).uppercase(),
+                        onClick = onClickEquipar
+                    )
+                }
+            }  else {
+                //Preço
+                Row(
+                    modifier = Modifier
+                        .padding(end = 20.dp)
+                        .height(30.dp)
+                        .width(40.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
 
-            //Preço
-            Row(
-                modifier = Modifier
-                    .padding(end = 20.dp)
-                    .height(30.dp)
-                    .width(40.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TextoBranco(texto = itemLoja.precoItem.toInt().toString(), tamanhoFonte = 16)
+                    TextoBranco(texto = itemLoja.precoItem.toInt().toString(), tamanhoFonte = 16)
 
-                val moeda: Painter =
-                    painterResource(id = R.drawable.icon_moeda)
+                    val moeda: Painter =
+                        painterResource(id = R.drawable.icon_moeda)
 
-                Image(
-                    painter = moeda,
-                    contentDescription = stringResource(R.string.text_moedas), // A descrição é opcional
-                )
-
+                    Image(
+                        painter = moeda,
+                        contentDescription = stringResource(R.string.text_moedas), // A descrição é opcional
+                    )
+                }
             }
         }
     }

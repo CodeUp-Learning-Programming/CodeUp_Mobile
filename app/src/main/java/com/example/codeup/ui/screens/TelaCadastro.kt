@@ -107,7 +107,10 @@ fun Cadastro(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
             Modifier.padding(all = 20.dp),
             verticalArrangement = Arrangement.Top
         ) {
-            Spacer(Modifier.fillMaxWidth().height(100.dp))
+            Spacer(
+                Modifier
+                    .fillMaxWidth()
+                    .height(100.dp))
             Row {
                 TextoBranco(
                     texto = stringResource(R.string.text_cadastrar_se),
@@ -115,7 +118,10 @@ fun Cadastro(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
                     pesoFonte = "Titulo"
                 )
             }
-            Spacer(Modifier.fillMaxWidth().height(40.dp))
+            Spacer(
+                Modifier
+                    .fillMaxWidth()
+                    .height(40.dp))
 
             Column(modifier = Modifier.fillMaxWidth()) {
                 TextoBranco(
@@ -134,7 +140,10 @@ fun Cadastro(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
                 )
             }
 
-            Spacer(Modifier.fillMaxWidth().height(20.dp))
+            Spacer(
+                Modifier
+                    .fillMaxWidth()
+                    .height(20.dp))
 
             Column(Modifier.fillMaxWidth()) {
                 TextoBranco(
@@ -146,11 +155,11 @@ fun Cadastro(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
 
                 TextFieldBordaGradienteAzul(
                     modifier = Modifier
-                    .clickable { calendarState.show() }
-                    .fillMaxWidth(),
+                        .clickable { calendarState.show() }
+                        .fillMaxWidth(),
                     isTextFieldFocused = isTextfieldFocused,
                     texto = dtNascimento,
-                    label = "Data de nascimento",
+                    label = stringResource(R.string.text_data_nascimento),
                     onValueChange = { },
                     onFocusChanged = { isTextfieldFocused = it.isFocused },
                     keyboardType = KeyboardType.Text,
@@ -158,7 +167,10 @@ fun Cadastro(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
                 )
             }
 
-            Spacer(Modifier.fillMaxWidth().height(20.dp))
+            Spacer(
+                Modifier
+                    .fillMaxWidth()
+                    .height(20.dp))
 
             Column(Modifier.fillMaxWidth()) {
                 TextoBranco(
@@ -178,7 +190,10 @@ fun Cadastro(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
                 )
             }
 
-            Spacer(Modifier.fillMaxWidth().height(20.dp))
+            Spacer(
+                Modifier
+                    .fillMaxWidth()
+                    .height(20.dp))
 
             Column(Modifier.fillMaxWidth()) {
                 TextoBranco(
@@ -191,14 +206,17 @@ fun Cadastro(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
                     modifier = Modifier.fillMaxWidth(),
                     isTextFieldFocused = isTextfieldFocused,
                     texto = usuario.senha,
-                    label = "Sua senha",
+                    label = stringResource(R.string.text_sua_senha),
                     onValueChange = { usuarioSetter(usuario.copy(senha = it)) },
                     onFocusChanged = { isTextfieldFocused = it.isFocused },
                     keyboardType = KeyboardType.Password
                 )
             }
 
-            Spacer(Modifier.fillMaxWidth().height(20.dp))
+            Spacer(
+                Modifier
+                    .fillMaxWidth()
+                    .height(20.dp))
 
             BotaoAzul(
                 text = stringResource(R.string.text_cadastrar), onClick = {
@@ -232,7 +250,6 @@ fun Cadastro(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
                 TextoBranco(
                     texto = stringResource(R.string.text_ja_tem_conta),
                     tamanhoFonte = 12,
-                    pesoFonte = "normal"
                 )
                 TextButton(
                     onClick = {

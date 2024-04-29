@@ -122,7 +122,8 @@ fun CardAprenda(
                     modifier = Modifier.fillMaxWidth(),
                     altura = 30,
                     largura = 20,
-                    tamanhoFonte = 12
+                    tamanhoFonte = 12,
+
                 )
             }
 
