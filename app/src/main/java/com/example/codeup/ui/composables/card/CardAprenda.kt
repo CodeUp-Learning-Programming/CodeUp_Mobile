@@ -48,7 +48,7 @@ fun CardAprenda(
     Box(
         modifier = Modifier
             .width(270.dp)
-            .height(150.dp)
+            .height(170.dp)
             .background(Color.Black) // Cor de fundo do cartão
             .border(1.dp, borderGradient, shape = RoundedCornerShape(8F)) // Borda com gradiente
     ) {

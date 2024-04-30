@@ -35,7 +35,6 @@ fun MenuHome(
     totalMoedas: Int,
     conteudo: @Composable () -> Unit
 ) {
-//    MenuLateral()
     Scaffold(
         topBar = {
             Box(

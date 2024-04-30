@@ -74,7 +74,7 @@ fun Greeting2(name: String, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
-                .background(Color(40,40,40))
+                .background(Color(40, 40, 40))
         )
         Column(
             modifier = Modifier
@@ -83,27 +83,27 @@ fun Greeting2(name: String, modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                TextoBranco(
-                    texto = "Os botões são essenciais para a interatividade nas interfaces de usuário, proporcionando uma maneira intuitiva e direta de realizar diversas ações, como enviar formulários, fazer seleções e efetuar compras. Sua presença facilita a execução de tarefas específicas, simplificando a experiência do usuário. Além disso, os botões visualmente comunicam as ações possíveis, auxiliando os usuários na interação com a interface.",
-                    tamanhoFonte = 16,
-                    pesoFonte = "normal",
+            Column(Modifier.height(250.dp)) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    TextoBranco(
+                        texto = "Os botões são essenciais para a interatividade nas interfaces de usuário, proporcionando uma maneira intuitiva e direta de realizar diversas ações, como enviar formulários, fazer seleções e efetuar compras. Sua presença facilita a execução de tarefas específicas, simplificando a experiência do usuário. Além disso, os botões visualmente comunicam as ações possíveis, auxiliando os usuários na interação com a interface.",
+                        tamanhoFonte = 14,
+                    )
 
-                )
-
+                }
             }
+
             Spacer(modifier = Modifier.height(10.dp))
 
             Row {
                 TextoBranco(
                     texto = "Qual elemento HTML é utilizado para criar um botão clicável em uma página da web?",
                     tamanhoFonte = 16,
-                    pesoFonte = "normal"
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))

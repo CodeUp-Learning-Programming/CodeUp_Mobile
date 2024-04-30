@@ -1,5 +1,6 @@
 package com.example.codeup.api.controller
 
+import com.example.codeup.data.FotoPerfilRequest
 import com.example.codeup.data.Usuario
 import com.example.codeup.data.UsuarioLoginRequest
 import com.example.codeup.data.UsuarioRegisterRequest
@@ -26,7 +27,7 @@ interface UsuarioApi {
     suspend fun login(@Body usuarioLoginRequest: UsuarioLoginRequest): Response<Usuario>
 
     @PATCH("api/usuarios/foto")
-    suspend fun atualizarFotoPerfil(@Body novaFoto: String): Response<Void>
+    suspend fun atualizarFotoPerfil(@Body fotoPerfilRequest: FotoPerfilRequest): Response<Void>
 
     @DELETE("api/usuarios/foto")
     suspend fun removerFotoPerfil(): Response<Void>

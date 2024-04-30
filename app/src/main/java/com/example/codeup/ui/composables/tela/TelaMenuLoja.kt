@@ -63,6 +63,7 @@ fun TelaMenuLoja(
 
 
     var atualizar by remember { mutableStateOf(true) }
+    var itemFoiAdquirido by remember { mutableStateOf(false) }
 
     val interactionSource = remember { MutableInteractionSource() }
     val (showPopup, setShowPopup) = remember { mutableStateOf(false) }
@@ -147,6 +148,15 @@ fun TelaMenuLoja(
                 }
 
                 if (showPopup && selectedItem != null) {
+                    var equipado by remember { mutableStateOf(false) }
+
+                    if(selectedItem!!.tipoItem == "Imagem" && selectedItem!!.fotoItem != usuario.fotoPerfil){
+                        equipado = false
+                    }else if(selectedItem!!.tipoItem == "Tema"){
+                        equipado = false
+                    }else{
+                        equipado = true
+                    }
 
                     Box(
                         modifier = Modifier
@@ -178,8 +188,24 @@ fun TelaMenuLoja(
                                         setShowPopup(false)
                                         selectedItem = null
                                     },
+                                    onClickComprar = {
+                                        val lojaViewModel = LojaViewModel(usuario.token)
+                                        lojaViewModel.comprarItem(selectedItem!!.id, context = context)
+                                        lojaViewModel.carregarLoja(context = context)
+
+                                        //colocar para fechar depois de um tempo
+                                        setShowPopup(false)
+                                        selectedItem = null
+                                        itemFoiAdquirido = false
+                                    },
+                                    onClickEquipar = {
+                                        if(!equipado){
+                                            val usuarioViewModel = UsuarioViewModel(usuario.token)
+                                            usuarioViewModel.equiparItem(selectedItem!!.fotoItem, selectedItem!!.tipoItem,context)
+                                        }
+                                    },
+                                    equipado = equipado,
                                     isVisible = showPopup,
-                                    lojaViewModel = LojaViewModel(bearerToken = usuario.token)
                                 )
                             }
                         }

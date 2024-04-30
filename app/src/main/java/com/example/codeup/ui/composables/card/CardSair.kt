@@ -44,7 +44,7 @@ fun CardSair(
     )
     Box(
         modifier = Modifier
-            .width(295.dp)
+            .width(300.dp)
             .height(110.dp)
             .fillMaxSize()
             .background(

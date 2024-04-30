@@ -7,9 +7,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.codeup.api.RetrofitService
+import com.example.codeup.data.FotoPerfilRequest
 import com.example.codeup.data.Usuario
 import com.example.codeup.data.UsuarioLoginRequest
 import com.example.codeup.data.UsuarioRegisterRequest
+import com.example.codeup.ui.screens.TelaExercicio
 import com.example.codeup.ui.screens.TelaHome
 import com.example.codeup.ui.screens.TelaLogin
 import com.example.codeup.util.StoreRememberUser
@@ -73,10 +75,8 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
                     }
 
                     loginStatus.postValue("Login bem-sucedido")
-                    context.startActivity(Intent(context, TelaHome::class.java).apply {
-                        putExtra("usuario", usuario)
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    })
+                    val telaHome = Intent(context, TelaHome::class.java)
+                    context.startActivity(telaHome)
 
                 } else {
                     loginStatus.postValue("Erro de login: ${usuarioResponse.errorBody()?.string()}")
@@ -117,7 +117,7 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 if (tipoItem == "Imagem") {
-                    val usuarioResponse = apiUsuario.atualizarFotoPerfil(fotoItem)
+                    val usuarioResponse = apiUsuario.atualizarFotoPerfil(FotoPerfilRequest(fotoItem))
 
                     if (usuarioResponse.isSuccessful) {
                         val currentUser =
