@@ -1,230 +1,99 @@
 package com.example.codeup.ui.screens
 
+import BarraNavegacao
+import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import com.example.codeup.R
-import com.example.codeup.ui.DadosDoCard
-import com.example.codeup.ui.composables.CardExercicio
-import com.example.codeup.ui.composables.CardPopup
-import com.example.codeup.ui.composables.Menu
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.compose.rememberNavController
+import com.example.codeup.data.Materia
+import com.example.codeup.data.Usuario
+import com.example.codeup.ui.screens.viewmodels.FaseViewModel
+import com.example.codeup.ui.screens.viewmodels.LojaViewModel
 import com.example.codeup.ui.theme.CodeupTheme
+import com.example.codeup.util.StoreUser
+import kotlinx.coroutines.launch
 
 class TelaHome : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
+
+
         enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.light(
-                0, 0
-            ),
-            navigationBarStyle = SystemBarStyle.light(
-                0, 0
-            )
+            statusBarStyle = SystemBarStyle.light(0, 0),
+            navigationBarStyle = SystemBarStyle.light(0, 0)
         )
+        window.decorView.apply {
+            // Hide both the navigation bar and the status bar.
+            // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+            // a general rule, you should design your app to hide the status bar whenever you
+            // hide the navigation bar.
+            systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
+        }
         setContent {
             CodeupTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = Color.Black
                 ) {
-
-                    Home("Android")
-
+                    Home()
                 }
             }
         }
     }
 }
 
-
+@SuppressLint("CoroutineCreationDuringComposition")
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-fun Home(name: String, fundo: String = "tema_padrao", modifier: Modifier = Modifier) {
-    Menu(
-        "${R.drawable.tema_pontos}",
-        "Algoritimo",
-        totalCoracoes = 5,
-        totalMoedas = 10,
-        totalSequencia = 5,
-        conteudo = {
-            val listaExercicios = remember {
-                mutableListOf(
-                    DadosDoCard(
-                        bloqueado = false,
-                        totalExercicios = 5,
-                        totalExerciciosConcluidos = 5
-                    ),
-                    DadosDoCard(
-                        bloqueado = false,
-                        totalExercicios = 5,
-                        totalExerciciosConcluidos = 3
-                    ),
-                    DadosDoCard(
-                        bloqueado = true,
-                        totalExercicios = 10,
-                        totalExerciciosConcluidos = 8
-                    ),
-                    DadosDoCard(
-                        bloqueado = true,
-                        totalExercicios = 10,
-                        totalExerciciosConcluidos = 8
-                    ),
-                    DadosDoCard(
-                        bloqueado = true,
-                        totalExercicios = 10,
-                        totalExerciciosConcluidos = 8
-                    ),
-                    DadosDoCard(
-                        bloqueado = true,
-                        totalExercicios = 10,
-                        totalExerciciosConcluidos = 8
-                    ),
-                    DadosDoCard(
-                        bloqueado = true,
-                        totalExercicios = 10,
-                        totalExerciciosConcluidos = 8
-                    ),
-                    DadosDoCard(
-                        bloqueado = true,
-                        totalExercicios = 10,
-                        totalExerciciosConcluidos = 8
-                    ),
-                    DadosDoCard(
-                        bloqueado = true,
-                        totalExercicios = 10,
-                        totalExerciciosConcluidos = 8
-                    ),
-                    DadosDoCard(
-                        bloqueado = true,
-                        totalExercicios = 10,
-                        totalExerciciosConcluidos = 8
-                    ),
-                    DadosDoCard(
-                        bloqueado = true,
-                        totalExercicios = 15,
-                        totalExerciciosConcluidos = 12
-                    )
-                )
-            }
+fun Home() {
+    val navController = rememberNavController()
 
+    val context = LocalContext.current
+    var usuario by remember { mutableStateOf<Usuario?>(null) }
+    val materia = remember { Materia(id = 1, titulo = "Algoritmos", url = "") }
 
-            // Variável de estado para controlar a visibilidade do pop-up
-            val (showPopup, setShowPopup) = remember { mutableStateOf(false) }
-            // Índice do card selecionado
-            var selectedCardIndex by remember { mutableStateOf(-1) }
+    val coroutineScope = rememberCoroutineScope()
+    val storeUser = StoreUser.getInstance(context)
 
-            var i = 0;
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 10.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                reverseLayout = false
-            ) {
-                var alinharDireita = true;
-                items(listaExercicios) { exercicio ->
-                    Column {
-                        //Linha reta
-                        Canvas(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                        ) {
-                            drawLine(
-                                color = Color.Gray,
-                                start = Offset(300f, 0f),
-                                end = Offset(300f, 400f),
-                                strokeWidth = 50f
-                            )
-                            drawLine(
-                                color = Color.Black,
-                                start = Offset(300f, 0f),
-                                end = Offset(300f, 400f),
-                                strokeWidth = 40f
-                            )
-                        }
-
-                        Row(
-                            modifier = Modifier
-                                .width(200.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = if (alinharDireita) Arrangement.End else Arrangement.Start
-                        ) {
-                            CardExercicio(
-                                bloqueado = exercicio.bloqueado,
-                                totalExercicios = exercicio.totalExercicios,
-                                totalExerciciosConcluidos = exercicio.totalExerciciosConcluidos,
-                                onClick = {
-                                    //exibir card
-                                    // Mostra o pop-up ao clicar no card
-                                    setShowPopup(true)
-                                    // Salva o índice do card selecionado
-                                    selectedCardIndex = listaExercicios.indexOf(exercicio)
-                                },
-                            )
-
-                        }
-
-                        Spacer(modifier = Modifier.height(40.dp))
-                        alinharDireita = !alinharDireita;
-
-
-                    }
-                }
-
-            }
-            // Se o pop-up estiver visível, mostra o pop-up correspondente ao card selecionado
-            if (showPopup && selectedCardIndex != -1) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color(13,13,13).copy(alpha = 0.2f))
-                        .clickable {
-                            // Fecha o pop-up ao clicar no botão de fechar
-                            setShowPopup(false)
-                            // Reseta o índice do card selecionado
-                            selectedCardIndex = -1
-                        },
-                    contentAlignment = Alignment.Center
-                ){
-                    CardPopup(
-                        bloqueado = listaExercicios[selectedCardIndex].bloqueado,
-                        totalExercicios = listaExercicios[selectedCardIndex].totalExercicios,
-                        totalExerciciosConcluidos = listaExercicios[selectedCardIndex].totalExerciciosConcluidos,
-                    )
-                }
-
+    // Observe and collect user data from DataStore
+    LaunchedEffect(key1 = true) {
+        coroutineScope.launch {
+            storeUser.getUsuario.collect { retrievedUser ->
+                usuario = retrievedUser
             }
         }
-    )
-}
+    }
 
+    usuario?.let { it ->
+        val faseViewModel = FaseViewModel(it.token)
+        faseViewModel.buscarFasePelaMateria(1, context)
+
+        val lojaViewModel = LojaViewModel(it.token)
+        lojaViewModel.carregarLoja(context)
+
+        BarraNavegacao(
+            navController = navController,
+            usuario = it,
+            materia = materia,
+        )
+    }
+}
