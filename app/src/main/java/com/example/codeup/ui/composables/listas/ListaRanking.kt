@@ -5,13 +5,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,20 +30,22 @@ import com.example.codeup.ui.composables.TextoBranco
 fun ListaRanking(
     listaUsuariosRanking: List<UsuarioRanking>
 ) {
-    var contador = 0
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(listaUsuariosRanking) { usuarioRanking ->
+    LazyColumn() {
+        itemsIndexed(listaUsuariosRanking) { index, usuarioRanking ->
 
             Row(
                 modifier = Modifier
                     .height(100.dp)
                     .fillMaxWidth()
                     .background(
-                        if (contador % 2 == 0) Color(22, 22, 22) else Color(
-                            0,
-                            0,
-                            0
-                        )
+                        if (index % 2 == 0) Color(33,
+                            33,
+                            33
+                        ) else Color(
+                            22,
+                            22,
+                            22
+                        ),
                     ),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -73,15 +74,15 @@ fun ListaRanking(
                             val bronze: Painter =
                                 painterResource(id = R.drawable.icon_medalha_bronze)
 
-                            if (usuarioRanking.posicao <= 3) {
+                            if (index+1 <= 3) {
                                 Image(
-                                    painter = if (usuarioRanking.posicao == 1) ouro else if (usuarioRanking.posicao == 2) prata else bronze,
+                                    painter = if (index+1 == 1) ouro else if (index+1 == 2) prata else bronze,
                                     contentDescription = null, // A descrição é opcional
-                                    modifier = Modifier.fillMaxSize()
+//                                    modifier = Modifier.fillMaxSize()
                                 )
                             } else {
                                 TextoBranco(
-                                    texto = "${usuarioRanking.posicao}",
+                                    texto = "${index+1}",
                                     tamanhoFonte = 16,
                                     alinhamentoTexto = TextAlign.Center
                                 )
@@ -118,7 +119,7 @@ fun ListaRanking(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TextoBranco(
-                            texto = "${usuarioRanking.usuario.nome}",
+                            texto = usuarioRanking.nome,
                             tamanhoFonte = 12
                         )
 
@@ -130,11 +131,10 @@ fun ListaRanking(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TextoBranco(texto = "${usuarioRanking.pontos}", tamanhoFonte = 16)
+                    TextoBranco(texto = usuarioRanking.pontos, tamanhoFonte = 16)
                 }
 
             }
-            contador++
         }
     }
 }

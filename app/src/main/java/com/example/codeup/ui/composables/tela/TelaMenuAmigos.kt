@@ -1,5 +1,6 @@
 package com.example.codeup.ui.composables.tela
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
@@ -11,7 +12,7 @@ import com.example.codeup.ui.composables.menu.MenuPadrao
 
 @Composable
 fun TelaMenuAmigos(
-    user: Usuario,
+    usuario: Usuario,
 ) {
     val listaAmigos = remember {
         listOf(
@@ -253,6 +254,10 @@ fun TelaMenuAmigos(
     }
     MenuPadrao(
         texto = stringResource(R.string.text_amigos),
+        onClick = {
+                  Log.d("Amigos","Adicionar amigos")
+        },
+        imagem = R.drawable.icon_adicionar_amigo,
         conteudo = ({
             ListaAmigos(listaAmigos)
         })

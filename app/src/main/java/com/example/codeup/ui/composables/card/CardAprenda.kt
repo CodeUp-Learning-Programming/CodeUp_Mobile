@@ -1,6 +1,5 @@
 package com.example.codeup.ui.composables.card
 
-import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -23,14 +22,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 import com.example.codeup.ui.composables.BotaoAzul
 import com.example.codeup.ui.composables.TextoBranco
-import com.example.codeup.ui.screens.TelaExercicio
 
 @Composable
 fun CardAprenda(
@@ -38,8 +35,8 @@ fun CardAprenda(
     desbloqueada: Boolean,
     qtdExerciciosFaseConcluidos: Int,
     qtdExerciciosFase: Int,
+    onClick: () -> Unit,
     ) {
-    val contexto = LocalContext.current
 
     val borderGradient = Brush.horizontalGradient(
         colors = listOf(
@@ -51,7 +48,7 @@ fun CardAprenda(
     Box(
         modifier = Modifier
             .width(270.dp)
-            .height(150.dp)
+            .height(170.dp)
             .background(Color.Black) // Cor de fundo do cartão
             .border(1.dp, borderGradient, shape = RoundedCornerShape(8F)) // Borda com gradiente
     ) {
@@ -120,14 +117,13 @@ fun CardAprenda(
             )
             Row {
                 BotaoAzul(
-                    text = "CONTINUE APRENDENDO", onClick = {
-                        val telaExercicio = Intent(contexto, TelaExercicio::class.java)
-                        contexto.startActivity(telaExercicio)
-                    },
+                    text = "CONTINUE APRENDENDO",
+                    onClick = onClick,
                     modifier = Modifier.fillMaxWidth(),
                     altura = 30,
                     largura = 20,
-                    tamanhoFonte = 12
+                    tamanhoFonte = 12,
+
                 )
             }
 

@@ -2,6 +2,8 @@ package com.example.codeup.ui.screens
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -31,33 +33,37 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
-import com.example.codeup.api.RetrofitService
-import com.example.codeup.data.Usuario
 import com.example.codeup.data.UsuarioRegisterRequest
 import com.example.codeup.ui.composables.BotaoAzul
 import com.example.codeup.ui.composables.TextFieldBordaGradienteAzul
-import com.example.codeup.ui.composables.TextFieldDataBordaGradienteAzul
 import com.example.codeup.ui.composables.TextoAzulGradienteSublinhado
 import com.example.codeup.ui.composables.TextoBranco
+import com.example.codeup.ui.screens.viewmodels.UsuarioViewModel
 import com.example.codeup.ui.theme.CodeupTheme
 import com.maxkeppeker.sheets.core.models.base.rememberSheetState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class TelaCadastro : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.light(
-                0, 0
-            ), navigationBarStyle = SystemBarStyle.light(
-                0, 0
-            )
+            statusBarStyle = SystemBarStyle.light(0, 0),
+            navigationBarStyle = SystemBarStyle.light(0, 0)
         )
+        window.decorView.apply {
+            // Hide both the navigation bar and the status bar.
+            // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+            // a general rule, you should design your app to hide the status bar whenever you
+            // hide the navigation bar.
+            systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
+        }
         setContent {
             CodeupTheme {
                 Surface(
@@ -72,7 +78,7 @@ class TelaCadastro : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Cadastro() {
+fun Cadastro(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
     val contexto = LocalContext.current
     val (usuario, usuarioSetter) = remember {
         mutableStateOf(UsuarioRegisterRequest())
@@ -83,29 +89,29 @@ fun Cadastro() {
     var dtNascimentoInputValido by remember { mutableStateOf(false) }
     var nomeInputValido by remember { mutableStateOf(false) }
 
-
-    val erroApi = remember { mutableStateOf("") }
-
     val calendarState = rememberSheetState()
+    val (dtNascimento, setDtNascimento) = remember { mutableStateOf("") }
 
 
     CalendarDialog(state = calendarState, config = CalendarConfig(
         monthSelection = true, yearSelection = true
     ), selection = CalendarSelection.Date { date ->
-        usuarioSetter(usuario.copy(dtNascimento = date))
+        usuarioSetter(usuario.copy(dtNascimento = date.toString()))
+        setDtNascimento(date.toString().toBrazilianDateFormat())
     })
 
     Column(
-        modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween
+        Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
-            modifier = Modifier.padding(all = 20.dp), verticalArrangement = Arrangement.Top
+            Modifier.padding(all = 20.dp),
+            verticalArrangement = Arrangement.Top
         ) {
             Spacer(
-                modifier = Modifier
+                Modifier
                     .fillMaxWidth()
-                    .height(100.dp)
-            )
+                    .height(100.dp))
             Row {
                 TextoBranco(
                     texto = stringResource(R.string.text_cadastrar_se),
@@ -114,10 +120,9 @@ fun Cadastro() {
                 )
             }
             Spacer(
-                modifier = Modifier
+                Modifier
                     .fillMaxWidth()
-                    .height(40.dp)
-            )
+                    .height(40.dp))
 
             Column(modifier = Modifier.fillMaxWidth()) {
                 TextoBranco(
@@ -137,12 +142,11 @@ fun Cadastro() {
             }
 
             Spacer(
-                modifier = Modifier
+                Modifier
                     .fillMaxWidth()
-                    .height(20.dp)
-            )
+                    .height(20.dp))
 
-            Column(modifier = Modifier.fillMaxWidth()) {
+            Column(Modifier.fillMaxWidth()) {
                 TextoBranco(
                     texto = stringResource(R.string.text_data_nascimento),
                     tamanhoFonte = 14,
@@ -150,24 +154,26 @@ fun Cadastro() {
                 var isTextfieldFocused by remember { mutableStateOf(false) }
 
 
-                TextFieldDataBordaGradienteAzul(modifier = Modifier
-                    .clickable { calendarState.show() }
-                    .fillMaxWidth(),
+                TextFieldBordaGradienteAzul(
+                    modifier = Modifier
+                        .clickable { calendarState.show() }
+                        .fillMaxWidth(),
                     isTextFieldFocused = isTextfieldFocused,
-                    texto = usuario.dtNascimento,
+                    texto = dtNascimento,
+                    label = stringResource(R.string.text_data_nascimento),
                     onValueChange = { },
                     onFocusChanged = { isTextfieldFocused = it.isFocused },
-                    enabled = false
+                    keyboardType = KeyboardType.Text,
+                    enabled = false,
                 )
             }
 
             Spacer(
-                modifier = Modifier
+                Modifier
                     .fillMaxWidth()
-                    .height(20.dp)
-            )
+                    .height(20.dp))
 
-            Column(modifier = Modifier.fillMaxWidth()) {
+            Column(Modifier.fillMaxWidth()) {
                 TextoBranco(
                     texto = stringResource(R.string.text_email),
                     tamanhoFonte = 14,
@@ -186,16 +192,14 @@ fun Cadastro() {
             }
 
             Spacer(
-                modifier = Modifier
+                Modifier
                     .fillMaxWidth()
-                    .height(20.dp)
-            )
+                    .height(20.dp))
 
-            Column(modifier = Modifier.fillMaxWidth()) {
+            Column(Modifier.fillMaxWidth()) {
                 TextoBranco(
                     texto = stringResource(R.string.text_senha),
-                    tamanhoFonte = 14,
-                    pesoFonte = "normal"
+                    tamanhoFonte = 14
                 )
                 var isTextfieldFocused by remember { mutableStateOf(false) }
 
@@ -203,7 +207,7 @@ fun Cadastro() {
                     modifier = Modifier.fillMaxWidth(),
                     isTextFieldFocused = isTextfieldFocused,
                     texto = usuario.senha,
-                    label = "********",
+                    label = stringResource(R.string.text_sua_senha),
                     onValueChange = { usuarioSetter(usuario.copy(senha = it)) },
                     onFocusChanged = { isTextfieldFocused = it.isFocused },
                     keyboardType = KeyboardType.Password
@@ -211,66 +215,42 @@ fun Cadastro() {
             }
 
             Spacer(
-                modifier = Modifier
+                Modifier
                     .fillMaxWidth()
-                    .height(20.dp)
-            )
+                    .height(20.dp))
 
             BotaoAzul(
                 text = stringResource(R.string.text_cadastrar), onClick = {
-                    if (usuario.email.isEmpty() || usuario.senha.isEmpty()) {
+                    if (usuario.email.isEmpty() || usuario.senha.isEmpty() || usuario.nome.isEmpty() || usuario.dtNascimento.isEmpty()) {
                         emailInputValido = true
                         senhaInputValido = true
                         nomeInputValido = true
                         dtNascimentoInputValido = true
                     } else {
-                        val ApiUsuarios = RetrofitService.getApiUsuarioService(null)
-                        val post = ApiUsuarios.cadastrar(usuario)
-
-                        post.enqueue(object : Callback<Usuario> {
-                            override fun onResponse(
-                                call: Call<Usuario>, response: Response<Usuario>
-                            ) {
-                                if (response.isSuccessful) {
-                                    val usuarioResponse = response.body()
-                                    if (usuarioResponse != null) {
-                                        val telaLogin = Intent(contexto, TelaLogin::class.java)
-                                        contexto.startActivity(telaLogin)
-                                    } else {
-                                        erroApi.value = "Cadastro não realizado"
-
-                                    }
-                                } else {
-                                    erroApi.value = "Erro na resposta: ${response.code()}"
+                            CoroutineScope(Dispatchers.IO).launch {
+                                try {
+                                    usuarioViewModel.cadastrar(usuario, contexto)
+                                } catch (e: Exception) {
+                                    Log.e("Cadastro", "Erro ao cadastrar usuário! ${e.message}")
                                 }
                             }
-
-                            override fun onFailure(call: Call<Usuario>, t: Throwable) {
-                                erroApi.value = t.message.toString()
-
-                            }
-                        })
-
                     }
 
                 }, modifier = Modifier.fillMaxWidth()
             )
         }
 
-        Column(
-            modifier = Modifier.padding(bottom = 30.dp)
-        ) {
+        Column(Modifier.padding(bottom = 30.dp)) {
             Row(
+                Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
             ) {
 
 
                 TextoBranco(
                     texto = stringResource(R.string.text_ja_tem_conta),
                     tamanhoFonte = 12,
-                    pesoFonte = "normal"
                 )
                 TextButton(
                     onClick = {
@@ -291,3 +271,14 @@ fun Cadastro() {
     }
 }
 
+fun String.toBrazilianDateFormat(inputPattern: String = "yyyy-MM-dd", outputPattern: String = "dd/MM/yyyy"): String {
+    return try {
+        val inputFormat = SimpleDateFormat(inputPattern, Locale.getDefault())
+        val date = inputFormat.parse(this)
+        val outputFormat = SimpleDateFormat(outputPattern, Locale.getDefault())
+        outputFormat.format(date)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        "Formato de data inválidoLLL"
+    }
+}

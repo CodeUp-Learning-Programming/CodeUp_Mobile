@@ -1,112 +1,99 @@
 package com.example.codeup.ui.screens
 
+import BarraNavegacao
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
-import com.example.codeup.api.RetrofitService
-import com.example.codeup.data.Fase
+import com.example.codeup.data.Materia
 import com.example.codeup.data.Usuario
-import com.example.codeup.ui.DadosDoCard
-import com.example.codeup.ui.composables.BarraNavegacao
+import com.example.codeup.ui.screens.viewmodels.FaseViewModel
+import com.example.codeup.ui.screens.viewmodels.LojaViewModel
 import com.example.codeup.ui.theme.CodeupTheme
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.codeup.util.StoreUser
+import kotlinx.coroutines.launch
 
 class TelaHome : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val extras = intent.extras
+
+
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.light(0, 0),
             navigationBarStyle = SystemBarStyle.light(0, 0)
         )
-
+        window.decorView.apply {
+            // Hide both the navigation bar and the status bar.
+            // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+            // a general rule, you should design your app to hide the status bar whenever you
+            // hide the navigation bar.
+            systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
+        }
         setContent {
             CodeupTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = Color.Black
                 ) {
-                    Home(extras = extras)
+                    Home()
                 }
             }
         }
     }
 }
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-fun Home(
-    extras: Bundle?,
-    modifier: Modifier = Modifier
-) {
-    val user = extras?.getSerializable("usuario") as? Usuario
+fun Home() {
+    val navController = rememberNavController()
 
-    val erroApi = remember { mutableStateOf("") }
-    val ApiUsuarios = RetrofitService.getApiFaseService(user?.token)
-    val get = ApiUsuarios.buscarFasePelaMateria(1)
-    var listaExercicios by remember { mutableStateOf<List<DadosDoCard>>(emptyList()) }
+    val context = LocalContext.current
+    var usuario by remember { mutableStateOf<Usuario?>(null) }
+    val materia = remember { Materia(id = 1, titulo = "Algoritmos", url = "") }
 
-    get.enqueue(object : Callback<List<Fase>> {
-        override fun onResponse(call: Call<List<Fase>>, response: Response<List<Fase>>) {
-            if (response.isSuccessful) {
-                val faseResponse = response.body()
-                if (faseResponse != null) {
-                    listaExercicios = faseResponse.map { fase ->
-                        DadosDoCard(
-                            tituloFase = fase.tituloFase,
-                            desbloqueada = fase.desbloqueada,
-                            qtdExerciciosFase = fase.qtdExerciciosFase,
-                            qtdExerciciosFaseConcluidos = fase.qtdExerciciosFaseConcluidos
-                        )
-                    }
-                } else {
-                    erroApi.value = "Erro: Usuário não encontrado"
-                }
-            } else {
-                erroApi.value = "Erro na resposta: ${response.code()}"
+    val coroutineScope = rememberCoroutineScope()
+    val storeUser = StoreUser.getInstance(context)
+
+    // Observe and collect user data from DataStore
+    LaunchedEffect(key1 = true) {
+        coroutineScope.launch {
+            storeUser.getUsuario.collect { retrievedUser ->
+                usuario = retrievedUser
             }
         }
+    }
 
-        override fun onFailure(call: Call<List<Fase>>, t: Throwable) {
-            erroApi.value = t.message.toString()
+    usuario?.let { it ->
+        val faseViewModel = FaseViewModel(it.token)
+        faseViewModel.buscarFasePelaMateria(1, context)
 
-            //Colocando dados para execução em modo offline
-            val listaExerciciosMock = listOf(
-                DadosDoCard("Aprenda",true, 5, 5),
-                DadosDoCard("Aprenda",false, 5, 3),
-                DadosDoCard("Aprenda",false, 5, 3),
-                DadosDoCard("Aprenda",false, 5, 3),
-                DadosDoCard("Aprenda",false, 5, 3),
-            )
-            listaExercicios = listaExerciciosMock.map { fase ->
-                DadosDoCard(
-                    tituloFase = fase.tituloFase,
-                    desbloqueada = fase.desbloqueada,
-                    qtdExerciciosFase = fase.qtdExerciciosFase,
-                    qtdExerciciosFaseConcluidos = fase.qtdExerciciosFaseConcluidos
-                )
-            }
-        }
-    })
+        val lojaViewModel = LojaViewModel(it.token)
+        lojaViewModel.carregarLoja(context)
 
-    if (user != null) {
-        BarraNavegacao(rememberNavController(), user, listaExercicios)
+        BarraNavegacao(
+            navController = navController,
+            usuario = it,
+            materia = materia,
+        )
     }
 }
