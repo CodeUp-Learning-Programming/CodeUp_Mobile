@@ -11,7 +11,12 @@ import androidx.compose.ui.unit.sp
 import com.example.codeup.R
 
 @Composable
-fun TextoBranco(texto: String, tamanhoFonte: Int, pesoFonte: String) {
+fun TextoBranco(
+    texto: String,
+    tamanhoFonte: Int,
+    pesoFonte: String = "",
+    alinhamentoTexto: TextAlign = TextAlign.Start
+) {
     if (pesoFonte == "Titulo") {
         Text(
             text = texto,
@@ -20,7 +25,7 @@ fun TextoBranco(texto: String, tamanhoFonte: Int, pesoFonte: String) {
                 Font(R.font.poppins_bold, FontWeight.Bold)
             ),
             fontSize = tamanhoFonte.sp,
-            textAlign = TextAlign.Start
+            textAlign = alinhamentoTexto
         )
     } else {
         Text(
@@ -30,7 +35,7 @@ fun TextoBranco(texto: String, tamanhoFonte: Int, pesoFonte: String) {
                 Font(R.font.poppins_semi_bold, FontWeight.SemiBold)
             ),
             fontSize = tamanhoFonte.sp,
-            textAlign = TextAlign.Start
+            textAlign = alinhamentoTexto
         )
     }
 }

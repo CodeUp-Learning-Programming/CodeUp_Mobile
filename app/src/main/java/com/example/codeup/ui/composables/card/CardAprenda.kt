@@ -1,6 +1,5 @@
-package com.example.codeup.ui.composables
+package com.example.codeup.ui.composables.card
 
-import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -23,22 +22,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
-import com.example.codeup.ui.screens.TelaExercicio
-import com.example.codeup.ui.theme.CodeupTheme
+import com.example.codeup.ui.composables.BotaoAzul
+import com.example.codeup.ui.composables.TextoBranco
 
 @Composable
 fun CardAprenda(
-    bloqueado: Boolean,
-    totalExerciciosConcluidos: Int,
-    totalExercicios: Int,
+    tituloFase: String,
+    desbloqueada: Boolean,
+    qtdExerciciosFaseConcluidos: Int,
+    qtdExerciciosFase: Int,
+    onClick: () -> Unit,
     ) {
-    val contexto = LocalContext.current
 
     val borderGradient = Brush.horizontalGradient(
         colors = listOf(
@@ -49,8 +47,8 @@ fun CardAprenda(
 
     Box(
         modifier = Modifier
-            .width(230.dp)
-            .height(150.dp)
+            .width(270.dp)
+            .height(170.dp)
             .background(Color.Black) // Cor de fundo do cartão
             .border(1.dp, borderGradient, shape = RoundedCornerShape(8F)) // Borda com gradiente
     ) {
@@ -66,7 +64,7 @@ fun CardAprenda(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                TextoBranco(texto = "APRENDA", tamanhoFonte = 12, pesoFonte = "regular")
+                TextoBranco(texto = "APRENDA", tamanhoFonte = 12)
 
                 val painter1: Painter = painterResource(id = R.drawable.icon_aprenda_selecionado)
                 Image(
@@ -79,7 +77,7 @@ fun CardAprenda(
                 modifier = Modifier
                     .fillMaxWidth(),
             ) {
-                TextoBranco(texto = "Váriaveis", tamanhoFonte = 24, pesoFonte = "normal")
+                TextoBranco(texto = tituloFase, tamanhoFonte = 20, pesoFonte = "normal")
             }
             Column {
                 //Parte e quantidade
@@ -91,7 +89,7 @@ fun CardAprenda(
                 ) {
                     TextoBranco(texto = "PARTE", tamanhoFonte = 10, pesoFonte = "normal")
                     TextoBranco(
-                        texto = "$totalExerciciosConcluidos/$totalExercicios",
+                        texto = "$qtdExerciciosFaseConcluidos/$qtdExerciciosFase",
                         tamanhoFonte = 10,
                         pesoFonte = "normal"
                     )
@@ -102,7 +100,7 @@ fun CardAprenda(
                         .fillMaxWidth()
                 ) {
                     LinearProgressIndicator(
-                        progress = totalExerciciosConcluidos.toFloat() / totalExercicios.toFloat(),
+                        progress = qtdExerciciosFaseConcluidos.toFloat() / qtdExerciciosFase.toFloat(),
                         modifier = Modifier
                             .fillMaxWidth(),
                         trackColor = Color(49, 49, 49),
@@ -119,14 +117,13 @@ fun CardAprenda(
             )
             Row {
                 BotaoAzul(
-                    text = "CONTINUE APRENDENDO", onClick = {
-                        val telaExercicio = Intent(contexto, TelaExercicio::class.java)
-                        contexto.startActivity(telaExercicio)
-                    },
+                    text = "CONTINUE APRENDENDO",
+                    onClick = onClick,
                     modifier = Modifier.fillMaxWidth(),
                     altura = 30,
                     largura = 20,
-                    tamanhoFonte = 12
+                    tamanhoFonte = 12,
+
                 )
             }
 
@@ -137,10 +134,10 @@ fun CardAprenda(
 
 }
 
-@Preview(showBackground = true)
-@Composable
-fun CardPreview() {
-    CodeupTheme {
-        CardAprenda(false, 2, 10)
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun CardPreview() {
+//    CodeupTheme {
+//        CardAprenda(false, 2, 10)
+//    }
+//}
