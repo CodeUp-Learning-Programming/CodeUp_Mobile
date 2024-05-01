@@ -39,11 +39,14 @@ fun ListaAmigos(
                     .height(100.dp)
                     .fillMaxWidth()
                     .background(
-                        if (contador % 2 == 0) Color(22, 22, 22) else Color(
-                            0,
-                            0,
-                            0
-                        )
+                        if (contador % 2 == 0) Color(33,
+                            33,
+                            33
+                        ) else Color(
+                            22,
+                            22,
+                            22
+                        ),
                     ),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -80,7 +83,7 @@ fun ListaAmigos(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TextoBranco(
-                            texto = "${amigos.nome}",
+                            texto = amigos.nome,
                             tamanhoFonte = 12
                         )
 

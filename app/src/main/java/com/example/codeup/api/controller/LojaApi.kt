@@ -8,9 +8,9 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface LojaApi {
-    @GET("api/loja")
+    @GET("loja")
     suspend fun buscarLojaCompleta(): Response<Loja>
 
-    @POST("api/loja/comprar/{idItem}")
+    @POST("loja/comprar/{idItem}")
     suspend fun comprarItem(@Path("idItem") idItem: Int): Response<UsuarioAtualizado>
 }

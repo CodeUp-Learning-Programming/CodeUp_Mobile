@@ -4,11 +4,11 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.codeup.api.RetrofitService
 import com.example.codeup.data.Loja
 import com.example.codeup.util.StoreLoja
 import com.example.codeup.util.StoreUser
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -20,7 +20,9 @@ class LojaViewModel(private val bearerToken: String): ViewModel(){
     val erroApi = MutableLiveData("")
 
     fun carregarLoja(context: Context) {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d("USUARIO","Equipando item")
+
             try {
                 val storeLoja = StoreLoja.getInstance(context)
                 val response = apiLoja.buscarLojaCompleta()
@@ -45,7 +47,7 @@ class LojaViewModel(private val bearerToken: String): ViewModel(){
     fun comprarItem(id: Int, context: Context) {
         val storeUser = StoreUser.getInstance(context)
 
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = apiLoja.comprarItem(id)
                 if (response.isSuccessful) {

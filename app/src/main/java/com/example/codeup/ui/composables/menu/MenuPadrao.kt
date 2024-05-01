@@ -52,15 +52,16 @@ fun MenuPadrao(
 
                     ) {
                         TextoBranco(texto = texto, tamanhoFonte = 24)
-                        if(imagem != 0){
+                        if (imagem != 0) {
                             val fotoEngrenagem: Painter = painterResource(imagem)
 
                             Image(
-                                modifier = Modifier.clickable (onClick = onClick),
+                                modifier = Modifier.clickable(onClick = onClick),
                                 painter = fotoEngrenagem,
                                 contentDescription = stringResource(R.string.text_descricao_materia),
                             )
-                        }else{
+                        } else {
+                            TextoBranco(texto = "", tamanhoFonte = 24)
 
                         }
                     }
@@ -78,8 +79,16 @@ fun MenuPadrao(
                 .background(Color(13, 13, 13)),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            //Colocar conteudo aqui dinamicamente
-            conteudo()
+
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                   ) {
+
+                //Colocar conteudo aqui dinamicamente
+                conteudo()
+            }
         }
     }
 }

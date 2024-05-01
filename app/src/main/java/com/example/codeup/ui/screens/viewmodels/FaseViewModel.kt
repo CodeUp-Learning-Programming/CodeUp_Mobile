@@ -8,17 +8,17 @@ import androidx.lifecycle.viewModelScope
 import com.example.codeup.api.RetrofitService
 import com.example.codeup.data.Fase
 import com.example.codeup.util.StoreFase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 class FaseViewModel(private val bearerToken: String?): ViewModel(){
-    val faseAtivo = MutableLiveData<Fase>()
     val fases = MutableLiveData<List<Fase>>() // Corrigido para o tipo List<Fase>
     val apiFase = RetrofitService.getApiFaseService(bearerToken)
     val erroApi = MutableLiveData("")
 
     fun buscarFasePelaMateria(idMateria: Int, context: Context) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val storeFases = StoreFase.getInstance(context)
 

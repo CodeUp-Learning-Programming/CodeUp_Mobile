@@ -52,8 +52,8 @@ fun MenuExercicio(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color(0, 0, 0))
-                    .height(50.dp)
-                    .padding(all = 5.dp)
+                    .height(80.dp)
+                    .padding(top = 30.dp, start = 5.dp,end = 5.dp)
             ) {
 
                 Column {
@@ -130,6 +130,7 @@ fun MenuExercicio(
 
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+
             conteudo()
         }
     }

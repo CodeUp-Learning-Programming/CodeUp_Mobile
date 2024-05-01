@@ -26,12 +26,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.codeup.R
 import com.example.codeup.data.Materia
 import com.example.codeup.data.Usuario
-import com.example.codeup.ui.TelasFragmentos
-import com.example.codeup.ui.TelasFragmentos.TELA_MENU_AMIGOS
-import com.example.codeup.ui.TelasFragmentos.TELA_MENU_APRENDA
-import com.example.codeup.ui.TelasFragmentos.TELA_MENU_LOJA
-import com.example.codeup.ui.TelasFragmentos.TELA_MENU_PERFIL
-import com.example.codeup.ui.TelasFragmentos.TELA_MENU_RANKING
+import com.example.codeup.ui.TelasNavBar
+import com.example.codeup.ui.TelasNavBar.TELA_MENU_AMIGOS
+import com.example.codeup.ui.TelasNavBar.TELA_MENU_APRENDA
+import com.example.codeup.ui.TelasNavBar.TELA_MENU_LOJA
+import com.example.codeup.ui.TelasNavBar.TELA_MENU_PERFIL
+import com.example.codeup.ui.TelasNavBar.TELA_MENU_RANKING
 import com.example.codeup.ui.composables.TextoBranco
 import com.example.codeup.ui.composables.tela.TelaMenuAmigos
 import com.example.codeup.ui.composables.tela.TelaMenuAprenda
@@ -49,9 +49,17 @@ fun BarraNavegacao(navController: NavHostController, usuario: Usuario, materia: 
         NavItem(TELA_MENU_PERFIL, R.drawable.icon_usuario_selecionado, R.drawable.icon_usuario, R.string.text_perfil)
     )
 
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
-        Column(Modifier.padding(bottom = 60.dp)) {
-            NavHost(navController = navController, startDestination = TELA_MENU_APRENDA.name,
+    Box(modifier = Modifier
+        .fillMaxSize()
+        , contentAlignment = Alignment.BottomCenter) {
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .height(80.dp)
+            .padding(bottom = 80.dp)
+            .background(Color.Black)) {
+            NavHost(
+                navController = navController,
+                startDestination = TELA_MENU_APRENDA.name,
                 enterTransition = {
                     slideIntoContainer(
                         AnimatedContentTransitionScope.SlideDirection.Left,
@@ -63,7 +71,8 @@ fun BarraNavegacao(navController: NavHostController, usuario: Usuario, materia: 
                         AnimatedContentTransitionScope.SlideDirection.Right,
                         animationSpec = tween(700)
                     )
-                }
+                },
+
                 ) {
                 items.forEach { item ->
                     composable(item.route.name) {
@@ -87,8 +96,8 @@ fun BarraNavegacao(navController: NavHostController, usuario: Usuario, materia: 
 fun NavigationBar(items: List<NavItem>, currentRoute: String?, navController: NavHostController) {
     Box(
         modifier = Modifier
-            .background(Color.Black)
-            .height(110.dp)
+            .background(Color.Transparent)
+            .height(80.dp)
             .padding(top = 10.dp),
         contentAlignment = Alignment.TopCenter
     ) {
@@ -130,4 +139,4 @@ fun NavigationIcon(item: NavItem, isSelected: Boolean, navController: NavHostCon
     }
 }
 
-data class NavItem(val route: TelasFragmentos, val iconSelected: Int, val iconUnselected: Int, val contentDesc: Int)
+data class NavItem(val route: TelasNavBar, val iconSelected: Int, val iconUnselected: Int, val contentDesc: Int)

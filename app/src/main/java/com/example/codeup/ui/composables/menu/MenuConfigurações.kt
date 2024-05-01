@@ -72,6 +72,7 @@ fun MenuConfiguracoes(
                 .background(Color(13, 13, 13)),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+
             //Colocar conteudo aqui dinamicamente
             Box(
                 Modifier

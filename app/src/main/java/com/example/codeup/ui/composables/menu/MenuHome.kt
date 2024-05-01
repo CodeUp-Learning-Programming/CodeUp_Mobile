@@ -40,14 +40,13 @@ fun MenuHome(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color(0, 0, 0))
-                    .height(140.dp)
-                    .padding(top = 50.dp)
+                    .background(Color.Black)
+                    .padding(top = 20.dp)
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(140.dp)
+                        .height(100.dp)
                         .width(150.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -174,6 +173,7 @@ fun MenuHome(
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+
             ImagemFundo(backgroundImageResId = R.drawable.tema_pontos) {
                 //Colocar conteudo aqui dinamicamente
                 conteudo()

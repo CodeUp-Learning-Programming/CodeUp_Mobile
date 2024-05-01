@@ -11,12 +11,10 @@ import com.example.codeup.data.FotoPerfilRequest
 import com.example.codeup.data.Usuario
 import com.example.codeup.data.UsuarioLoginRequest
 import com.example.codeup.data.UsuarioRegisterRequest
-import com.example.codeup.ui.screens.TelaExercicio
 import com.example.codeup.ui.screens.TelaHome
 import com.example.codeup.ui.screens.TelaLogin
 import com.example.codeup.util.StoreRememberUser
 import com.example.codeup.util.StoreUser
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -34,19 +32,22 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
     val erroApi = MutableLiveData<String?>()
 
     fun cadastrar(usuarioRegisterRequest: UsuarioRegisterRequest, context: Context) {
-        CoroutineScope(Dispatchers.IO).launch {
+        Log.d("USUARIO","Iniciando Cadastro")
+
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = apiUsuario.cadastrar(usuarioRegisterRequest)
                 if (response.isSuccessful) {
+                    Log.d("USUARIO","Cadastro bem-sucedido")
                     val telaLogin = Intent(context, TelaLogin::class.java)
                     context.startActivity(telaLogin)
                 } else {
-                    Log.e("api", "Erro ao carregar loja: ${response.message()}")
-                    erroApi.postValue("Erro ao carregar loja: ${response.message()}")
+                    Log.d("USUARIO","Cadastro mal-sucedido")
+                    erroApi.postValue("Erro ao realizar o cadastro: ${response.message()}")
                 }
             } catch (e: Exception) {
-                Log.e("api", "Erro ao carregar loja: ${e.message}")
-                erroApi.postValue("Erro ao carregar loja: ${e.message}")
+                Log.d("USUARIO","Erro de conexão")
+                loginStatus.postValue("Erro de conexão: ${e.message}")
             }
         }
     }
@@ -57,6 +58,7 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
         dataStoreRememberUser: StoreRememberUser,
         lembrar: Boolean
     ) {
+        Log.d("USUARIO","Iniciando Login")
         viewModelScope.launch(Dispatchers.IO) {
             carregando.postValue(true)
 
@@ -73,15 +75,17 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
                         dataStoreRememberUser.saveEmail(usuarioLoginRequest.email)
                         dataStoreRememberUser.savePassword(usuarioLoginRequest.senha)
                     }
-
+                    Log.d("USUARIO","Login bem-sucedido")
                     loginStatus.postValue("Login bem-sucedido")
                     val telaHome = Intent(context, TelaHome::class.java)
                     context.startActivity(telaHome)
 
                 } else {
+                    Log.d("USUARIO","Login mal-sucedido")
                     loginStatus.postValue("Erro de login: ${usuarioResponse.errorBody()?.string()}")
                 }
             } catch (e: Exception) {
+                Log.d("USUARIO","Erro de conexão")
                 loginStatus.postValue("Erro de conexão: ${e.message}")
             } finally {
                 carregando.postValue(false)
@@ -92,7 +96,7 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
 
     fun atualizarPorId(id: Int, context: Context) {
 
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val storeUser = StoreUser.getInstance(context)
                 val usuarioResponse = apiUsuario.buscarPorId(id)
@@ -105,7 +109,7 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
                     Log.e("API", " erro no post")
                 }
             } catch (e: Exception) {
-                Log.e("API", "Erro no delete de filmes: ${e.message}")
+                Log.d("USUARIO","Erro de conexão: ${e.message}")
             }
         }
     }
@@ -113,13 +117,15 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
 
     fun equiparItem(fotoItem: String, tipoItem: String, context: Context) {
         val storeUser = StoreUser.getInstance(context)
+        Log.d("USUARIO","Equipando item")
 
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 if (tipoItem == "Imagem") {
                     val usuarioResponse = apiUsuario.atualizarFotoPerfil(FotoPerfilRequest(fotoItem))
 
                     if (usuarioResponse.isSuccessful) {
+                        Log.d("USUARIO","Item equipado com sucesso")
                         val currentUser =
                             storeUser.getUsuario.first() // Coleta apenas a última emissão do Flow
                         currentUser?.let { usuario ->
@@ -127,14 +133,11 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
                             storeUser.saveUsuario(usuario) // Salva o usuário atualizado
                         }
                     } else {
-                        Log.e("API", " erro no post")
+                        Log.d("USUARIO","Não foi possivel equipar o item")
                     }
-
-
                 }
-
             } catch (e: Exception) {
-                Log.e("API", "Erro no delete de filmes: ${e.message}")
+                Log.e("C", "Erro de conexão: ${e.message}")
             }
         }
     }

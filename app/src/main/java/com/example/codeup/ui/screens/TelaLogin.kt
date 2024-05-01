@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -49,13 +50,16 @@ class TelaLogin : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.light(
-                0, 0
-            ), navigationBarStyle = SystemBarStyle.light(
-                0, 0
-            )
+            statusBarStyle = SystemBarStyle.light(0, 0),
+            navigationBarStyle = SystemBarStyle.light(0, 0)
         )
-
+        window.decorView.apply {
+            // Hide both the navigation bar and the status bar.
+            // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+            // a general rule, you should design your app to hide the status bar whenever you
+            // hide the navigation bar.
+            systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
+        }
         setContent {
             CodeupTheme {
                 Surface(
@@ -91,15 +95,16 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
 
 
     var lembrar by remember { mutableStateOf(false) }
-
+    var entrando by remember { mutableStateOf(false) }
     //Logando automaticamente caso o usuário tenha selecionado lembrar anteriormente
-    if (emailSalvo.value!! != "" && senhaSalva.value!! != "") {
-                usuarioViewModel.login(
-                    UsuarioLoginRequest(emailSalvo.value!!, senhaSalva.value!!),
-                    context,
-                    dataStore,
-                    true
-                )
+    if (emailSalvo.value!! != "" && senhaSalva.value!! != "" && !entrando) {
+        entrando = true
+        usuarioViewModel.login(
+            UsuarioLoginRequest(emailSalvo.value!!, senhaSalva.value!!),
+            context,
+            dataStore,
+            true
+        )
     }
 
     var emailInputValido by remember { mutableStateOf(false) }
@@ -221,7 +226,7 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
             )
 
             loginStatus?.let {
-                TextoBranco(it,20)  // Mostrar o status do login
+                TextoBranco(it, 20)  // Mostrar o status do login
                 Log.d("aaaaaa", loginStatus!!)
             }
 

@@ -9,10 +9,10 @@ import retrofit2.http.Query
 
 interface ExercicioApi {
 
-    @GET("/exercicios/{idFase}")
+    @GET("exercicios/{idFase}")
     fun buscarExerciciosPorIdFase(@Path("idFase") idFase: Int): Call<List<Exercicio>>
 
-    @GET("/exercicios/js")
+    @GET("exercicios/js")
     fun testJavaScriptCode(
         @Query("funcao") funcao: String,
         @Query("idExercicio") idExercicio: Int,

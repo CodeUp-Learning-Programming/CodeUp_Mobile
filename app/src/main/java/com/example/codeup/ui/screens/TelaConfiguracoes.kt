@@ -1,6 +1,7 @@
 package com.example.codeup.ui.screens
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -28,12 +29,16 @@ class TelaConfiguracoes : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.light(
-                0, 0
-            ), navigationBarStyle = SystemBarStyle.light(
-                0, 0
-            )
+            statusBarStyle = SystemBarStyle.light(0, 0),
+            navigationBarStyle = SystemBarStyle.light(0, 0)
         )
+        window.decorView.apply {
+            // Hide both the navigation bar and the status bar.
+            // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+            // a general rule, you should design your app to hide the status bar whenever you
+            // hide the navigation bar.
+            systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
+        }
 
         setContent {
             CodeupTheme {
@@ -64,8 +69,8 @@ fun Configuracoes() {
         }
     }
 
-    usuario?.let { usuario ->
-        TelaMenuConfiguracoes(usuario)
+    usuario?.let { it ->
+        TelaMenuConfiguracoes(it)
 
     }
 

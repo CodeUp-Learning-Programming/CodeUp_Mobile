@@ -14,24 +14,24 @@ import retrofit2.http.Path
 
 interface UsuarioApi {
 
-    @GET("api/usuarios/{id}")
+    @GET("usuarios/{id}")
     suspend fun buscarPorId(@Path("id") id: Int): Response<Usuario>
 
-    @GET("api/usuarios/atualizar/{id}")
+    @GET("usuarios/atualizar/{id}")
     suspend fun atualizarListaItensPorId(@Path("id") id: Int): Response<Usuario>
 
-    @POST("api/usuarios/cadastrar")
+    @POST("usuarios/cadastrar")
     suspend fun cadastrar(@Body usuarioRegisterRequest: UsuarioRegisterRequest): Response<Usuario>
 
-    @POST("api/usuarios/login")
+    @POST("usuarios/login")
     suspend fun login(@Body usuarioLoginRequest: UsuarioLoginRequest): Response<Usuario>
 
-    @PATCH("api/usuarios/foto")
+    @PATCH("usuarios/foto")
     suspend fun atualizarFotoPerfil(@Body fotoPerfilRequest: FotoPerfilRequest): Response<Void>
 
-    @DELETE("api/usuarios/foto")
+    @DELETE("usuarios/foto")
     suspend fun removerFotoPerfil(): Response<Void>
 
-    @DELETE("api/usuarios/perfil")
+    @DELETE("usuarios/perfil")
     suspend fun removerPerfil(@Body senha: String): Response<String>
 }

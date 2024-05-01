@@ -253,7 +253,7 @@ fun TelaMenuConfiguracoes(
                             ) {
                                 Row(
                                     Modifier
-                                        .width(150.dp)
+                                        .width(300.dp)
                                         .clickable {
                                             setShowPopup(true)
                                         },
@@ -302,7 +302,7 @@ fun TelaMenuConfiguracoes(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Row(
-                                    Modifier.width(150.dp),
+                                    Modifier.width(300.dp),
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.Start
                                 ) {

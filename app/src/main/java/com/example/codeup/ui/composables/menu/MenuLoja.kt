@@ -27,13 +27,13 @@ import com.example.codeup.ui.composables.TextoBranco
 @Composable
 fun MenuLoja(
     texto: String = "",
-    imagem: Int = R.drawable.icon_adicionar_amigo,
     moedas: Int,
     conteudo: @Composable () -> Unit
 ) {
 
     Scaffold(
         topBar = {
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -70,6 +70,7 @@ fun MenuLoja(
 
             }
 
+
         },
     ) { innerPadding ->
         Column(
@@ -80,7 +81,7 @@ fun MenuLoja(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             //Colocar conteudo aqui dinamicamente
-            Box(Modifier.fillMaxWidth().height(1.dp).background(Color(40,40,40)))
+//            Box(Modifier.fillMaxWidth().height(1.dp).background(Color(40,40,40)))
             conteudo()
 
         }

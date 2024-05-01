@@ -62,4 +62,6 @@
     <string name="text_foto_perfil">Profile Picture</string>
     <string name="text_sair">Log out</string>
     <string name="text_enviar">Send</string>
+    <string name="text_equipar_item">Equip</string>
+    <string name="text_equipado">Equipped</string>
 </resources>

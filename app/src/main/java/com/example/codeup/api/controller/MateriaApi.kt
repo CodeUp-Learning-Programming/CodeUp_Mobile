@@ -5,6 +5,6 @@ import retrofit2.Response
 import retrofit2.http.GET
 
 interface MateriaApi {
-    @GET("/materias")
+    @GET("materias")
     suspend fun listar(): Response<List<Materia>>
 }
