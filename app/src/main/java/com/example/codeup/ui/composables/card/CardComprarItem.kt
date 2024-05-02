@@ -26,10 +26,10 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.codeup.R
 import com.example.codeup.data.ItemLoja
-import com.example.codeup.ui.composables.BotaoAzul
-import com.example.codeup.ui.composables.BotaoAzulClaro
-import com.example.codeup.ui.composables.BotaoPretoBordaBranca
-import com.example.codeup.ui.composables.TextoBranco
+import com.example.codeup.ui.composables.componentes.BotaoAzul
+import com.example.codeup.ui.composables.componentes.BotaoAzulClaro
+import com.example.codeup.ui.composables.componentes.BotaoPretoBordaBranca
+import com.example.codeup.ui.composables.componentes.TextoBranco
 
 @Composable
 fun CardComprarItem(

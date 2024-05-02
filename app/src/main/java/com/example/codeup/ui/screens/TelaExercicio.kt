@@ -32,12 +32,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.codeup.data.Exercicio
 import com.example.codeup.data.Usuario
 import com.example.codeup.ui.OpcoesPergunta
-import com.example.codeup.ui.composables.TextOpcaoPergunta
-import com.example.codeup.ui.composables.TextoBranco
+import com.example.codeup.ui.composables.componentes.TextOpcaoPergunta
+import com.example.codeup.ui.composables.componentes.TextoBranco
 import com.example.codeup.ui.composables.menu.MenuExercicio
 import com.example.codeup.ui.screens.ui.theme.CodeupTheme
+import com.example.codeup.util.StoreExercicio
 import com.example.codeup.util.StoreUser
 import kotlinx.coroutines.launch
 
@@ -76,9 +78,11 @@ fun ExercicioAtual() {
 
     val context = LocalContext.current
     var usuario by remember { mutableStateOf<Usuario?>(null) }
+    var listaExercicios by remember { mutableStateOf(emptyList<Exercicio>()) }
 
     val coroutineScope = rememberCoroutineScope()
     val storeUser = StoreUser.getInstance(context)
+    val storeExercicio = StoreExercicio.getInstance(context)
 
     // Observe and collect user data from DataStore
     LaunchedEffect(key1 = true) {
@@ -88,6 +92,19 @@ fun ExercicioAtual() {
             }
         }
     }
+// Coleta de dados deve ser controlada por condições específicas
+    LaunchedEffect(key1 = true) {
+        coroutineScope.launch {
+            storeExercicio.getExercicio.collect { exercicios ->
+                listaExercicios = exercicios
+            }
+        }
+    }
+
+
+
+
+
     usuario?.let { it ->
         MenuExercicio(totalCoracoes = it.vidas, conteudo = {
             val listaOpcoesPergunta = remember {
@@ -128,7 +145,8 @@ fun ExercicioAtual() {
                         horizontalArrangement = Arrangement.Center
                     ) {
                         TextoBranco(
-                            texto = "Os botões são essenciais para a interatividade nas interfaces de usuário, proporcionando uma maneira intuitiva e direta de realizar diversas ações, como enviar formulários, fazer seleções e efetuar compras. Sua presença facilita a execução de tarefas específicas, simplificando a experiência do usuário. Além disso, os botões visualmente comunicam as ações possíveis, auxiliando os usuários na interação com a interface.",
+//                            texto = "Os botões são essenciais para a interatividade nas interfaces de usuário, proporcionando uma maneira intuitiva e direta de realizar diversas ações, como enviar formulários, fazer seleções e efetuar compras. Sua presença facilita a execução de tarefas específicas, simplificando a experiência do usuário. Além disso, os botões visualmente comunicam as ações possíveis, auxiliando os usuários na interação com a interface.",
+                            texto = listaExercicios[0].conteudoTeorico,
                             tamanhoFonte = 14,
                         )
 
@@ -139,7 +157,8 @@ fun ExercicioAtual() {
 
                 Row {
                     TextoBranco(
-                        texto = "Qual elemento HTML é utilizado para criar um botão clicável em uma página da web?",
+//                        texto = "Qual elemento HTML é utilizado para criar um botão clicável em uma página da web?",
+                        texto = listaExercicios[0].desafio,
                         tamanhoFonte = 16,
                     )
                 }

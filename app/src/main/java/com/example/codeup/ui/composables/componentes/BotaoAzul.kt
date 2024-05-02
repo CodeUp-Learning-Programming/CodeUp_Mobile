@@ -1,4 +1,4 @@
-package com.example.codeup.ui.composables
+package com.example.codeup.ui.composables.componentes
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi

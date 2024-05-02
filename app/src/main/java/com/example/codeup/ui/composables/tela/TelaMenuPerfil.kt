@@ -32,12 +32,12 @@ import coil.compose.AsyncImage
 import com.example.codeup.R
 import com.example.codeup.data.Materia
 import com.example.codeup.data.Usuario
-import com.example.codeup.ui.composables.BotaoAzulClaro
-import com.example.codeup.ui.composables.TextoBranco
 import com.example.codeup.ui.composables.card.CardExperimentarPro
 import com.example.codeup.ui.composables.card.CardPerfil
-import com.example.codeup.ui.composables.card.GraficoLinha
-import com.example.codeup.ui.composables.card.GraficoTrilhaRecente
+import com.example.codeup.ui.composables.componentes.BotaoAzulClaro
+import com.example.codeup.ui.composables.componentes.GraficoLinha
+import com.example.codeup.ui.composables.componentes.GraficoTrilhaRecente
+import com.example.codeup.ui.composables.componentes.TextoBranco
 import com.example.codeup.ui.composables.menu.MenuPadrao
 import com.example.codeup.ui.screens.TelaConfiguracoes
 

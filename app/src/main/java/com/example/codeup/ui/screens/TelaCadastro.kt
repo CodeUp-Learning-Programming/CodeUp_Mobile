@@ -34,10 +34,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 import com.example.codeup.data.UsuarioRegisterRequest
-import com.example.codeup.ui.composables.BotaoAzul
-import com.example.codeup.ui.composables.TextFieldBordaGradienteAzul
-import com.example.codeup.ui.composables.TextoAzulGradienteSublinhado
-import com.example.codeup.ui.composables.TextoBranco
+import com.example.codeup.ui.composables.componentes.BotaoAzul
+import com.example.codeup.ui.composables.componentes.TextFieldBordaGradienteAzul
+import com.example.codeup.ui.composables.componentes.TextoAzulGradienteSublinhado
+import com.example.codeup.ui.composables.componentes.TextoBranco
 import com.example.codeup.ui.screens.viewmodels.UsuarioViewModel
 import com.example.codeup.ui.theme.CodeupTheme
 import com.maxkeppeker.sheets.core.models.base.rememberSheetState

@@ -1,4 +1,4 @@
-package com.example.codeup.ui.composables
+package com.example.codeup.ui.composables.componentes
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

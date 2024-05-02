@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.codeup.R
 import com.example.codeup.data.Usuario
-import com.example.codeup.ui.composables.TextoBranco
+import com.example.codeup.ui.composables.componentes.TextoBranco
 
 @Composable
 fun ListaAmigos(

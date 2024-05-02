@@ -32,7 +32,7 @@ import com.example.codeup.ui.TelasNavBar.TELA_MENU_APRENDA
 import com.example.codeup.ui.TelasNavBar.TELA_MENU_LOJA
 import com.example.codeup.ui.TelasNavBar.TELA_MENU_PERFIL
 import com.example.codeup.ui.TelasNavBar.TELA_MENU_RANKING
-import com.example.codeup.ui.composables.TextoBranco
+import com.example.codeup.ui.composables.componentes.TextoBranco
 import com.example.codeup.ui.composables.tela.TelaMenuAmigos
 import com.example.codeup.ui.composables.tela.TelaMenuAprenda
 import com.example.codeup.ui.composables.tela.TelaMenuLoja

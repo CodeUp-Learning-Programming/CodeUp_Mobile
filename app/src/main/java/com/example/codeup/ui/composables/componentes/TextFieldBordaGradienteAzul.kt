@@ -1,4 +1,4 @@
-package com.example.codeup.ui.composables
+package com.example.codeup.ui.composables.componentes
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

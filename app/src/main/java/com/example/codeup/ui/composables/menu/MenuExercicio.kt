@@ -30,7 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
-import com.example.codeup.ui.composables.BotaoAzul
+import com.example.codeup.ui.composables.componentes.BotaoAzul
 import com.example.codeup.ui.composables.card.CardSair
 import com.example.codeup.ui.screens.TelaHome
 

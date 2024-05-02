@@ -38,6 +38,7 @@ import com.example.codeup.ui.composables.card.CardAprenda
 import com.example.codeup.ui.composables.card.CardExercicio
 import com.example.codeup.ui.composables.menu.MenuHome
 import com.example.codeup.ui.screens.TelaExercicio
+import com.example.codeup.ui.screens.viewmodels.ExercicioViewModel
 import com.example.codeup.util.StoreFase
 import kotlinx.coroutines.launch
 
@@ -50,14 +51,14 @@ fun TelaMenuAprenda(
     val storeFase = StoreFase.getInstance(context)
 
     // Utilizando remember para evitar chamadas desnecessárias
-    var listaExercicios by remember { mutableStateOf(emptyList<Fase>()) }
+    var listaFases by remember { mutableStateOf(emptyList<Fase>()) }
     val coroutineScope = rememberCoroutineScope()
 
     // Coleta de dados deve ser controlada por condições específicas
     LaunchedEffect(key1 = true) {
         coroutineScope.launch {
             storeFase.getFases.collect { exercicios ->
-                listaExercicios = exercicios
+                listaFases = exercicios
             }
         }
     }
@@ -82,7 +83,7 @@ fun TelaMenuAprenda(
                 reverseLayout = false
             ) {
                 var alinharDireita = true;
-                items(listaExercicios) { exercicio ->
+                items(listaFases) { exercicio ->
                     Column {
                         //Linha reta
                         Canvas(
@@ -115,7 +116,7 @@ fun TelaMenuAprenda(
                                 qtdExerciciosFaseConcluidos = exercicio.qtdExerciciosFaseConcluidos,
                                 onClick = {
                                     setShowPopup(true)
-                                    selectedCardIndex = listaExercicios.indexOf(exercicio)
+                                    selectedCardIndex = listaFases.indexOf(exercicio)
                                 },
                             )
 
@@ -149,14 +150,19 @@ fun TelaMenuAprenda(
                                 onClick = {})
                     ) {
                         CardAprenda(
-                            tituloFase = listaExercicios[selectedCardIndex].tituloFase,
-                            desbloqueada = listaExercicios[selectedCardIndex].desbloqueada,
-                            qtdExerciciosFase = listaExercicios[selectedCardIndex].qtdExerciciosFase,
-                            qtdExerciciosFaseConcluidos = listaExercicios[selectedCardIndex].qtdExerciciosFaseConcluidos,
+                            tituloFase = listaFases[selectedCardIndex].tituloFase,
+                            desbloqueada = listaFases[selectedCardIndex].desbloqueada,
+                            qtdExerciciosFase = listaFases[selectedCardIndex].qtdExerciciosFase,
+                            qtdExerciciosFaseConcluidos = listaFases[selectedCardIndex].qtdExerciciosFaseConcluidos,
                             onClick = {
+
+                                val exercicioViewModel = ExercicioViewModel(usuario.token)
+                                exercicioViewModel.buscarExerciciosPorIdFase(listaFases[selectedCardIndex].faseId, context)
+
+
                                 val telaExercicio = Intent(context, TelaExercicio::class.java)
                                 context.startActivity(telaExercicio)
-                            }
+                            },
                         )
                     }
                 }

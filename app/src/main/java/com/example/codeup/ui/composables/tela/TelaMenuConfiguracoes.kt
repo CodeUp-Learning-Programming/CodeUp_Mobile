@@ -43,9 +43,9 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.codeup.R
 import com.example.codeup.data.Usuario
-import com.example.codeup.ui.composables.BotaoPretoBordaBranca
-import com.example.codeup.ui.composables.TextFieldBordaGradienteAzul
-import com.example.codeup.ui.composables.TextoBranco
+import com.example.codeup.ui.composables.componentes.BotaoPretoBordaBranca
+import com.example.codeup.ui.composables.componentes.TextFieldBordaGradienteAzul
+import com.example.codeup.ui.composables.componentes.TextoBranco
 import com.example.codeup.ui.composables.card.CardExperimentarPro
 import com.example.codeup.ui.composables.menu.MenuConfiguracoes
 import com.example.codeup.ui.screens.TelaHome

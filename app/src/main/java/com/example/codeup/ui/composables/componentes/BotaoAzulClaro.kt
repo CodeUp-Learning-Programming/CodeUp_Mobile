@@ -1,7 +1,6 @@
-package com.example.codeup.ui.composables
+package com.example.codeup.ui.composables.componentes
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -22,7 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.example.codeup.R
 
 @Composable
-fun BotaoPretoBordaBranca(
+fun BotaoAzulClaro(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -36,9 +35,8 @@ fun BotaoPretoBordaBranca(
         modifier = modifier
             .size(width = largura.dp, height = altura.dp)
             .shadow(4.dp, RoundedCornerShape(1.dp))
-            .border(1.dp, Color.White, shape = RoundedCornerShape(8.dp))
             .background(
-                Color.Transparent,
+                Color(1, 169, 247),
                 shape = RoundedCornerShape(8.dp)
             )
             .clickable(
@@ -52,7 +50,7 @@ fun BotaoPretoBordaBranca(
     ) {
         Text(
             text = text,
-            color = Color.White,
+            color = Color.Black,
             modifier = Modifier.align(Alignment.Center),
             fontFamily = FontFamily(
                 Font(R.font.poppins_semi_bold, FontWeight.SemiBold)

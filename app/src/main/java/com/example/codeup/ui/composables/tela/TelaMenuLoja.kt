@@ -32,7 +32,7 @@ import com.example.codeup.R
 import com.example.codeup.data.ItemLoja
 import com.example.codeup.data.Loja
 import com.example.codeup.data.Usuario
-import com.example.codeup.ui.composables.TextoBranco
+import com.example.codeup.ui.composables.componentes.TextoBranco
 import com.example.codeup.ui.composables.card.CardComprarItem
 import com.example.codeup.ui.composables.card.CardItemLoja
 import com.example.codeup.ui.composables.menu.MenuLoja
@@ -205,7 +205,6 @@ fun TelaMenuLoja(
                                         }
                                     },
                                     equipado = equipado,
-                                    isVisible = showPopup,
                                 )
                             }
                         }

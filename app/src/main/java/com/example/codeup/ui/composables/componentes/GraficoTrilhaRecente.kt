@@ -1,4 +1,4 @@
-package com.example.codeup.ui.composables.card
+package com.example.codeup.ui.composables.componentes
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -7,24 +7,26 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.codeup.ui.composables.LineChartScreen
-import com.example.codeup.ui.composables.TextoBranco
+import com.example.codeup.data.Materia
+import com.example.codeup.ui.composables.componentes.TextoBranco
 
 @Composable
-fun GraficoLinha(
-    titulo: String
+fun GraficoTrilhaRecente(
+    materia: Materia
 ) {
+
     val borderGradient = Brush.horizontalGradient(
         colors = listOf(
             Color(0, 225, 242),
@@ -33,32 +35,50 @@ fun GraficoLinha(
     )
     Box(
         modifier = Modifier
-            .height(300.dp)
-            .width(320.dp)
-            .background(Color.Black, shape = RoundedCornerShape(8F))
+            .height(100.dp)
+            .background(Color.Black)
             .border(1.dp, borderGradient, shape = RoundedCornerShape(8F)),
         contentAlignment = Alignment.Center
     ) {
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(all = 15.dp),
+                .padding(all = 10.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             // Primeira linha
             Row(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .width(300.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.Start
             ) {
-                TextoBranco(texto = titulo, tamanhoFonte = 14)
+                TextoBranco(texto = "Trilha recente", tamanhoFonte = 14)
             }
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                LineChartScreen()
+            Column {
+                //Parte e quantidade
+                Row(
+                    modifier = Modifier,
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    TextoBranco(texto = materia.titulo, tamanhoFonte = 14)
+                }
+                //Barra de progresso
+                Surface(
+                    modifier = Modifier
+                ) {
+                    LinearProgressIndicator(
+                        progress = { 40.toFloat() / 100.toFloat() },
+                        modifier = Modifier
+                            .width(300.dp)
+                            .height(8.dp),
+                        color = Color(1, 167, 247),
+                        trackColor = Color(49, 49, 49),
+                    )
+
+                }
+
             }
 
         }
