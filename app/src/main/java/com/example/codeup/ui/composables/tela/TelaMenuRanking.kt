@@ -226,7 +226,7 @@ fun TelaMenuRanking(
     }
 
     MenuPadrao(
-        texto = stringResource(R.string.text_ranking),
+        titulo = stringResource(R.string.text_ranking),
         onClick = {
             Log.d("Tela Ranking", "Menu")
         },

@@ -84,6 +84,10 @@ dependencies {
     //COIL
     implementation("io.coil-kt:coil-compose:2.5.0")
 
+    //PULLREFRESH
+    implementation ("androidx.compose.material:material:1.6.7")
+
+
 
     implementation("androidx.core:core-ktx:1.13.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")

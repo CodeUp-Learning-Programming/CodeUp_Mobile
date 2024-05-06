@@ -47,7 +47,7 @@ import com.example.codeup.ui.composables.componentes.BotaoPretoBordaBranca
 import com.example.codeup.ui.composables.componentes.TextFieldBordaGradienteAzul
 import com.example.codeup.ui.composables.componentes.TextoBranco
 import com.example.codeup.ui.composables.card.CardExperimentarPro
-import com.example.codeup.ui.composables.menu.MenuConfiguracoes
+import com.example.codeup.ui.composables.menu.MenuPadraoVoltar
 import com.example.codeup.ui.screens.TelaHome
 import com.example.codeup.ui.screens.TelaLogin
 import com.example.codeup.util.StoreRememberUser
@@ -59,8 +59,8 @@ fun TelaMenuConfiguracoes(
 ) {
     val context = LocalContext.current
 
-    MenuConfiguracoes(
-        onClick = {
+    MenuPadraoVoltar(
+        onClickVoltar = {
             val telaHome = Intent(context, TelaHome::class.java)
             context.startActivity(telaHome)
         },

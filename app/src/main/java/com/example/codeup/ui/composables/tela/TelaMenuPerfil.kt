@@ -35,6 +35,7 @@ import com.example.codeup.data.Usuario
 import com.example.codeup.ui.composables.card.CardExperimentarPro
 import com.example.codeup.ui.composables.card.CardPerfil
 import com.example.codeup.ui.composables.componentes.BotaoAzulClaro
+import com.example.codeup.ui.composables.componentes.GraficoBarra
 import com.example.codeup.ui.composables.componentes.GraficoLinha
 import com.example.codeup.ui.composables.componentes.GraficoTrilhaRecente
 import com.example.codeup.ui.composables.componentes.TextoBranco
@@ -48,7 +49,7 @@ fun TelaMenuPerfil(
     val context = LocalContext.current
 
     MenuPadrao(
-        texto = stringResource(R.string.text_perfil),
+        titulo = stringResource(R.string.text_perfil),
         imagem = R.drawable.icon_configurar,
         onClick = {
             val telaConfiguracoes = Intent(context, TelaConfiguracoes::class.java)
@@ -190,7 +191,12 @@ fun TelaMenuPerfil(
                                 .background(Color(24, 24, 24))
                         )
                         GraficoLinha(titulo = stringResource(R.string.text_maior_ranking))
-
+                        Spacer(
+                            modifier = Modifier
+                                .height(10.dp)
+                                .background(Color(24, 24, 24))
+                        )
+                        GraficoBarra(titulo = stringResource(R.string.text_maior_ranking))
                     }
                     Spacer(
                         modifier = Modifier

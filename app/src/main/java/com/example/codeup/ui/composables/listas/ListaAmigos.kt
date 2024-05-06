@@ -13,33 +13,71 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.codeup.R
+import com.example.codeup.data.Amigo
 import com.example.codeup.data.Usuario
 import com.example.codeup.ui.composables.componentes.TextoBranco
+import com.example.codeup.ui.screens.viewmodels.AmizadeViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.random.Random
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ListaAmigos(
-    listaAmigos: List<Usuario>
-) {
+    listaAmigos: List<Amigo>,
+    usuario: Usuario,
+    imagem: Int = 0,
+
+    ) {
+    val context = LocalContext.current
     var contador = 0
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(listaAmigos) { amigos ->
+    var atualizando by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+    val pullRefreshState = rememberPullRefreshState(refreshing = atualizando, onRefresh = {
+
+        coroutineScope.launch {
+            atualizando = true
+            //Atualizar lista de amigos
+            val amizadeViewModelViewModel = AmizadeViewModel(usuario.token)
+            amizadeViewModelViewModel.listarAmigos(usuario.id!!, context)
+            delay(Random.nextLong(500, 3000))
+            atualizando = false
+        }
+
+    })
+
+Box() {
+
+
+    LazyColumn(modifier = Modifier.fillMaxSize().pullRefresh(pullRefreshState)) {
+        items(listaAmigos) { amigo ->
 
             Row(
                 modifier = Modifier
                     .height(100.dp)
                     .fillMaxWidth()
                     .background(
-                        if (contador % 2 == 0) Color(33,
+                        if (contador % 2 == 0) Color(
+                            33,
                             33,
                             33
                         ) else Color(
@@ -70,7 +108,7 @@ fun ListaAmigos(
                                 .clip(CircleShape)
                         ) {
                             AsyncImage(
-                                model = "https://helpia.ai/wp-content/uploads/2023/11/bing-creator.jpeg",
+                                model = amigo.foto,
                                 contentDescription = "astronauta",
                             )
                         }
@@ -83,7 +121,7 @@ fun ListaAmigos(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TextoBranco(
-                            texto = amigos.nome,
+                            texto = amigo.nome,
                             tamanhoFonte = 12
                         )
 
@@ -102,7 +140,7 @@ fun ListaAmigos(
                 ) {
 
                     val usuario: Painter =
-                        painterResource(id = R.drawable.icon_usuario)
+                        painterResource(id = imagem)
 
                     Image(
                         painter = usuario,
@@ -115,4 +153,10 @@ fun ListaAmigos(
             contador++
         }
     }
+    PullRefreshIndicator(
+        refreshing = atualizando,
+        state = pullRefreshState,
+        Modifier.align(Alignment.TopCenter)
+    )
+}
 }

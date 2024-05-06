@@ -63,4 +63,7 @@
     <string name="text_enviar">enviar</string>
     <string name="text_equipar_item">equipar</string>
     <string name="text_equipado">Equipado</string>
+    <string name="text_item_coracao">Coração grande</string>
+    <string name="text_add_amigos">Adicionar amigos</string>
+    <string name="text_buscar">Buscar</string>
 </resources>

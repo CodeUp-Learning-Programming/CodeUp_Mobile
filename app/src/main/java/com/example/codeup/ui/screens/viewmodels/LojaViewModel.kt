@@ -21,7 +21,7 @@ class LojaViewModel(private val bearerToken: String): ViewModel(){
 
     fun carregarLoja(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d("USUARIO","Equipando item")
+            Log.d("Loja","Carregando loja")
 
             try {
                 val storeLoja = StoreLoja.getInstance(context)
@@ -32,13 +32,14 @@ class LojaViewModel(private val bearerToken: String): ViewModel(){
 
                     loja.postValue(lojaResponse)
                     storeLoja.saveLoja(lojaResponse!!)
+                    Log.d("Loja","Loja carregada com sucesso")
 
                 } else {
-                    Log.e("api", "Erro ao carregar loja: ${response.message()}")
+                    Log.e("Loja", "Erro ao carregar loja: ${response.message()}")
                     erroApi.postValue("Erro ao carregar loja: ${response.message()}")
                 }
             } catch (e: Exception) {
-                Log.e("api", "Erro ao carregar loja: ${e.message}")
+                Log.e("Loja", "Erro ao carregar loja: ${e.message}")
                 erroApi.postValue("Erro ao carregar loja: ${e.message}")
             }
         }

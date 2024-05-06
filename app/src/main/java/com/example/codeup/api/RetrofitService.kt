@@ -1,5 +1,6 @@
 package com.example.codeup.api
 
+import com.example.codeup.api.controller.AmizadeApi
 import com.example.codeup.api.controller.ExercicioApi
 import com.example.codeup.api.controller.FaseApi
 import com.example.codeup.api.controller.LojaApi
@@ -36,6 +37,9 @@ object RetrofitService {
         return createApiService(UsuarioApi::class.java, token)
     }
 
+    fun getApiAmizadeService(token: String?): AmizadeApi {
+        return createApiService(AmizadeApi::class.java, token)
+    }
     private val okHttpClient: OkHttpClient by lazy {
         val builder = OkHttpClient.Builder()
         builder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))

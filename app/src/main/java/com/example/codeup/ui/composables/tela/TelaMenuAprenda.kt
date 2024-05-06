@@ -16,7 +16,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -40,8 +44,11 @@ import com.example.codeup.ui.composables.menu.MenuHome
 import com.example.codeup.ui.screens.TelaExercicio
 import com.example.codeup.ui.screens.viewmodels.ExercicioViewModel
 import com.example.codeup.util.StoreFase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TelaMenuAprenda(
     usuario: Usuario,
@@ -54,6 +61,18 @@ fun TelaMenuAprenda(
     var listaFases by remember { mutableStateOf(emptyList<Fase>()) }
     val coroutineScope = rememberCoroutineScope()
 
+    var atualizando by remember { mutableStateOf(false) }
+    val pullRefreshState = rememberPullRefreshState(refreshing = atualizando, onRefresh = {
+
+        coroutineScope.launch {
+            atualizando = true
+            //Atualizar lista de amigos
+
+            delay(Random.nextLong(500, 3000))
+            atualizando = false
+        }
+
+    })
     // Coleta de dados deve ser controlada por condições específicas
     LaunchedEffect(key1 = true) {
         coroutineScope.launch {
@@ -74,16 +93,18 @@ fun TelaMenuAprenda(
         totalMoedas = usuario.moedas,
         totalSequencia = usuario.sequencia,
         conteudo = {
+            Box{
+
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 10.dp),
+                    .padding(top = 10.dp)
+                    .pullRefresh(pullRefreshState),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                reverseLayout = false
             ) {
-                var alinharDireita = true;
-                items(listaFases) { exercicio ->
+                itemsIndexed(listaFases) { index, exercicio ->
                     Column {
                         //Linha reta
                         Canvas(
@@ -108,7 +129,7 @@ fun TelaMenuAprenda(
                             modifier = Modifier
                                 .width(200.dp),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = if (alinharDireita) Arrangement.End else Arrangement.Start
+                            horizontalArrangement = if (index % 2 == 0) Arrangement.End else Arrangement.Start
                         ) {
                             CardExercicio(
                                 desbloqueada = exercicio.desbloqueada,
@@ -119,16 +140,17 @@ fun TelaMenuAprenda(
                                     selectedCardIndex = listaFases.indexOf(exercicio)
                                 },
                             )
-
                         }
-
                         Spacer(modifier = Modifier.height(40.dp))
-                        alinharDireita = !alinharDireita;
-
-
                     }
                 }
 
+            }
+            PullRefreshIndicator(
+                refreshing = atualizando,
+                state = pullRefreshState,
+                Modifier.align(Alignment.TopCenter)
+            )
             }
             if (showPopup && selectedCardIndex != -1) {
                 Box(

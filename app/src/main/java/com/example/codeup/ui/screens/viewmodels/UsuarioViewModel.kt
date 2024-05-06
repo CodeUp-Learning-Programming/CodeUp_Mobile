@@ -121,7 +121,7 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                if (tipoItem == "Imagem") {
+                if (tipoItem == "Foto de Perfil") {
                     val usuarioResponse = apiUsuario.atualizarFotoPerfil(FotoPerfilRequest(fotoItem))
 
                     if (usuarioResponse.isSuccessful) {

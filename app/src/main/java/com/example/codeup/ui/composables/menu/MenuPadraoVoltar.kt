@@ -28,9 +28,10 @@ import com.example.codeup.ui.composables.componentes.TextoBranco
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuConfiguracoes(
+fun MenuPadraoVoltar(
     conteudo: @Composable () -> Unit,
-    onClick: () -> Unit,
+    titulo: String = "",
+    onClickVoltar: () -> Unit,
     ) {
 
     Scaffold(
@@ -51,12 +52,12 @@ fun MenuConfiguracoes(
                     ) {
                         val seta: Painter = painterResource(id = R.drawable.icon_seta)
                         Image(
-                            modifier = Modifier.clickable (onClick = onClick),
+                            modifier = Modifier.clickable (onClick = onClickVoltar),
                             painter = seta,
                             contentDescription = stringResource(R.string.text_descricao_materia),
                         )
                         Spacer(Modifier.width(10.dp))
-                        TextoBranco(texto = stringResource(id = R.string.text_configuracoes), tamanhoFonte = 24, pesoFonte = "normal")
+                        TextoBranco(texto = titulo, tamanhoFonte = 24, pesoFonte = "normal")
 
                     }
                 }

@@ -69,6 +69,7 @@ fun MenuLoja(
                 }
 
             }
+//            PullRefreshIndicator(refreshing = atualizando, state = pullRefreshState)
 
 
         },

@@ -6,14 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.codeup.api.RetrofitService
-import com.example.codeup.data.Exercicio
 import com.example.codeup.util.StoreExercicio
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 class ExercicioViewModel(private val bearerToken: String?): ViewModel(){
-    val exerciciosAtuais = MutableLiveData<List<Exercicio>>() // Corrigido para o tipo List<Fase>
+//    val exerciciosAtuais = MutableLiveData<List<Exercicio>>() // Corrigido para o tipo List<Fase>
     val apiExercicio = RetrofitService.getApiExercicioService(bearerToken)
     val erroApi = MutableLiveData("")
 

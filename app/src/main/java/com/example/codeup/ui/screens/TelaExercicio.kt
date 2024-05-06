@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -31,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.codeup.data.Exercicio
 import com.example.codeup.data.Usuario
@@ -57,7 +60,8 @@ class TelaExercicio : ComponentActivity() {
             // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
             // a general rule, you should design your app to hide the status bar whenever you
             // hide the navigation bar.
-            systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
+            systemUiVisibility =
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
         }
         setContent {
             CodeupTheme {
@@ -83,6 +87,7 @@ fun ExercicioAtual() {
     val coroutineScope = rememberCoroutineScope()
     val storeUser = StoreUser.getInstance(context)
     val storeExercicio = StoreExercicio.getInstance(context)
+    val scrollState = rememberScrollState()
 
     // Observe and collect user data from DataStore
     LaunchedEffect(key1 = true) {
@@ -130,6 +135,7 @@ fun ExercicioAtual() {
                     .height(1.dp)
                     .background(Color(40, 40, 40))
             )
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -140,14 +146,15 @@ fun ExercicioAtual() {
                 Column(Modifier.height(250.dp)) {
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .verticalScroll(scrollState),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {
                         TextoBranco(
-//                            texto = "Os botões são essenciais para a interatividade nas interfaces de usuário, proporcionando uma maneira intuitiva e direta de realizar diversas ações, como enviar formulários, fazer seleções e efetuar compras. Sua presença facilita a execução de tarefas específicas, simplificando a experiência do usuário. Além disso, os botões visualmente comunicam as ações possíveis, auxiliando os usuários na interação com a interface.",
-                            texto = listaExercicios[0].conteudoTeorico,
+                            texto = listaExercicios[0].conteudoTeorico.replace("^", "\n"),
                             tamanhoFonte = 14,
+                            alinhamentoTexto = TextAlign.Justify,
                         )
 
                     }
@@ -157,7 +164,6 @@ fun ExercicioAtual() {
 
                 Row {
                     TextoBranco(
-//                        texto = "Qual elemento HTML é utilizado para criar um botão clicável em uma página da web?",
                         texto = listaExercicios[0].desafio,
                         tamanhoFonte = 16,
                     )
@@ -196,7 +202,6 @@ fun ExercicioAtual() {
 
         })
     }
-
 
 
 }

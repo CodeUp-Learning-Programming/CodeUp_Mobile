@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
 import com.example.codeup.data.Materia
 import com.example.codeup.data.Usuario
+import com.example.codeup.ui.screens.viewmodels.AmizadeViewModel
 import com.example.codeup.ui.screens.viewmodels.FaseViewModel
 import com.example.codeup.ui.screens.viewmodels.LojaViewModel
 import com.example.codeup.ui.theme.CodeupTheme
@@ -89,6 +90,9 @@ fun Home() {
 
         val lojaViewModel = LojaViewModel(it.token)
         lojaViewModel.carregarLoja(context)
+
+        val amizadeViewModelViewModel = AmizadeViewModel(it.token)
+        amizadeViewModelViewModel.listarAmigos(usuario!!.id!!, context)
 
         BarraNavegacao(
             navController = navController,

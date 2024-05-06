@@ -1,5 +1,6 @@
 package com.example.codeup.ui.composables.card
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -70,12 +74,24 @@ fun CardComprarItem(
                         .height(150.dp)
                         .width(150.dp)
                         .clip(CircleShape)
-                        .background(Color.Gray)
                 ) {
-                    AsyncImage(
-                        model = itemLoja.fotoItem,
-                        contentDescription = itemLoja.descricaoItem,
-                    )
+                    if (itemLoja.tipoItem != "Utilitários") {
+                        AsyncImage(
+                            model = itemLoja.fotoItem,
+                            contentDescription = itemLoja.descricaoItem,
+                        )
+                    } else {
+                        if (itemLoja.nomeItem == "Reabastecimento de vidas") {
+                            val fotoCoracao: Painter =
+                                painterResource(R.drawable.icon_item_coracao)
+
+                            Image(
+                                modifier = Modifier.align(Alignment.Center).size(60.dp),
+                                painter = fotoCoracao,
+                                contentDescription = stringResource(R.string.text_item_coracao),
+                            )
+                        }
+                    }
                 }
             }
             //Segunda linha

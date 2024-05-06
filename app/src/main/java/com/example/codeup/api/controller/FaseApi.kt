@@ -6,6 +6,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface FaseApi {
-    @GET("api/fases/{idMateria}")
+    @GET("fases/{idMateria}")
     suspend fun buscarFasePelaMateria(@Path("idMateria") idMateria: Int): Response<List<Fase>>
 }
