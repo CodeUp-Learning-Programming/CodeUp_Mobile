@@ -14,8 +14,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitService {
 
-    //    private const val BASE_URL = "http://34.238.58.124/"
-    private const val BASE_URL = "http://192.168.0.113:8080/api/"
+    private const val BASE_URL = "http://192.168.137.4:8080/api/"
+//    private const val BASE_URL = "http://10.18.32.128:8080/api/"
+//    private const val BASE_URL = "http://192.168.0.113:8080/api/"
 
     fun getApiExercicioService(token: String?): ExercicioApi {
         return createApiService(ExercicioApi::class.java, token)
@@ -40,6 +41,7 @@ object RetrofitService {
     fun getApiAmizadeService(token: String?): AmizadeApi {
         return createApiService(AmizadeApi::class.java, token)
     }
+
     private val okHttpClient: OkHttpClient by lazy {
         val builder = OkHttpClient.Builder()
         builder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))

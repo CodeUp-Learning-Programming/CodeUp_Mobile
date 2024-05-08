@@ -33,14 +33,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.codeup.R
 import com.example.codeup.data.Exercicio
 import com.example.codeup.data.Usuario
 import com.example.codeup.ui.OpcoesPergunta
 import com.example.codeup.ui.composables.componentes.TextOpcaoPergunta
 import com.example.codeup.ui.composables.componentes.TextoBranco
 import com.example.codeup.ui.composables.menu.MenuExercicio
+import com.example.codeup.ui.composables.menu.MenuReporte
 import com.example.codeup.ui.screens.ui.theme.CodeupTheme
 import com.example.codeup.util.StoreExercicio
 import com.example.codeup.util.StoreUser
@@ -89,6 +92,8 @@ fun ExercicioAtual() {
     val storeExercicio = StoreExercicio.getInstance(context)
     val scrollState = rememberScrollState()
 
+    var reportar by remember { mutableStateOf(false) }
+
     // Observe and collect user data from DataStore
     LaunchedEffect(key1 = true) {
         coroutineScope.launch {
@@ -111,96 +116,130 @@ fun ExercicioAtual() {
 
 
     usuario?.let { it ->
-        MenuExercicio(totalCoracoes = it.vidas, conteudo = {
-            val listaOpcoesPergunta = remember {
-                mutableListOf(
-                    OpcoesPergunta(
-                        texto = "<button/>"
-                    ),
-                    OpcoesPergunta(
-                        texto = "<div/>"
-                    ),
-                    OpcoesPergunta(
-                        texto = "<p/>"
-                    ),
-                    OpcoesPergunta(
-                        texto = "<span/>"
-                    ),
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(Color(40, 40, 40))
-            )
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(all = 10.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Column(Modifier.height(250.dp)) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .verticalScroll(scrollState),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        TextoBranco(
-                            texto = listaExercicios[0].conteudoTeorico.replace("^", "\n"),
-                            tamanhoFonte = 14,
-                            alinhamentoTexto = TextAlign.Justify,
-                        )
-
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Row {
-                    TextoBranco(
-                        texto = listaExercicios[0].desafio,
-                        tamanhoFonte = 16,
+        MenuExercicio(totalCoracoes = it.vidas,
+            onClickReportar = {
+                reportar = true
+            },
+            conteudo = {
+                val listaOpcoesPergunta = remember {
+                    mutableListOf(
+                        OpcoesPergunta(
+                            texto = "<button/>"
+                        ),
+                        OpcoesPergunta(
+                            texto = "<div/>"
+                        ),
+                        OpcoesPergunta(
+                            texto = "<p/>"
+                        ),
+                        OpcoesPergunta(
+                            texto = "<span/>"
+                        ),
                     )
                 }
-                Spacer(modifier = Modifier.height(10.dp))
 
-                var respostaEscolhida by remember { mutableStateOf("") }
-
-                // Opções de escolha
-                LazyColumn(
+                Box(
                     modifier = Modifier
-                        .fillMaxSize(),
-                    reverseLayout = false
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(Color(40, 40, 40))
+                )
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(all = 10.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    items(listaOpcoesPergunta) { opcao ->
-                        Column {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                TextOpcaoPergunta(
-                                    texto = opcao.texto,
-                                    isSelected = respostaEscolhida == opcao.texto,
-                                    onOptionSelected = { respostaEscolhida = opcao.texto }
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(10.dp))
+                    Column(Modifier.height(250.dp)) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .verticalScroll(scrollState),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            TextoBranco(
+                                texto = listaExercicios[0].conteudoTeorico.replace("^", "\n"),
+                                tamanhoFonte = 14,
+                                alinhamentoTexto = TextAlign.Justify,
+                            )
+
                         }
                     }
 
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Row {
+                        TextoBranco(
+                            texto = listaExercicios[0].desafio,
+                            tamanhoFonte = 16,
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    var respostaEscolhida by remember { mutableStateOf("") }
+
+                    // Opções de escolha
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        reverseLayout = false
+                    ) {
+                        items(listaOpcoesPergunta) { opcao ->
+                            Column {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    TextOpcaoPergunta(
+                                        texto = opcao.texto,
+                                        isSelected = respostaEscolhida == opcao.texto,
+                                        onOptionSelected = { respostaEscolhida = opcao.texto }
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(10.dp))
+                            }
+                        }
+
+                    }
+
                 }
 
-            }
+            })
 
-        })
+        if (reportar) {
+            MenuReporte(conteudo = {
+                Column(
+                    Modifier
+                        .fillMaxSize()
+                        .padding(top = 20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    TextoBranco(
+                        texto = stringResource(R.string.text_reporte_exercicio),
+                        tamanhoFonte = 24
+                    )
+
+                    Spacer(Modifier.height(20.dp))
+
+                    Column{
+                        Row(Modifier.fillMaxWidth()){
+                            
+                        }
+                    }
+                }
+
+            }, onClickSair = {
+                reportar = false
+            })
+        }
+
+
     }
 
 

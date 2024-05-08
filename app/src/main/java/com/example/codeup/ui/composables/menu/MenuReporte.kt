@@ -28,18 +28,19 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 import com.example.codeup.ui.composables.card.CardSair
 import com.example.codeup.ui.composables.componentes.BotaoAzul
+import com.example.codeup.ui.composables.componentes.TextoBranco
 import com.example.codeup.ui.screens.TelaHome
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuExercicio(
-    totalCoracoes: Int,
-    onClickReportar: () -> Unit,
-    conteudo: @Composable () -> Unit
+fun MenuReporte(
+    conteudo: @Composable () -> Unit,
+    onClickSair: () -> Unit
 ) {
 
     var mostrarPopup by remember { mutableStateOf(false) }
@@ -54,11 +55,11 @@ fun MenuExercicio(
                     .fillMaxWidth()
                     .background(Color(0, 0, 0))
                     .height(80.dp)
-                    .padding(top = 30.dp, start = 5.dp,end = 5.dp)
+                    .padding(top = 30.dp, start = 5.dp, end = 5.dp)
             ) {
-
                 Column {
                     //Linha de cima
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -66,36 +67,18 @@ fun MenuExercicio(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val painter1: Painter = painterResource(id = R.drawable.icon_sair)
 
-                        val imagemCoracoes = when (totalCoracoes) {
-                            0 -> R.drawable.icon_cinco_coracoes_vazios
-                            1 -> R.drawable.icon_um_coracao
-                            2 -> R.drawable.icon_dois_coracoes
-                            3 -> R.drawable.icon_tres_coracoes
-                            4 -> R.drawable.icon_quatro_coracoes
-                            5 -> R.drawable.icon_cinco_coracoes
-                            else -> R.drawable.icon_cinco_coracoes_vazios
-                        }
+                            TextoBranco(stringResource(R.string.text_reporte), 16)
 
-                        val painter2: Painter = painterResource(id = imagemCoracoes) // isso tem que ser dinamico
-                        val reportar: Painter = painterResource(id = R.drawable.icon_bandeira)
+                            val painter1: Painter = painterResource(id = R.drawable.icon_sair)
+                            Image(
+                                modifier = Modifier.clickable(onClick = onClickSair),
+                                painter = painter1,
+                                contentDescription = stringResource(R.string.text_sair),
+                            )
 
-                        Image(
-                            modifier = Modifier.clickable(onClick = abrirPopup),
-                            painter = painter1,
-                            contentDescription = stringResource(R.string.text_descricao_materia),
-                        )
-                        Image(
-                            painter = painter2,
-                            contentDescription = stringResource(R.string.text_descricao_materia),
-                        )
-                        Image(
-                            modifier = Modifier.clickable(onClick = onClickReportar),
-                            painter = reportar,
-                            contentDescription = stringResource(R.string.text_icone_reportar),
-                        )
                     }
+
                 }
             }
         },
@@ -119,7 +102,9 @@ fun MenuExercicio(
                     ) {
 
                         BotaoAzul(modifier = Modifier
-                            .fillMaxWidth(), text = stringResource(R.string.text_enviar).uppercase(), onClick = { /**/ })
+                            .fillMaxWidth(),
+                            text = stringResource(R.string.text_reporte).uppercase(),
+                            onClick = { /**/ })
                     }
                 }
             }

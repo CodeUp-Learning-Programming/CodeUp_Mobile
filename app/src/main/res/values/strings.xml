@@ -66,4 +66,7 @@
     <string name="text_item_coracao">Coração grande</string>
     <string name="text_add_amigos">Adicionar amigos</string>
     <string name="text_buscar">Buscar</string>
+    <string name="text_reporte">Reporte</string>
+    <string name="text_icone_reportar">Bandeira para reportar o exercicio</string>
+    <string name="text_reporte_exercicio">Reporte de Exercício</string>
 </resources>
