@@ -54,7 +54,6 @@ fun BarraNavegacao(navController: NavHostController, usuario: Usuario, materia: 
         , contentAlignment = Alignment.BottomCenter) {
         Column(modifier = Modifier
             .fillMaxSize()
-            .height(80.dp)
             .padding(bottom = 80.dp)
             .background(Color.Black)) {
             NavHost(

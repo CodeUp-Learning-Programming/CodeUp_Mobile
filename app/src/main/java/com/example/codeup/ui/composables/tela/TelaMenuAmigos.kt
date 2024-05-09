@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 import com.example.codeup.data.Amigo
+import com.example.codeup.data.AmizadeSearchRequest
 import com.example.codeup.data.Usuario
 import com.example.codeup.ui.composables.componentes.BotaoAzulClaro
 import com.example.codeup.ui.composables.componentes.TextFieldBordaGradienteAzul
@@ -42,6 +43,10 @@ fun TelaMenuAmigos(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val storeAmizades = StoreAmizades.getInstance(context)
+
+    val (amizadeSearchRequest, amizadeSearchRequestSetter) = remember {
+        mutableStateOf(AmizadeSearchRequest())
+    }
 
     LaunchedEffect(key1 = true) {
         coroutineScope.launch {
@@ -76,9 +81,9 @@ fun TelaMenuAmigos(
                         TextFieldBordaGradienteAzul(
                             modifier = Modifier.fillMaxWidth(),
                             isTextFieldFocused = true,
-                            texto = usuario.nome,
+                            texto = amizadeSearchRequest.nome,
                             label = "",
-                            onValueChange = { usuario.nome },
+                            onValueChange = { amizadeSearchRequest.nome },
                             onFocusChanged = {
                                 isTextfieldFocused = true
                             },

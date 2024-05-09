@@ -43,10 +43,10 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.codeup.R
 import com.example.codeup.data.Usuario
+import com.example.codeup.ui.composables.card.CardExperimentarPro
 import com.example.codeup.ui.composables.componentes.BotaoPretoBordaBranca
 import com.example.codeup.ui.composables.componentes.TextFieldBordaGradienteAzul
 import com.example.codeup.ui.composables.componentes.TextoBranco
-import com.example.codeup.ui.composables.card.CardExperimentarPro
 import com.example.codeup.ui.composables.menu.MenuPadraoVoltar
 import com.example.codeup.ui.screens.TelaHome
 import com.example.codeup.ui.screens.TelaLogin
@@ -60,6 +60,7 @@ fun TelaMenuConfiguracoes(
     val context = LocalContext.current
 
     MenuPadraoVoltar(
+        titulo = stringResource(id = R.string.text_configuracoes),
         onClickVoltar = {
             val telaHome = Intent(context, TelaHome::class.java)
             context.startActivity(telaHome)

@@ -14,9 +14,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitService {
 
-    private const val BASE_URL = "http://192.168.137.4:8080/api/"
-//    private const val BASE_URL = "http://10.18.32.128:8080/api/"
-//    private const val BASE_URL = "http://192.168.0.113:8080/api/"
+    //Ip máquina publica
+    private const val BASE_URL = "http://34.199.146.72/api/"
+
+    //private const val BASE_URL = "http://10.18.32.128:8080/api/"
+
+    //Localhost
+    //private const val BASE_URL = "http://192.168.0.113:8080/api/"
 
     fun getApiExercicioService(token: String?): ExercicioApi {
         return createApiService(ExercicioApi::class.java, token)

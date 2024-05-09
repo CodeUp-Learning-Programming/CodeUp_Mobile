@@ -41,7 +41,7 @@
     <string name="text_cancelar">Cancel</string>
     <string name="text_teste_gratuito">Free trial for 30 days, then only $15/month</string>
     <string name="text_iniciar_teste">Start Trial</string>
-    <string name="text_fechar">Close Icon</string>
+    <string name="icon_fechar">Close Icon</string>
     <string name="text_configuracoes">Settings</string>
     <string name="title_activity_tela_configuracoes">SettingsScreen</string>
     <string name="text_configuracoes_do_app">App Settings</string>

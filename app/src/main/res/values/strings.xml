@@ -40,7 +40,7 @@
     <string name="text_cancelar">cancelar</string>
     <string name="text_teste_gratuito">Teste gratuito por 30 dias, depois apenas R$15/mês</string>
     <string name="text_iniciar_teste">Iniciar teste</string>
-    <string name="text_fechar">Icone de fechar</string>
+    <string name="icon_fechar">Icone de fechar</string>
     <string name="text_configuracoes">Configurações</string>
     <string name="title_activity_tela_configuracoes">TelaConfiguracoes</string>
     <string name="text_configuracoes_do_app">Configurações do aplicativo</string>
@@ -69,4 +69,11 @@
     <string name="text_reporte">Reporte</string>
     <string name="text_icone_reportar">Bandeira para reportar o exercicio</string>
     <string name="text_reporte_exercicio">Reporte de Exercício</string>
+    <string name="text_resposta_errada">A resposta está errada</string>
+    <string name="text_erro_digitacao">Há um erro de digitação</string>
+    <string name="text_questao_confusa">A questão está confusa</string>
+    <string name="text_algo_errado">Algo não está funcionando direito ou está quebrado</string>
+    <string name="text_explique_problema">Por favor explique o problema com mais detalhes</string>
+    <string name="text_fechar">fechar</string>
+    <string name="text_reporte_enviado">Reporte enviado com sucesso!</string>
 </resources>

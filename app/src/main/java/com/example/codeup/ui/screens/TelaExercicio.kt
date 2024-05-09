@@ -7,6 +7,8 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,6 +42,9 @@ import com.example.codeup.R
 import com.example.codeup.data.Exercicio
 import com.example.codeup.data.Usuario
 import com.example.codeup.ui.OpcoesPergunta
+import com.example.codeup.ui.composables.card.CardReporteEnviado
+import com.example.codeup.ui.composables.componentes.RadioButtonCustomizado
+import com.example.codeup.ui.composables.componentes.TextFieldBordaGradienteAzul
 import com.example.codeup.ui.composables.componentes.TextOpcaoPergunta
 import com.example.codeup.ui.composables.componentes.TextoBranco
 import com.example.codeup.ui.composables.menu.MenuExercicio
@@ -93,6 +98,16 @@ fun ExercicioAtual() {
     val scrollState = rememberScrollState()
 
     var reportar by remember { mutableStateOf(false) }
+    var enviarReportePasso1 by remember { mutableStateOf(false) }
+    var enviarReporte by remember { mutableStateOf(false) }
+
+    var respostaEscolhida by remember { mutableStateOf("") }
+
+    var isTextfieldFocused by remember { mutableStateOf(false) }
+    var validarResposta by remember { mutableStateOf(false) }
+    var respostaCerta by remember { mutableStateOf(false) }
+
+    val (showPopup, setShowPopup) = remember { mutableStateOf(false) }
 
     // Observe and collect user data from DataStore
     LaunchedEffect(key1 = true) {
@@ -119,6 +134,9 @@ fun ExercicioAtual() {
         MenuExercicio(totalCoracoes = it.vidas,
             onClickReportar = {
                 reportar = true
+            },
+            onClickValidarResposta = {
+                validarResposta = true
             },
             conteudo = {
                 val listaOpcoesPergunta = remember {
@@ -179,7 +197,6 @@ fun ExercicioAtual() {
                     }
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    var respostaEscolhida by remember { mutableStateOf("") }
 
                     // Opções de escolha
                     LazyColumn(
@@ -198,8 +215,10 @@ fun ExercicioAtual() {
                                     TextOpcaoPergunta(
                                         texto = opcao.texto,
                                         isSelected = respostaEscolhida == opcao.texto,
-                                        onOptionSelected = { respostaEscolhida = opcao.texto }
-                                    )
+                                        onOptionSelected = { respostaEscolhida = opcao.texto },
+                                        respostaCerta = if(opcao.texto == "<button/>") true else false,
+                                        validarResposta = validarResposta
+                                        )
                                 }
                                 Spacer(modifier = Modifier.height(10.dp))
                             }
@@ -211,35 +230,106 @@ fun ExercicioAtual() {
 
             })
 
+
         if (reportar) {
-            MenuReporte(conteudo = {
-                Column(
-                    Modifier
-                        .fillMaxSize()
-                        .padding(top = 20.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    TextoBranco(
-                        texto = stringResource(R.string.text_reporte_exercicio),
-                        tamanhoFonte = 24
-                    )
+            MenuReporte(
+                onClickReporte = {
+                    if (!enviarReportePasso1) {
+                        enviarReportePasso1 = true
+                    } else {
+                        setShowPopup(true)
+                    }
+                },
+                conteudo = {
+                    Column(
+                        Modifier
+                            .fillMaxSize()
+                            .padding(top = 50.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Top
+                    ) {
+                        TextoBranco(
+                            texto = stringResource(R.string.text_reporte_exercicio),
+                            tamanhoFonte = 24
+                        )
 
-                    Spacer(Modifier.height(20.dp))
-
-                    Column{
-                        Row(Modifier.fillMaxWidth()){
-                            
+                        Spacer(Modifier.height(30.dp))
+                        if (!enviarReportePasso1) {
+                            Column {
+                                Row(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(start = 15.dp, end = 15.dp)
+                                ) {
+                                    RadioButtonCustomizado(
+                                        listOf(
+                                            stringResource(id = R.string.text_resposta_errada),
+                                            stringResource(id = R.string.text_erro_digitacao),
+                                            stringResource(id = R.string.text_questao_confusa),
+                                            stringResource(id = R.string.text_algo_errado),
+                                        )
+                                    )
+                                }
+                            }
+                        } else {
+                            var text by remember { mutableStateOf("") }
+                            Column {
+                                Row(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(start = 15.dp, end = 15.dp)
+                                ) {
+                                    TextFieldBordaGradienteAzul(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(bottom = 200.dp),
+                                        isTextFieldFocused = isTextfieldFocused,
+                                        texto = text,
+                                        label = stringResource(R.string.text_explique_problema),
+                                        onValueChange = { text = it },
+                                        onFocusChanged = {
+                                            isTextfieldFocused = it.isFocused
+                                        }
+                                    )
+                                }
+                            }
                         }
                     }
-                }
 
-            }, onClickSair = {
-                reportar = false
-            })
+                }, onClickSair = {
+                    reportar = false
+                })
         }
 
 
+        if (showPopup) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.5f))
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = { setShowPopup(false) }
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = {})
+                ) {
+                    CardReporteEnviado(
+                        onClickFechar = {
+                            setShowPopup(false)
+                            reportar = false
+                        },
+                    )
+                }
+            }
+        }
     }
 
 

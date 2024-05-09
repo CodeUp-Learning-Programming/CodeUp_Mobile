@@ -39,6 +39,7 @@ import com.example.codeup.ui.screens.TelaHome
 fun MenuExercicio(
     totalCoracoes: Int,
     onClickReportar: () -> Unit,
+    onClickValidarResposta: () -> Unit,
     conteudo: @Composable () -> Unit
 ) {
 
@@ -119,7 +120,7 @@ fun MenuExercicio(
                     ) {
 
                         BotaoAzul(modifier = Modifier
-                            .fillMaxWidth(), text = stringResource(R.string.text_enviar).uppercase(), onClick = { /**/ })
+                            .fillMaxWidth(), text = stringResource(R.string.text_enviar).uppercase(), onClick = onClickValidarResposta)
                     }
                 }
             }
