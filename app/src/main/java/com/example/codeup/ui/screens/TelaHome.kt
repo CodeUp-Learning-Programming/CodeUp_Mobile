@@ -28,6 +28,7 @@ import com.example.codeup.data.Usuario
 import com.example.codeup.ui.screens.viewmodels.AmizadeViewModel
 import com.example.codeup.ui.screens.viewmodels.FaseViewModel
 import com.example.codeup.ui.screens.viewmodels.LojaViewModel
+import com.example.codeup.ui.screens.viewmodels.UsuarioViewModel
 import com.example.codeup.ui.theme.CodeupTheme
 import com.example.codeup.util.StoreUser
 import kotlinx.coroutines.launch
@@ -94,6 +95,8 @@ fun Home() {
         val amizadeViewModelViewModel = AmizadeViewModel(it.token)
         amizadeViewModelViewModel.listarAmigos(usuario!!.id!!, context)
 
+        val buscarExerciciosPorMes = UsuarioViewModel(it.token)
+        buscarExerciciosPorMes.buscarExerciciosPorMes(usuario!!.id!!,context)
         BarraNavegacao(
             navController = navController,
             usuario = it,

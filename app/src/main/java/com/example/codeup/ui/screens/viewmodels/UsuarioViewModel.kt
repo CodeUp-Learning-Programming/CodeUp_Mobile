@@ -15,6 +15,7 @@ import com.example.codeup.ui.screens.TelaHome
 import com.example.codeup.ui.screens.TelaLogin
 import com.example.codeup.util.StoreRememberUser
 import com.example.codeup.util.StoreUser
+import com.example.codeup.util.StoreUserGraficoExercicio
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -142,4 +143,25 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
         }
     }
 
+
+    fun buscarExerciciosPorMes(id: Int, context: Context) {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val storeUserGraficoExercicio = StoreUserGraficoExercicio.getInstance(context)
+                val usuarioResponse = apiUsuario.buscarExerciciosPorMes(id)
+
+                if (usuarioResponse.isSuccessful && usuarioResponse.body() != null) {
+                    val usuario = usuarioResponse.body()!!
+                    storeUserGraficoExercicio.saveListExercicios(usuario)
+                    Log.e("USUARIO", usuario.toString())
+
+                } else {
+                    Log.e("API", " erro no post")
+                }
+            } catch (e: Exception) {
+                Log.d("USUARIO","Erro de conexão: ${e.message}")
+            }
+        }
+    }
 }

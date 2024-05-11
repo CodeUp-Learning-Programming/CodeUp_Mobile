@@ -17,6 +17,9 @@ interface UsuarioApi {
     @GET("usuarios/{id}")
     suspend fun buscarPorId(@Path("id") id: Int): Response<Usuario>
 
+    @GET("usuarios/exercicios/mes/{id}")
+    suspend fun buscarExerciciosPorMes(@Path("id") id: Int): Response<Map<String, String>>
+
     @GET("usuarios/atualizar/{id}")
     suspend fun atualizarListaItensPorId(@Path("id") id: Int): Response<Usuario>
 

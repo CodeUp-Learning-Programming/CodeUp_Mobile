@@ -14,7 +14,9 @@ import co.yml.charts.ui.barchart.models.BarData
 import co.yml.charts.ui.barchart.models.BarStyle
 
 @Composable
-fun BarChartScreen() {
+fun BarChartScreen(
+
+) {
     val stepSize = 5
     val barsData = listOf(
         BarData(Point(0.toFloat(), 2f), label = "Jan", color = Color(0, 154, 242)),
