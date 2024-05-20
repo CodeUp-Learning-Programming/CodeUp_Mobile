@@ -1,7 +1,6 @@
 package com.example.codeup.ui.composables.tela
 
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -42,15 +41,13 @@ import com.example.codeup.data.Usuario
 import com.example.codeup.ui.composables.card.CardExperimentarPro
 import com.example.codeup.ui.composables.card.CardPerfil
 import com.example.codeup.ui.composables.componentes.BotaoAzulClaro
-import com.example.codeup.ui.composables.componentes.GraficoBarra
 import com.example.codeup.ui.composables.componentes.GraficoLinha
 import com.example.codeup.ui.composables.componentes.GraficoTrilhaRecente
+import com.example.codeup.ui.composables.componentes.MyNotification
 import com.example.codeup.ui.composables.componentes.TextoBranco
 import com.example.codeup.ui.composables.menu.MenuPadrao
 import com.example.codeup.ui.screens.TelaConfiguracoes
-import com.example.codeup.ui.screens.viewmodels.LojaViewModel
 import com.example.codeup.ui.screens.viewmodels.UsuarioViewModel
-import com.example.codeup.util.StoreUser
 import com.example.codeup.util.StoreUserGraficoExercicio
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -123,6 +120,9 @@ fun TelaMenuPerfil(
                                 .clip(CircleShape)
                         ) {
                             AsyncImage(
+                                modifier = Modifier
+                                    .height(150.dp)
+                                    .width(150.dp),
                                 model = usuario.fotoPerfil,
                                 contentDescription = stringResource(R.string.text_foto_perfil),
                             )
@@ -133,8 +133,10 @@ fun TelaMenuPerfil(
                             modifier = Modifier,
                             text = stringResource(R.string.text_experimente_pro).uppercase(),
                             onClick = {
-                                setShowPopup(true)
-                                Log.d("PERFIL", "Exibindo pop up")
+//                                setShowPopup(true)
+//                                Log.d("PERFIL", "Exibindo pop up")
+                                val notification = MyNotification(context, "TESTE", "EH O MATH")
+                                notification.fireNotification()
                             })
                     }
                     Row(
@@ -232,12 +234,6 @@ fun TelaMenuPerfil(
                                 .background(Color(24, 24, 24))
                         )
                         GraficoLinha(titulo = stringResource(R.string.text_maior_ranking))
-                        Spacer(
-                            modifier = Modifier
-                                .height(10.dp)
-                                .background(Color(24, 24, 24))
-                        )
-                        GraficoBarra(titulo = stringResource(R.string.text_maior_ranking))
                     }
                     Spacer(
                         modifier = Modifier

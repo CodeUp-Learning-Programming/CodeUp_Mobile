@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.codeup.api.RetrofitService
-import com.example.codeup.data.BuscarPorNome
+import com.example.codeup.data.BuscarPorNomeRequest
 import com.example.codeup.data.RespostaSolicitacao
 import com.example.codeup.data.SolicitarAmizadeRequest
 import com.example.codeup.data.Usuario
@@ -51,13 +51,15 @@ class AmizadeViewModel(private val bearerToken: String?) : ViewModel() {
         Log.d("AMIZADE", "Enviando solicitação de amizade")
         viewModelScope.launch(Dispatchers.IO) {
             val response = apiAmizade.solicitacoesAmizadeRecebidas(idUsuario)
+            val storeAmizades = StoreAmizades.getInstance(context)
 
             try {
                 if (response.isSuccessful) {
-                    Log.d("AMIZADE", "Solicitação enviada com sucesso")
+                    Log.d("AMIZADE", "Lista de pedidos de amizades recebida com sucesso!")
+                    storeAmizades.savePedidosAmizade(response.body()!!)
 
                 } else {
-                    Log.d("AMIZADE", "Cadastro mal-sucedido")
+                    Log.d("AMIZADE", "Lista de pedidos de amizades recebida com sucesso!")
                     erroApi.postValue("Erro ao realizar o cadastro: ${response.message()}")
                 }
             } catch (e: Exception) {
@@ -71,10 +73,12 @@ class AmizadeViewModel(private val bearerToken: String?) : ViewModel() {
         Log.d("AMIZADE", "Enviando solicitação de amizade")
         viewModelScope.launch(Dispatchers.IO) {
             val response = apiAmizade.solicitacoesAmizadeEnviadas(idUsuario)
+            val storeAmizades = StoreAmizades.getInstance(context)
 
             try {
                 if (response.isSuccessful) {
                     Log.d("AMIZADE", "Solicitação enviada com sucesso")
+//                    storeAmizades.saveAmigos(response.body()!!)
 
                 } else {
                     Log.d("AMIZADE", "Cadastro mal-sucedido")
@@ -133,16 +137,16 @@ class AmizadeViewModel(private val bearerToken: String?) : ViewModel() {
         }
     }
 
-    fun buscarRelaciomento(buscarPorNome: BuscarPorNome, context: Context) {
+    fun buscarRelaciomento(buscarPorNome: BuscarPorNomeRequest, context: Context) {
         Log.d("AMIZADE", "Buscando lista de amigos")
         viewModelScope.launch(Dispatchers.IO) {
-            val response = apiAmizade.buscarRelaciomento(buscarPorNome)
+            val response = apiAmizade.buscarRelacionamento(buscarPorNome.idUsuario, buscarPorNome.nome)
             val storeAmizades = StoreAmizades.getInstance(context)
 
             try {
                 if (response.isSuccessful) {
                     Log.d("AMIZADE", "Lista adquirida com sucesso")
-
+                    storeAmizades.saveListaBuscarAmigos(response.body()!!)
                 } else {
                     Log.d("AMIZADE", "Erro ao obter a lista")
                     erroApi.postValue("Erro ao realizar o cadastro: ${response.message()}")

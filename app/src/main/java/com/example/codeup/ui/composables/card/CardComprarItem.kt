@@ -106,8 +106,7 @@ fun CardComprarItem(
             Column {
                 //Parte e quantidade
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
@@ -122,6 +121,7 @@ fun CardComprarItem(
                     )
 
                 }
+
                 if (!itemLoja.adquirido) {
 
                     Column(
@@ -136,12 +136,6 @@ fun CardComprarItem(
                             largura = 20,
                             tamanhoFonte = 12
                         )
-                        TextButton(onClick = onClick) {
-                            TextoBranco(
-                                texto = stringResource(id = R.string.text_cancelar).uppercase(),
-                                tamanhoFonte = 12
-                            )
-                        }
                     }
 
                 } else if (!equipado) {

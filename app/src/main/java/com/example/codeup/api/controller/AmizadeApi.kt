@@ -1,8 +1,8 @@
 package com.example.codeup.api.controller
 
 import com.example.codeup.data.Amigo
+import com.example.codeup.data.AmizadeRequestReceived
 import com.example.codeup.data.AmizadeResult
-import com.example.codeup.data.BuscarPorNome
 import com.example.codeup.data.BuscarPorNomeResult
 import com.example.codeup.data.RespostaSolicitacao
 import com.example.codeup.data.SolicitarAmizadeRequest
@@ -17,7 +17,7 @@ interface AmizadeApi {
         @POST("amizades/solicitar/amizade")
         suspend fun solicitarAmizade(@Body solicitarAmizadeRequest: SolicitarAmizadeRequest): Response<Boolean>
         @GET("amizades/solicitacoes/recebidas")
-        suspend fun solicitacoesAmizadeRecebidas(@Query("idUsuario") idUsuario: Int): Response<List<AmizadeResult>>
+        suspend fun solicitacoesAmizadeRecebidas(@Query("idUsuario") idUsuario: Int): Response<List<AmizadeRequestReceived>>
         @GET("amizades/solicitacoes/enviadas")
         suspend fun solicitacoesAmizadeEnviadas(@Query("idUsuario") idUsuario: Int): Response<List<AmizadeResult>>
         @GET("amizades/amigos")
@@ -26,9 +26,12 @@ interface AmizadeApi {
         @POST("amizades/gerenciar/convite")
         suspend fun gerenciarConvite(@Body respostaSolicitacao: RespostaSolicitacao): Response<StatusPedidoAmizade>
 
-        @POST("amizades/buscar_por_nome")
-        suspend fun buscarRelaciomento(@Body buscarPorNome: BuscarPorNome): Response<BuscarPorNomeResult>
-
+        @GET("amizades/busca-nome")
+        suspend fun buscarRelacionamento(
+                @Query("usuarioLogadoID", encoded = true) usuarioLogadoID: Int, @Query("nomePesquisa",
+                        encoded = true
+                ) nomePesquisa: String
+        ): Response<List<BuscarPorNomeResult>>
 
 
 }

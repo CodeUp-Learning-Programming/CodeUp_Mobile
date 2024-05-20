@@ -1,6 +1,11 @@
 package com.example.codeup.ui.composables.tela
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -121,31 +126,36 @@ fun TelaMenuLoja(
                                 items(itens) { item ->
                                     var equipado by remember { mutableStateOf(false) }
 
-                                if (item.tipoItem == "Foto de Perfil" && item.fotoItem != usuario.fotoPerfil) {
-                                    equipado = false
-                                } else if (item.tipoItem == "Tema") {
-                                    equipado = false
-                                } else {
-                                    equipado = true
-                                }
+                                    if (item.tipoItem == "Foto de Perfil" && item.fotoItem != usuario.fotoPerfil) {
+                                        equipado = false
+                                    } else if (item.tipoItem == "Tema") {
+                                        equipado = false
+                                    } else {
+                                        equipado = true
+                                    }
                                     CardItemLoja(
                                         modifier = Modifier.fillMaxWidth(),
                                         itemLoja = item,
                                         equipado = equipado,
-                                        cor = if (itens.indexOf(item) % 2 == 0) Color(33, 33, 33) else Color(22, 22, 22),
+                                        cor = if (itens.indexOf(item) % 2 == 0) Color(
+                                            33,
+                                            33,
+                                            33
+                                        ) else Color(22, 22, 22),
                                         onClick = {
                                             setShowPopup(true)
-                                        selectedItem = item
+                                            selectedItem = item
                                         },
                                         onClickEquipar = {
                                             if (!equipado) {
-                                            val usuarioViewModel = UsuarioViewModel(usuario.token)
-                                            usuarioViewModel.equiparItem(
-                                                item.fotoItem,
-                                                item.tipoItem,
-                                                context
-                                            )
-                                        }
+                                                val usuarioViewModel =
+                                                    UsuarioViewModel(usuario.token)
+                                                usuarioViewModel.equiparItem(
+                                                    item.fotoItem,
+                                                    item.tipoItem,
+                                                    context
+                                                )
+                                            }
                                         }
                                     )
                                 }
@@ -153,7 +163,11 @@ fun TelaMenuLoja(
 
                         }
                     }
-                    PullRefreshIndicator(refreshing = atualizando, state = pullRefreshState,Modifier.align(Alignment.TopCenter))
+                    PullRefreshIndicator(
+                        refreshing = atualizando,
+                        state = pullRefreshState,
+                        Modifier.align(Alignment.TopCenter)
+                    )
 
 
                     if (showPopup && selectedItem != null) {
@@ -166,66 +180,99 @@ fun TelaMenuLoja(
                         } else {
                             equipado = true
                         }
-
-                        Box(
+                        AnimatedVisibility(
+                            visible = showPopup,
+                            enter = slideInVertically(
+                                initialOffsetY = { -it }, // Inicia o pop-up acima do layout
+                                animationSpec = tween(
+                                    durationMillis = 400,
+                                    easing = FastOutSlowInEasing
+                                )
+                            ),
+                            exit = slideOutVertically(
+                                targetOffsetY = { -it }, // Move o pop-up para cima ao sair
+                                animationSpec = tween(
+                                    durationMillis = 400,
+                                    easing = FastOutSlowInEasing
+                                )
+                            ),
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(Color.Black.copy(alpha = 0.5f))
+                                .background(
+                                    Color(
+                                        13,
+                                        13,
+                                        13,
+                                        128
+                                    )
+                                ) // Fundo escuro para destacar o pop-up
                                 .clickable(
-                                    interactionSource = remember { MutableInteractionSource() },
+                                    interactionSource = interactionSource,
                                     indication = null,
                                     onClick = { setShowPopup(false) }
                                 ),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(Color(13, 13, 13).copy(alpha = 0.2f))
-                                    .clickable(
-                                        interactionSource = interactionSource,
-                                        indication = null,
-                                        onClick = {}
-                                    ),
+                            content = {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .background(Color.Black.copy(alpha = 0.5f))
+                                        .clickable(
+                                            interactionSource = remember { MutableInteractionSource() },
+                                            indication = null,
+                                            onClick = { setShowPopup(false) }
+                                        ),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .background(Color(13, 13, 13).copy(alpha = 0.2f))
+                                            .clickable(
+                                                interactionSource = interactionSource,
+                                                indication = null,
+                                                onClick = {}
+                                            ),
 
-                                contentAlignment = Alignment.Center
-                            ) {
-                                selectedItem?.let {
-                                    CardComprarItem(
-                                        itemLoja = it,
-                                        onClick = {
-                                            setShowPopup(false)
-                                            selectedItem = null
-                                        },
-                                        onClickComprar = {
-                                            val lojaViewModel = LojaViewModel(usuario.token)
-                                            lojaViewModel.comprarItem(
-                                                selectedItem!!.id,
-                                                context = context
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        selectedItem?.let {
+                                            CardComprarItem(
+                                                itemLoja = it,
+                                                onClick = {
+                                                    setShowPopup(false)
+                                                    selectedItem = null
+                                                },
+                                                onClickComprar = {
+                                                    val lojaViewModel = LojaViewModel(usuario.token)
+                                                    lojaViewModel.comprarItem(
+                                                        selectedItem!!.id,
+                                                        context = context
+                                                    )
+                                                    lojaViewModel.carregarLoja(context = context)
+
+                                                    //colocar para fechar depois de um tempo
+                                                    setShowPopup(false)
+                                                    selectedItem = null
+                                                    itemFoiAdquirido = false
+                                                },
+                                                onClickEquipar = {
+                                                    if (!equipado) {
+                                                        val usuarioViewModel =
+                                                            UsuarioViewModel(usuario.token)
+                                                        usuarioViewModel.equiparItem(
+                                                            selectedItem!!.fotoItem,
+                                                            selectedItem!!.tipoItem,
+                                                            context
+                                                        )
+                                                    }
+                                                },
+                                                equipado = equipado,
                                             )
-                                            lojaViewModel.carregarLoja(context = context)
-
-                                            //colocar para fechar depois de um tempo
-                                            setShowPopup(false)
-                                            selectedItem = null
-                                            itemFoiAdquirido = false
-                                        },
-                                        onClickEquipar = {
-                                            if (!equipado) {
-                                                val usuarioViewModel =
-                                                    UsuarioViewModel(usuario.token)
-                                                usuarioViewModel.equiparItem(
-                                                    selectedItem!!.fotoItem,
-                                                    selectedItem!!.tipoItem,
-                                                    context
-                                                )
-                                            }
-                                        },
-                                        equipado = equipado,
-                                    )
+                                        }
+                                    }
                                 }
                             }
-                        }
+                        )
                     }
                 }
             })
