@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -55,19 +56,34 @@ fun ListaSolicitacoesAmigos(
     var atualizando by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     val pullRefreshState = rememberPullRefreshState(refreshing = atualizando, onRefresh = {
-
         coroutineScope.launch {
             atualizando = true
-            //Atualizar lista de amigos
+            // Atualizar lista de amigos
             val amizadeViewModelViewModel = AmizadeViewModel(usuario.token)
             amizadeViewModelViewModel.listarAmigos(usuario.id!!, context)
             delay(Random.nextLong(500, 3000))
             atualizando = false
         }
-
     })
 
-    Box() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(13, 13, 13))
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        TextoBranco(texto = "Solicitações", tamanhoFonte = 20)
+//        Icon(
+//            imageVector = Icons.Filled.ExpandMore,
+//            contentDescription = "Expandir",
+////            imageVector = if (isExpanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+////            contentDescription = if (isExpanded) "Colapsar" else "Expandir",
+//            tint = Color.White,
+//            modifier = Modifier.padding(start = 8.dp)
+//        )
+    }
+    Box {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -79,15 +95,7 @@ fun ListaSolicitacoesAmigos(
                         .height(100.dp)
                         .fillMaxWidth()
                         .background(
-                            if (contador % 2 == 0) Color(
-                                33,
-                                33,
-                                33
-                            ) else Color(
-                                22,
-                                22,
-                                22
-                            ),
+                            if (contador % 2 == 0) Color(33, 33, 33) else Color(22, 22, 22)
                         ),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -96,13 +104,12 @@ fun ListaSolicitacoesAmigos(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        //Foto
-                        Row(
+                        // Foto
+                        Box(
                             modifier = Modifier
                                 .width(80.dp)
                                 .height(100.dp),
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
+                            contentAlignment = Alignment.Center
                         ) {
                             Box(
                                 modifier = Modifier
@@ -116,12 +123,12 @@ fun ListaSolicitacoesAmigos(
                                 )
                             }
                         }
-                        //Nome
-                        Row(
+                        // Nome
+                        Box(
                             modifier = Modifier
-                                .height(100.dp),
-                            horizontalArrangement = Arrangement.Start,
-                            verticalAlignment = Alignment.CenterVertically
+                                .height(100.dp)
+                                .padding(start = 8.dp),
+                            contentAlignment = Alignment.Center
                         ) {
                             TextoBranco(
                                 texto = amigo.nome,
@@ -137,8 +144,7 @@ fun ListaSolicitacoesAmigos(
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val cancelarAddAmigo: Painter =
-                            painterResource(id = R.drawable.icon_rejeitar)
+                        val cancelarAddAmigo: Painter = painterResource(id = R.drawable.icon_rejeitar)
 
                         val addAmigo: Painter = if (amigo.status == "PENDENTE") {
                             // Ícone para solicitação pendente
@@ -148,48 +154,42 @@ fun ListaSolicitacoesAmigos(
                             painterResource(id = imagem)
                         }
 
-                            Image(
-                                modifier = Modifier
-                                    .clickable(onClick = {
-                                            //Aceitar amizade
-                                        Log.d("AMIZADE", "AMIZADE ACEITA")
-                                            val amizadeViewModelViewModel =
-                                                AmizadeViewModel(usuario.token)
-                                            amizadeViewModelViewModel.gerenciarConvite(
-                                                RespostaSolicitacao(
-                                                    idReceptor = usuario.id!!,
-                                                    emailSolicitante = amigo.email,
-                                                    resposta = true
-                                                ), context
-                                            )
-                                        amizadeViewModelViewModel.listarAmigos(
-                                            usuario.id!!, context
-                                        )
-                                    }),
-                                painter = addAmigo,
-                                contentDescription = null, // A descrição é opcional
-                            )
+                        Image(
+                            modifier = Modifier
+                                .clickable {
+                                    // Aceitar amizade
+                                    Log.d("AMIZADE", "AMIZADE ACEITA")
+                                    val amizadeViewModelViewModel = AmizadeViewModel(usuario.token)
+                                    amizadeViewModelViewModel.gerenciarConvite(
+                                        RespostaSolicitacao(
+                                            idReceptor = usuario.id!!,
+                                            emailSolicitante = amigo.email,
+                                            resposta = true
+                                        ), context
+                                    )
+                                    amizadeViewModelViewModel.listarAmigos(usuario.id!!, context)
+                                },
+                            painter = addAmigo,
+                            contentDescription = null, // A descrição é opcional
+                        )
 
-                            Image(
-                                modifier = Modifier
-                                    .clickable(onClick = {
-                                        //Cancelar amizade
-                                        val amizadeViewModelViewModel =
-                                            AmizadeViewModel(usuario.token)
-                                        amizadeViewModelViewModel.gerenciarConvite(
-                                            RespostaSolicitacao(
-                                                idReceptor = usuario.id!!,
-                                                emailSolicitante = amigo.email,
-                                                resposta = false
-                                            ), context
-                                        )
-                                    }),
-                                painter = cancelarAddAmigo,
-                                contentDescription = null, // A descrição é opcional
-                            )
-
+                        Image(
+                            modifier = Modifier
+                                .clickable {
+                                    // Cancelar amizade
+                                    val amizadeViewModelViewModel = AmizadeViewModel(usuario.token)
+                                    amizadeViewModelViewModel.gerenciarConvite(
+                                        RespostaSolicitacao(
+                                            idReceptor = usuario.id!!,
+                                            emailSolicitante = amigo.email,
+                                            resposta = false
+                                        ), context
+                                    )
+                                },
+                            painter = cancelarAddAmigo,
+                            contentDescription = null, // A descrição é opcional
+                        )
                     }
-
                 }
                 contador++
             }

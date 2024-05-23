@@ -1,6 +1,5 @@
 package com.example.codeup.ui.composables.listas
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -142,8 +141,6 @@ fun ListaProcurarAmigos(
                             modifier = Modifier
                                 .clickable(onClick = {
                                     val amizadeViewModelViewModel = AmizadeViewModel(usuario.token)
-                                    Log.d("TESTE", "a${usuario.id!!.toString()}")
-                                    Log.d("TESTE", "${amigo.email}")
                                     amizadeViewModelViewModel.solicitarAmizade(
                                         SolicitarAmizadeRequest(
                                             idSolicitante = usuario.id!!,

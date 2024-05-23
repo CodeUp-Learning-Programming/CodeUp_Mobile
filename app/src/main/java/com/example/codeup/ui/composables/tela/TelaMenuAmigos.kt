@@ -57,8 +57,6 @@ fun TelaMenuAmigos(
         mutableStateOf(BuscarPorNomeRequest())
     }
 
-
-
     LaunchedEffect(Unit) {
         coroutineScope.launch {
             storeAmizades.getAmigos.collect { amigos ->
@@ -77,7 +75,7 @@ fun TelaMenuAmigos(
         }
     }
 
-Log.d("LISTA", "LISTAPEDIDOS $listaProcurarAmigos")
+    Log.d("LISTA", "LISTAPEDIDOS $listaProcurarAmigos")
 
     if (procurarAmigos) {
         MenuPadraoVoltar(
@@ -123,8 +121,6 @@ Log.d("LISTA", "LISTAPEDIDOS $listaProcurarAmigos")
                                 val amizadeViewModelViewModel = AmizadeViewModel(usuario.token)
                                 amizadeViewModelViewModel.solicitacoesRecebidas(usuario.id!!, context)
                                 amizadeViewModelViewModel.buscarRelaciomento(buscarPorNome = buscarPorNomeRequest, context)
-
-
                             })
                     }
                 }
@@ -143,19 +139,19 @@ Log.d("LISTA", "LISTAPEDIDOS $listaProcurarAmigos")
             },
             imagem = R.drawable.icon_adicionar_amigo,
             conteudo = ({
-
-
-                ListaSolicitacoesAmigos(
-                    listaSolicitacoes, usuario = usuario,
-                    imagem = R.drawable.icon_usuario
-                )
-                ListaAmigos(
-                    listaAmigos, usuario = usuario,
-                    imagem = R.drawable.icon_usuario
-                )
+                Column {
+                    if(listaSolicitacoes.isNotEmpty()){
+                        ListaSolicitacoesAmigos(
+                            listaSolicitacoes, usuario = usuario,
+                            imagem = R.drawable.icon_usuario
+                        )
+                    }
+                    ListaAmigos(
+                        listaAmigos, usuario = usuario,
+                        imagem = R.drawable.icon_usuario
+                    )
+                }
             })
         )
     }
-
 }
-

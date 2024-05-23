@@ -65,98 +65,119 @@ fun ListaAmigos(
 
     })
 
-Box() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(13, 13, 13))
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        TextoBranco(texto = "Amigos", tamanhoFonte = 20)
+//        Icon(
+//            imageVector = Icons.Filled.ExpandMore,
+//            contentDescription = "Expandir",
+////            imageVector = if (isExpanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+////            contentDescription = if (isExpanded) "Colapsar" else "Expandir",
+//            tint = Color.White,
+//            modifier = Modifier.padding(start = 8.dp)
+//        )
+    }
+    Box() {
 
 
-    LazyColumn(modifier = Modifier.fillMaxSize().pullRefresh(pullRefreshState)) {
-        items(listaAmigos) { amigo ->
+        LazyColumn(modifier = Modifier
+            .fillMaxSize()
+            .pullRefresh(pullRefreshState)) {
 
-            Row(
-                modifier = Modifier
-                    .height(100.dp)
-                    .fillMaxWidth()
-                    .background(
-                        if (contador % 2 == 0) Color(
-                            33,
-                            33,
-                            33
-                        ) else Color(
-                            22,
-                            22,
-                            22
-                        ),
-                    ),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+            items(listaAmigos) { amigo ->
+
                 Row(
+                    modifier = Modifier
+                        .height(100.dp)
+                        .fillMaxWidth()
+                        .background(
+                            if (contador % 2 == 0) Color(
+                                33,
+                                33,
+                                33
+                            ) else Color(
+                                22,
+                                22,
+                                22
+                            ),
+                        ),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    //Foto
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        //Foto
+                        Row(
+                            modifier = Modifier
+                                .width(80.dp)
+                                .height(100.dp),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .height(60.dp)
+                                    .width(60.dp)
+                                    .clip(CircleShape)
+                            ) {
+                                AsyncImage(
+                                    model = amigo.foto,
+                                    contentDescription = "astronauta",
+                                )
+                            }
+                        }
+                        //Nome
+                        Row(
+                            modifier = Modifier
+                                .height(100.dp),
+                            horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            TextoBranco(
+                                texto = amigo.nome,
+                                tamanhoFonte = 12
+                            )
+
+                        }
+                    }
+
+
+                    //Pontuação
                     Row(
                         modifier = Modifier
-                            .width(80.dp)
-                            .height(100.dp),
+                            .padding(end = 20.dp)
+                            .height(20.dp)
+                            .width(20.dp),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .height(60.dp)
-                                .width(60.dp)
-                                .clip(CircleShape)
-                        ) {
-                            AsyncImage(
-                                model = amigo.foto,
-                                contentDescription = "astronauta",
-                            )
-                        }
-                    }
-                    //Nome
-                    Row(
-                        modifier = Modifier
-                            .height(100.dp),
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        TextoBranco(
-                            texto = amigo.nome,
-                            tamanhoFonte = 12
+
+                        val usuario: Painter =
+                            painterResource(id = imagem)
+
+                        Image(
+                            painter = usuario,
+                            contentDescription = null, // A descrição é opcional
+                            modifier = Modifier.fillMaxSize()
                         )
 
+
                     }
                 }
-
-
-                //Pontuação
-                Row(
-                    modifier = Modifier
-                        .padding(end = 20.dp)
-                        .height(20.dp)
-                        .width(20.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    val usuario: Painter =
-                        painterResource(id = imagem)
-
-                    Image(
-                        painter = usuario,
-                        contentDescription = null, // A descrição é opcional
-                        modifier = Modifier.fillMaxSize()
-                    )
-
-                }
+                contador++
             }
-            contador++
         }
+        PullRefreshIndicator(
+            refreshing = atualizando,
+            state = pullRefreshState,
+            Modifier.align(Alignment.TopCenter)
+        )
     }
-    PullRefreshIndicator(
-        refreshing = atualizando,
-        state = pullRefreshState,
-        Modifier.align(Alignment.TopCenter)
-    )
-}
 }
