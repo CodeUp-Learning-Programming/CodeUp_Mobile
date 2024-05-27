@@ -55,3 +55,7 @@ class MyNotification(private val context: Context, private val title: String, pr
         notificationManager.notify(0, notificationBuilder.build())
     }
 }
+
+//Para soltar a notificação é assim
+//val notification = MyNotification(context, "TESTE", "mensagem")
+//notification.fireNotification()

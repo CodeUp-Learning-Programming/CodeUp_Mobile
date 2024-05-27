@@ -77,7 +77,6 @@ class TelaLogin : ComponentActivity() {
 fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
 
     //ViewModel
-    val carregando by usuarioViewModel.carregando.observeAsState(false)
     val loginStatus by usuarioViewModel.loginStatus.observeAsState()
 
     //DataStore
@@ -109,7 +108,6 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
 
     var emailInputValido by remember { mutableStateOf(false) }
     var senhaInputValido by remember { mutableStateOf(false) }
-
 
 
     Column(
@@ -211,14 +209,16 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
             )
 
             BotaoAzul(
-                loading = carregando,
+                loading = entrando,
                 text = stringResource(R.string.text_entrar), onClick = {
                     if (usuarioLoginRequest.email.isEmpty() || usuarioLoginRequest.senha.isEmpty()) {
                         emailInputValido = true
                         senhaInputValido = true
+                        entrando = false
 
                     } else {
                         usuarioViewModel.login(usuarioLoginRequest, context, dataStore, lembrar)
+                        entrando = true
 
                     }
                 }, modifier = Modifier.fillMaxWidth()

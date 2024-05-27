@@ -1,6 +1,7 @@
 package com.example.codeup.ui.composables.tela
 
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -133,10 +134,9 @@ fun TelaMenuPerfil(
                             modifier = Modifier,
                             text = stringResource(R.string.text_experimente_pro).uppercase(),
                             onClick = {
-//                                setShowPopup(true)
-//                                Log.d("PERFIL", "Exibindo pop up")
-                                val notification = MyNotification(context, "TESTE", "EH O MATH")
-                                notification.fireNotification()
+                                setShowPopup(true)
+                                Log.d("PERFIL", "Exibindo pop up")
+
                             })
                     }
                     Row(

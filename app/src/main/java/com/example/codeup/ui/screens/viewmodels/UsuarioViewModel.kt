@@ -25,7 +25,6 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
 
 
     // Estado para carregar indicação
-    var carregando = MutableLiveData(false)
     val loginStatus = MutableLiveData<String?>()
 
     val usuarioAtivo = MutableLiveData<Usuario>()
@@ -61,13 +60,12 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
     ) {
         Log.d("USUARIO","Iniciando Login")
         viewModelScope.launch(Dispatchers.IO) {
-            carregando.postValue(true)
-
             try {
                 val storeUser = StoreUser.getInstance(context)
                 val usuarioResponse = apiUsuario.login(usuarioLoginRequest)
 
                 if (usuarioResponse.isSuccessful && usuarioResponse.body() != null) {
+
                     val usuario = usuarioResponse.body()!!
                     usuarioAtivo.postValue(usuario)
                     storeUser.saveUsuario(usuario)
@@ -81,6 +79,7 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
                     val telaHome = Intent(context, TelaHome::class.java)
                     context.startActivity(telaHome)
 
+
                 } else {
                     Log.d("USUARIO","Login mal-sucedido")
                     loginStatus.postValue("Erro de login: ${usuarioResponse.errorBody()?.string()}")
@@ -88,8 +87,6 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
             } catch (e: Exception) {
                 Log.d("USUARIO","Erro de conexão")
                 loginStatus.postValue("Erro de conexão: ${e.message}")
-            } finally {
-                carregando.postValue(false)
             }
         }
     }
