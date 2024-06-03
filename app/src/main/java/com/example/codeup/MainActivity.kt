@@ -64,9 +64,84 @@ class MainActivity : ComponentActivity() {
                         }
                     }
 
-                    Login()
+               Login()
+//                    MyApp()
                 }
             }
         }
     }
 }
+
+//
+//data class WordItem(val id: UUID, val word: String)
+//
+//@Composable
+//fun MyApp() {
+//    var selectedWords by remember { mutableStateOf(listOf<WordItem>()) }
+//    val availableWords = listOf(
+//        WordItem(UUID.randomUUID(), "Kotlin"),
+//        WordItem(UUID.randomUUID(), "Compose"),
+//        WordItem(UUID.randomUUID(), "Jetpack"),
+//        WordItem(UUID.randomUUID(), "Android"),
+//        WordItem(UUID.randomUUID(), "Compose"), // Repetida
+//        WordItem(UUID.randomUUID(), "Kotlin")  // Repetida
+//    )
+//
+//    Column(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .padding(16.dp)
+//    ) {
+//        Text("Available Words", fontSize = 20.sp, modifier = Modifier.padding(bottom = 8.dp))
+//
+//        WordList(
+//            words = availableWords,
+//            selectedWords = selectedWords,
+//            onWordClick = { wordItem ->
+//                if (selectedWords.any { it.id == wordItem.id }) {
+//                    selectedWords = selectedWords.filter { it.id != wordItem.id }
+//                } else {
+//                    selectedWords = selectedWords + wordItem
+//                }
+//            }
+//        )
+//
+//        Spacer(modifier = Modifier.height(32.dp))
+//
+//        Text("Selected Words", fontSize = 20.sp, modifier = Modifier.padding(bottom = 8.dp))
+//
+//        SelectedWordsArea(selectedWords)
+//    }
+//}
+//
+//@Composable
+//fun WordList(words: List<WordItem>, selectedWords: List<WordItem>, onWordClick: (WordItem) -> Unit) {
+//    Column {
+//        words.forEach { wordItem ->
+//            val isSelected = selectedWords.any { it.id == wordItem.id }
+//            Text(
+//                text = wordItem.word,
+//                fontSize = 18.sp,
+//                modifier = Modifier
+//                    .padding(4.dp)
+//                    .background(if (isSelected) Color.Green else Color.LightGray)
+//                    .padding(8.dp)
+//                    .clickable { onWordClick(wordItem) }
+//            )
+//        }
+//    }
+//}
+//
+//@Composable
+//fun SelectedWordsArea(words: List<WordItem>) {
+//    Column(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .background(Color.Gray)
+//            .padding(16.dp)
+//    ) {
+//        words.forEach { wordItem ->
+//            Text(text = wordItem.word, fontSize = 18.sp, modifier = Modifier.padding(4.dp))
+//        }
+//    }
+//}

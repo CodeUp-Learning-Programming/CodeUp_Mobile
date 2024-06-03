@@ -147,6 +147,7 @@ fun TelaMenuAmigos(
                         )
                     }
                     ListaAmigos(
+                        temSolicitacao = listaSolicitacoes.isNotEmpty(),
                         listaAmigos, usuario = usuario,
                         imagem = R.drawable.icon_usuario
                     )

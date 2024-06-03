@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.codeup.data.UltimaMateriaAcessada
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +17,7 @@ class StoreUserGraficoExercicio private constructor(private val context: Context
     companion object {
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "exercicios_feitos")
         private val FASE_KEY = stringPreferencesKey("exercicios_feitos_key")
+        private val ULTIMA_MATERIA_KEY = stringPreferencesKey("ultima_materia_key")
         private var INSTANCE: StoreUserGraficoExercicio? = null
         private val gson = Gson()
 
@@ -40,4 +42,19 @@ class StoreUserGraficoExercicio private constructor(private val context: Context
             preferences[FASE_KEY] = json
         }
     }
+
+    // Retrieve the Usuario object
+    val getUltimaMateriaAcessada: Flow<UltimaMateriaAcessada?> = context.dataStore.data.map { preferences ->
+        preferences[StoreUserGraficoExercicio.ULTIMA_MATERIA_KEY]?.let { json ->
+            StoreUserGraficoExercicio.gson.fromJson(json, UltimaMateriaAcessada::class.java)
+        }
+    }
+
+    // Save the Usuario object
+    suspend fun saveUltimaMateriaAcessada(ultimaMateriaAcessada: UltimaMateriaAcessada) {
+        context.dataStore.edit { preferences ->
+            preferences[StoreUserGraficoExercicio.ULTIMA_MATERIA_KEY] = StoreUserGraficoExercicio.gson.toJson(ultimaMateriaAcessada)
+        }
+    }
+
 }

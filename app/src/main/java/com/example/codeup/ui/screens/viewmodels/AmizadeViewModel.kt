@@ -9,7 +9,6 @@ import com.example.codeup.api.RetrofitService
 import com.example.codeup.data.BuscarPorNomeRequest
 import com.example.codeup.data.RespostaSolicitacao
 import com.example.codeup.data.SolicitarAmizadeRequest
-import com.example.codeup.data.Usuario
 import com.example.codeup.util.StoreAmizades
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,12 +16,6 @@ import kotlinx.coroutines.launch
 
 class AmizadeViewModel(private val bearerToken: String?) : ViewModel() {
 
-
-    // Estado para carregar indicação
-    var carregando = MutableLiveData(false)
-    val loginStatus = MutableLiveData<String?>()
-
-    val usuarioAtivo = MutableLiveData<Usuario>()
     val apiAmizade = RetrofitService.getApiAmizadeService(bearerToken)
 
     val erroApi = MutableLiveData<String?>()
@@ -42,7 +35,6 @@ class AmizadeViewModel(private val bearerToken: String?) : ViewModel() {
                 }
             } catch (e: Exception) {
                 Log.d("AMIZADE", "Erro de conexão")
-                loginStatus.postValue("Erro de conexão: ${e.message}")
             }
         }
     }
@@ -64,7 +56,6 @@ class AmizadeViewModel(private val bearerToken: String?) : ViewModel() {
                 }
             } catch (e: Exception) {
                 Log.d("AMIZADE", "Erro de conexão")
-                loginStatus.postValue("Erro de conexão: ${e.message}")
             }
         }
     }
@@ -86,7 +77,6 @@ class AmizadeViewModel(private val bearerToken: String?) : ViewModel() {
                 }
             } catch (e: Exception) {
                 Log.d("AMIZADE", "Erro de conexão")
-                loginStatus.postValue("Erro de conexão: ${e.message}")
             }
         }
     }
@@ -108,7 +98,6 @@ class AmizadeViewModel(private val bearerToken: String?) : ViewModel() {
                 }
             } catch (e: Exception) {
                 Log.d("AMIZADE", "Erro de conexão")
-                loginStatus.postValue("Erro de conexão: ${e.message}")
             }
         }
     }
@@ -117,7 +106,6 @@ class AmizadeViewModel(private val bearerToken: String?) : ViewModel() {
         Log.d("AMIZADE", "Buscando lista de amigos")
         viewModelScope.launch(Dispatchers.IO) {
             val response = apiAmizade.gerenciarConvite(respostaSolicitacao)
-
             try {
                 if (response.isSuccessful) {
                     Log.d("AMIZADE", "Pedido gerenciado com sucesso!")
@@ -132,8 +120,8 @@ class AmizadeViewModel(private val bearerToken: String?) : ViewModel() {
                 }
             } catch (e: Exception) {
                 Log.d("AMIZADE", "Erro de conexão")
-                loginStatus.postValue("Erro de conexão: ${e.message}")
             }
+
         }
     }
 
@@ -153,7 +141,6 @@ class AmizadeViewModel(private val bearerToken: String?) : ViewModel() {
                 }
             } catch (e: Exception) {
                 Log.d("AMIZADE", "Erro de conexão")
-                loginStatus.postValue("Erro de conexão: ${e.message}")
             }
         }
     }

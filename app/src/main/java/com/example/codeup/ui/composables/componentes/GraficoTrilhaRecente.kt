@@ -19,11 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.codeup.data.Materia
+import com.example.codeup.data.UltimaMateriaAcessada
 
 @Composable
 fun GraficoTrilhaRecente(
-    materia: Materia
+    ultimaMateriaAcessada: UltimaMateriaAcessada
 ) {
 
     val borderGradient = Brush.horizontalGradient(
@@ -61,14 +61,14 @@ fun GraficoTrilhaRecente(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TextoBranco(texto = materia.titulo, tamanhoFonte = 14)
+                    TextoBranco(texto = ultimaMateriaAcessada.titulo, tamanhoFonte = 14)
                 }
                 //Barra de progresso
                 Surface(
                     modifier = Modifier
                 ) {
                     LinearProgressIndicator(
-                        progress = { 40.toFloat() / 100.toFloat() },
+                        progress = { ultimaMateriaAcessada.totalConcluidos.toFloat() / ultimaMateriaAcessada.totalExercicios.toFloat() },
                         modifier = Modifier
                             .width(300.dp)
                             .height(8.dp),

@@ -21,11 +21,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +46,8 @@ import com.example.codeup.ui.composables.componentes.TextoBranco
 import com.example.codeup.ui.screens.viewmodels.UsuarioViewModel
 import com.example.codeup.ui.theme.CodeupTheme
 import com.example.codeup.util.StoreRememberUser
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class TelaLogin : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,7 +90,7 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
     val emailSalvo = dataStore.getEmail.collectAsState(initial = "")
     val senhaSalva = dataStore.getPassword.collectAsState(initial = "")
 
-
+    val coroutineScope = rememberCoroutineScope()
     //Objeto Usuario
     val (usuarioLoginRequest, usuarioLoginRequestSetter) = remember {
         mutableStateOf(UsuarioLoginRequest())
@@ -95,15 +99,21 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
 
     var lembrar by remember { mutableStateOf(false) }
     var entrando by remember { mutableStateOf(false) }
-    //Logando automaticamente caso o usuário tenha selecionado lembrar anteriormente
-    if (emailSalvo.value!! != "" && senhaSalva.value!! != "" && !entrando) {
-        entrando = true
-        usuarioViewModel.login(
-            UsuarioLoginRequest(emailSalvo.value!!, senhaSalva.value!!),
-            context,
-            dataStore,
-            true
-        )
+
+    LaunchedEffect(emailSalvo.value, senhaSalva.value) {
+        if (emailSalvo.value!!.isNotEmpty() && senhaSalva.value!!.isNotEmpty() && !entrando) {
+            entrando = true
+            usuarioLoginRequestSetter(usuarioLoginRequest.copy(email = emailSalvo.value!!,senha = senhaSalva.value!!))
+            lembrar = true
+            usuarioViewModel.login(
+                UsuarioLoginRequest(emailSalvo.value!!, senhaSalva.value!!),
+                context,
+                dataStore,
+                true
+            )
+            delay(5000)
+            entrando = false
+        }
     }
 
     var emailInputValido by remember { mutableStateOf(false) }
@@ -215,11 +225,13 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
                         emailInputValido = true
                         senhaInputValido = true
                         entrando = false
-
                     } else {
                         usuarioViewModel.login(usuarioLoginRequest, context, dataStore, lembrar)
-                        entrando = true
-
+                        coroutineScope.launch {
+                            entrando = true
+                            delay(5000)
+                            entrando = false
+                        }
                     }
                 }, modifier = Modifier.fillMaxWidth()
 

@@ -43,6 +43,7 @@ import kotlin.random.Random
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ListaAmigos(
+    temSolicitacao: Boolean = false,
     listaAmigos: List<Amigo>,
     usuario: Usuario,
     imagem: Int = 0,
@@ -57,22 +58,23 @@ fun ListaAmigos(
         coroutineScope.launch {
             atualizando = true
             //Atualizar lista de amigos
-            val amizadeViewModelViewModel = AmizadeViewModel(usuario.token)
-            amizadeViewModelViewModel.listarAmigos(usuario.id!!, context)
+            val amizadeViewModel = AmizadeViewModel(usuario.token)
+            amizadeViewModel.listarAmigos(usuario.id!!, context)
+            amizadeViewModel.solicitacoesRecebidas(usuario.id!!, context)
             delay(Random.nextLong(500, 3000))
             atualizando = false
         }
 
     })
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(13, 13, 13))
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        TextoBranco(texto = "Amigos", tamanhoFonte = 20)
+    if (temSolicitacao) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(13, 13, 13))
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextoBranco(texto = "Amigos", tamanhoFonte = 20)
 //        Icon(
 //            imageVector = Icons.Filled.ExpandMore,
 //            contentDescription = "Expandir",
@@ -81,13 +83,16 @@ fun ListaAmigos(
 //            tint = Color.White,
 //            modifier = Modifier.padding(start = 8.dp)
 //        )
+        }
     }
     Box() {
 
 
-        LazyColumn(modifier = Modifier
-            .fillMaxSize()
-            .pullRefresh(pullRefreshState)) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .pullRefresh(pullRefreshState)
+        ) {
 
             items(listaAmigos) { amigo ->
 

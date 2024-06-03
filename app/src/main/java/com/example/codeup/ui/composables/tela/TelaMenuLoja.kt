@@ -248,7 +248,9 @@ fun TelaMenuLoja(
                                                         selectedItem!!.id,
                                                         context = context
                                                     )
-                                                    lojaViewModel.carregarLoja(context = context)
+                                                    coroutineScope.launch {
+                                                        delay(Random.nextLong(500, 3000))
+                                                    }
 
                                                     //colocar para fechar depois de um tempo
                                                     setShowPopup(false)

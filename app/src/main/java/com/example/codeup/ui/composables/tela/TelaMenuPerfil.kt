@@ -35,16 +35,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import co.yml.charts.common.extensions.isNotNull
+import co.yml.charts.common.model.Point
 import coil.compose.AsyncImage
 import com.example.codeup.R
-import com.example.codeup.data.Materia
+import com.example.codeup.data.UltimaMateriaAcessada
 import com.example.codeup.data.Usuario
 import com.example.codeup.ui.composables.card.CardExperimentarPro
 import com.example.codeup.ui.composables.card.CardPerfil
 import com.example.codeup.ui.composables.componentes.BotaoAzulClaro
 import com.example.codeup.ui.composables.componentes.GraficoLinha
 import com.example.codeup.ui.composables.componentes.GraficoTrilhaRecente
-import com.example.codeup.ui.composables.componentes.MyNotification
 import com.example.codeup.ui.composables.componentes.TextoBranco
 import com.example.codeup.ui.composables.menu.MenuPadrao
 import com.example.codeup.ui.screens.TelaConfiguracoes
@@ -60,32 +61,56 @@ fun TelaMenuPerfil(
     usuario: Usuario,
 ) {
     val context = LocalContext.current
-    var listaExercicios by remember { mutableStateOf<Map<String,String>?>(null) }
+    var listaExercicios by remember { mutableStateOf<Map<String, String>?>(null) }
+    var listaExerciciosFinal by remember { mutableStateOf<List<Point>>(emptyList()) }
 
     val coroutineScope = rememberCoroutineScope()
     val storeUserGraficoExercicio = StoreUserGraficoExercicio.getInstance(context)
 
-    // Observe and collect user data from DataStore
+    var ultimaMateriaAcessada by remember { mutableStateOf<UltimaMateriaAcessada?>(null) }
+
+    var atualizando by remember { mutableStateOf(false) }
+    var graficoPlotado by remember { mutableStateOf(false) }
+
     LaunchedEffect(key1 = true) {
         coroutineScope.launch {
             storeUserGraficoExercicio.getListExercicios.collect { retrievedUser ->
                 listaExercicios = retrievedUser
             }
         }
+
+
+        storeUserGraficoExercicio.getUltimaMateriaAcessada.collect { ultimaMateria ->
+            if (ultimaMateria != null) {
+                ultimaMateriaAcessada = ultimaMateria
+            }
+        }
     }
-    var atualizando by remember { mutableStateOf(false) }
+
 
     val pullRefreshState = rememberPullRefreshState(refreshing = atualizando, onRefresh = {
 
         coroutineScope.launch {
             atualizando = true
             val buscarExerciciosPorMes = UsuarioViewModel(usuario.token)
-            buscarExerciciosPorMes.buscarExerciciosPorMes(usuario.id!!,context)
+            buscarExerciciosPorMes.buscarExerciciosPorMes(usuario.id!!, context)
             delay(Random.nextLong(500, 3000))
             atualizando = false
         }
 
     })
+
+    //Remover
+    val pointsData: List<Point> =
+        listOf(
+            Point(0.toFloat(), 1.toFloat()),
+            Point(1.toFloat(), 2.toFloat()),
+            Point(2.toFloat(), 5.toFloat()),
+            Point(3.toFloat(), 2.toFloat()),
+
+            )
+
+
     MenuPadrao(
         titulo = stringResource(R.string.text_perfil),
         imagem = R.drawable.icon_configurar,
@@ -96,7 +121,12 @@ fun TelaMenuPerfil(
         conteudo = ({
             val (showPopup, setShowPopup) = remember { mutableStateOf(false) }
 
-            Box(modifier = Modifier.fillMaxSize().pullRefresh(state = pullRefreshState)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .pullRefresh(state = pullRefreshState)
+            ) {
+
 
                 //Geral
                 Column(
@@ -206,34 +236,70 @@ fun TelaMenuPerfil(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        GraficoTrilhaRecente(
-                            Materia(
-                                id = 1,
-                                titulo = "Algoritmo",
-                                url = ""
+                        ultimaMateriaAcessada?.let {
+                            GraficoTrilhaRecente(
+                                it
                             )
-                        )
+                        }
                     }
                     Spacer(
                         modifier = Modifier
                             .height(10.dp)
                             .background(Color(24, 24, 24))
                     )
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceBetween
-                    ) {
-                   
-                        GraficoLinha(titulo = stringResource(R.string.text_exercicios_feitos))
 
-                        Spacer(
+                    if (listaExercicios.isNotNull()) {
+                        if (!graficoPlotado) {
+                            graficoPlotado = true
+                            var primeiro = true
+                            for ((mes, exerciciosFeitos) in listaExercicios!!) {
+                                // Convertendo as chaves e valores para números inteiros
+                                val mesAtual = mes.toFloat()
+                                val totalExerciciosMes = exerciciosFeitos.toFloat()
+                                if (primeiro) {
+                                    primeiro = false
+
+                                    listaExerciciosFinal = listaExerciciosFinal + Point(
+                                        if (mesAtual - 1 < 0) 12F else mesAtual - 1,
+                                        0F,
+                                        totalExerciciosMes.toString()
+                                    )
+                                }
+                                listaExerciciosFinal = listaExerciciosFinal + Point(
+                                    mesAtual,
+                                    totalExerciciosMes,
+                                    totalExerciciosMes.toString()
+                                )
+
+                            }
+                        }
+
+
+                        Column(
                             modifier = Modifier
-                                .height(10.dp)
-                                .background(Color(24, 24, 24))
-                        )
-                        GraficoLinha(titulo = stringResource(R.string.text_maior_ranking))
+                                .fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.SpaceBetween
+                        ) {
+
+                            GraficoLinha(
+                                titulo = stringResource(R.string.text_exercicios_feitos),
+                                listaExerciciosFinal
+                            )
+
+                            Spacer(
+                                modifier = Modifier
+                                    .height(10.dp)
+                                    .background(Color(24, 24, 24))
+                            )
+
+                            GraficoLinha(
+                                titulo = stringResource(R.string.text_maior_ranking),
+                                pointsData
+                            )
+                        }
+
+
                     }
                     Spacer(
                         modifier = Modifier

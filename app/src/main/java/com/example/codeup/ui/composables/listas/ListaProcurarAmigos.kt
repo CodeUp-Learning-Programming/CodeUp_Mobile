@@ -30,8 +30,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.codeup.R
 import com.example.codeup.data.BuscarPorNomeResult
 import com.example.codeup.data.SolicitarAmizadeRequest
 import com.example.codeup.data.Usuario
@@ -65,7 +67,7 @@ fun ListaProcurarAmigos(
 
     })
 
-    Box() {
+    Box {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -110,7 +112,7 @@ fun ListaProcurarAmigos(
                             ) {
                                 AsyncImage(
                                     model = amigo.foto,
-                                    contentDescription = "astronauta",
+                                    contentDescription = stringResource(R.string.text_descricao_imagem),
                                 )
                             }
                         }

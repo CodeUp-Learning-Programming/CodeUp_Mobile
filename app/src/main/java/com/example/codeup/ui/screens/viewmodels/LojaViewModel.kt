@@ -63,6 +63,8 @@ class LojaViewModel(private val bearerToken: String): ViewModel(){
 
                         storeUser.saveUsuario(usuario) // Salva o usuário atualizado
                     }
+                   carregarLoja(context = context)
+
 
                 } else {
                     Log.e("API", "Erro ao comprar item: ${response.errorBody()?.string()}")

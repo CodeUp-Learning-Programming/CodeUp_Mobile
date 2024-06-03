@@ -53,7 +53,7 @@ fun CardComprarItem(
     Box(
         modifier = Modifier
             .width(300.dp)
-            .height(310.dp)
+            .height(330.dp)
             .background(Color.Black)
             .border(1.dp, borderGradient, shape = RoundedCornerShape(8F))
     ) {

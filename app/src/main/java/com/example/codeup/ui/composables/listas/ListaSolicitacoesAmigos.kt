@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.codeup.R
@@ -73,7 +74,7 @@ fun ListaSolicitacoesAmigos(
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        TextoBranco(texto = "Solicitações", tamanhoFonte = 20)
+        TextoBranco(texto = stringResource(id = R.string.text_solicitacoes), tamanhoFonte = 20)
 //        Icon(
 //            imageVector = Icons.Filled.ExpandMore,
 //            contentDescription = "Expandir",

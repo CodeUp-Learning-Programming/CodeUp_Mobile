@@ -76,4 +76,8 @@
     <string name="text_explique_problema">Por favor explique o problema com mais detalhes</string>
     <string name="text_fechar">fechar</string>
     <string name="text_reporte_enviado">Reporte enviado com sucesso!</string>
+    <string name="text_solicitacoes">Solicitações</string>
+    <string name="text_titulo_console">script.js</string>
+    <string name="text_sem_dados">Sem dados para exibir</string>
+    <string name="text_descricao_imagem">Descrição da foto</string>
 </resources>

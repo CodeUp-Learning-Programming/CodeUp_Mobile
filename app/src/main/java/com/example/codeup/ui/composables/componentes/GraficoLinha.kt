@@ -17,11 +17,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import co.yml.charts.common.model.Point
+import com.example.codeup.R
 
 @Composable
 fun GraficoLinha(
-    titulo: String
+    titulo: String,
+    pointsData: List<Point>
 ) {
     val borderGradient = Brush.horizontalGradient(
         colors = listOf(
@@ -29,6 +33,7 @@ fun GraficoLinha(
             Color(0, 132, 249)
         )
     )
+
     Box(
         modifier = Modifier
             .height(300.dp)
@@ -52,11 +57,25 @@ fun GraficoLinha(
             ) {
                 TextoBranco(texto = titulo, tamanhoFonte = 14)
             }
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                LineChartScreen()
+            if (pointsData.isEmpty()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 100.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    TextoBranco(texto = stringResource(R.string.text_sem_dados), tamanhoFonte = 16)
+                }
+            } else {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+
+                    LineChartScreen(pointsData)
+                }
+
             }
 
         }

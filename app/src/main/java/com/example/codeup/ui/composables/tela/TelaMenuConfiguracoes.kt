@@ -199,6 +199,7 @@ fun TelaMenuConfiguracoes(
                                         tamanhoFonte = 14,
                                     )
                                 }
+
                                 TextoBranco(
                                     texto = stringResource(R.string.text_padrao),
                                     tamanhoFonte = 14,
