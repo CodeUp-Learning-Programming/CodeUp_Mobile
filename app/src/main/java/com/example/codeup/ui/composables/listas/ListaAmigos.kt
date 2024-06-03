@@ -90,7 +90,6 @@ fun ListaAmigos(
 
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
                 .pullRefresh(pullRefreshState)
         ) {
 

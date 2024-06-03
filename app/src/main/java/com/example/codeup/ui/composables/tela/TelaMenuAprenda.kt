@@ -178,8 +178,10 @@ fun TelaMenuAprenda(
                                     qtdExerciciosFase = fase.qtdExerciciosFase,
                                     qtdExerciciosFaseConcluidos = fase.qtdExerciciosFaseConcluidos,
                                     onClick = {
-                                        setShowPopup(true)
-                                        selectedCardIndex = listaFases.indexOf(fase)
+                                        if(fase.desbloqueada){
+                                            setShowPopup(true)
+                                            selectedCardIndex = listaFases.indexOf(fase)
+                                        }
                                     },
                                 )
                             }

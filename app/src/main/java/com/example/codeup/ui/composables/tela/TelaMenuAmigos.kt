@@ -102,10 +102,14 @@ fun TelaMenuAmigos(
                             isTextFieldFocused = true,
                             texto = buscarPorNomeRequest.nome,
                             label = "",
-                            onValueChange = { buscarPorNomeRequestSetter(buscarPorNomeRequest.copy(
-                                idUsuario = usuario.id!!,
-                                nome = it
-                            ))},
+                            onValueChange = {
+                                buscarPorNomeRequestSetter(
+                                    buscarPorNomeRequest.copy(
+                                        idUsuario = usuario.id!!,
+                                        nome = it
+                                    )
+                                )
+                            },
                             onFocusChanged = {
                                 isTextfieldFocused = true
                             },
@@ -116,11 +120,20 @@ fun TelaMenuAmigos(
                             modifier = Modifier.fillMaxWidth(),
                             text = stringResource(id = R.string.text_buscar).uppercase(),
                             onClick = {
-                                Log.d("AMIZADE", "${buscarPorNomeRequest.nome} e ${buscarPorNomeRequest.idUsuario}")
+                                Log.d(
+                                    "AMIZADE",
+                                    "${buscarPorNomeRequest.nome} e ${buscarPorNomeRequest.idUsuario}"
+                                )
 
                                 val amizadeViewModelViewModel = AmizadeViewModel(usuario.token)
-                                amizadeViewModelViewModel.solicitacoesRecebidas(usuario.id!!, context)
-                                amizadeViewModelViewModel.buscarRelaciomento(buscarPorNome = buscarPorNomeRequest, context)
+                                amizadeViewModelViewModel.solicitacoesRecebidas(
+                                    usuario.id!!,
+                                    context
+                                )
+                                amizadeViewModelViewModel.buscarRelaciomento(
+                                    buscarPorNome = buscarPorNomeRequest,
+                                    context
+                                )
                             })
                     }
                 }
@@ -139,13 +152,19 @@ fun TelaMenuAmigos(
             },
             imagem = R.drawable.icon_adicionar_amigo,
             conteudo = ({
-                Column {
-                    if(listaSolicitacoes.isNotEmpty()){
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(600.dp)
+                ) {
+                    if (listaSolicitacoes.isNotEmpty()) {
                         ListaSolicitacoesAmigos(
                             listaSolicitacoes, usuario = usuario,
                             imagem = R.drawable.icon_usuario
                         )
                     }
+                    Spacer(Modifier.height(10.dp))
+
                     ListaAmigos(
                         temSolicitacao = listaSolicitacoes.isNotEmpty(),
                         listaAmigos, usuario = usuario,
