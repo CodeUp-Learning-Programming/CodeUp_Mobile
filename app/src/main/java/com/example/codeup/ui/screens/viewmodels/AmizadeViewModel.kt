@@ -60,27 +60,6 @@ class AmizadeViewModel(private val bearerToken: String?) : ViewModel() {
         }
     }
 
-    fun solicitacoesEnviadas(idUsuario: Int, context: Context) {
-        Log.d("AMIZADE", "Enviando solicitação de amizade")
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = apiAmizade.solicitacoesAmizadeEnviadas(idUsuario)
-            val storeAmizades = StoreAmizades.getInstance(context)
-
-            try {
-                if (response.isSuccessful) {
-                    Log.d("AMIZADE", "Solicitação enviada com sucesso")
-//                    storeAmizades.saveAmigos(response.body()!!)
-
-                } else {
-                    Log.d("AMIZADE", "Cadastro mal-sucedido")
-                    erroApi.postValue("Erro ao realizar o cadastro: ${response.message()}")
-                }
-            } catch (e: Exception) {
-                Log.d("AMIZADE", "Erro de conexão")
-            }
-        }
-    }
-
     fun listarAmigos(idUsuario: Int, context: Context) {
         Log.d("AMIZADE", "Buscando lista de amigos")
         viewModelScope.launch(Dispatchers.IO) {
@@ -102,28 +81,32 @@ class AmizadeViewModel(private val bearerToken: String?) : ViewModel() {
         }
     }
 
-    fun gerenciarConvite(respostaSolicitacao: RespostaSolicitacao, context: Context) {
+    fun gerenciarConvite(respostaSolicitacao: RespostaSolicitacao, context: Context, idUsuario: Int) {
         Log.d("AMIZADE", "Buscando lista de amigos")
+
+        // Verifique se o código está dentro de um ViewModel
         viewModelScope.launch(Dispatchers.IO) {
-            val response = apiAmizade.gerenciarConvite(respostaSolicitacao)
             try {
+                val response = apiAmizade.gerenciarConvite(respostaSolicitacao)
                 if (response.isSuccessful) {
                     Log.d("AMIZADE", "Pedido gerenciado com sucesso!")
-                    if(respostaSolicitacao.resposta){
+                    if (respostaSolicitacao.resposta) {
+
                         Log.d("AMIZADE", "Pedido aceito com sucesso!")
-                    }else{
+                    } else {
                         Log.d("AMIZADE", "Pedido recusado com sucesso!")
                     }
+                    solicitacoesRecebidas(idUsuario, context)
                 } else {
                     Log.d("AMIZADE", "Erro ao obter a lista")
                     erroApi.postValue("Erro ao realizar o cadastro: ${response.message()}")
                 }
             } catch (e: Exception) {
-                Log.d("AMIZADE", "Erro de conexão")
+                Log.d("AMIZADE", "Erro de conexão: ${e.message}")
             }
-
         }
     }
+
 
     fun buscarRelaciomento(buscarPorNome: BuscarPorNomeRequest, context: Context) {
         Log.d("AMIZADE", "Buscando lista de amigos")

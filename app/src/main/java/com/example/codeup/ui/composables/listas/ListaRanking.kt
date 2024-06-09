@@ -162,7 +162,7 @@ fun ListaRanking(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        TextoBranco(texto = usuarioRanking.pontos, tamanhoFonte = 16)
+                        TextoBranco(texto = usuarioRanking.xp, tamanhoFonte = 16)
                     }
 
                 }

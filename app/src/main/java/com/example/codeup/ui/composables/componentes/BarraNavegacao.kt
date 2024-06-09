@@ -121,7 +121,7 @@ fun BarraNavegacao(
                                 usuario = usuario, materia = materia
                             )
 
-                            TELA_MENU_RANKING -> TelaMenuRanking(usuario = usuario)
+                            TELA_MENU_RANKING -> TelaMenuRanking()
                             TELA_MENU_AMIGOS -> TelaMenuAmigos(usuario = usuario)
                             TELA_MENU_LOJA -> TelaMenuLoja(usuario = usuario)
                             TELA_MENU_PERFIL -> TelaMenuPerfil(usuario = usuario)

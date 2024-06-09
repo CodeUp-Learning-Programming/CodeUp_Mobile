@@ -164,8 +164,9 @@ fun ListaSolicitacoesAmigos(
                                             idReceptor = usuario.id!!,
                                             emailSolicitante = amigo.email,
                                             resposta = true
-                                        ), context
+                                        ), context,usuario.id!!
                                     )
+
                                     amizadeViewModelViewModel.listarAmigos(usuario.id!!, context)
                                 },
                             painter = addAmigo,
@@ -182,7 +183,7 @@ fun ListaSolicitacoesAmigos(
                                             idReceptor = usuario.id!!,
                                             emailSolicitante = amigo.email,
                                             resposta = false
-                                        ), context
+                                        ), context, usuario.id!!
                                     )
                                 },
                             painter = cancelarAddAmigo,

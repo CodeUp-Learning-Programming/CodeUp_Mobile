@@ -3,6 +3,7 @@ package com.example.codeup.api.controller
 import com.example.codeup.data.FotoPerfilRequest
 import com.example.codeup.data.Usuario
 import com.example.codeup.data.UsuarioLoginRequest
+import com.example.codeup.data.UsuarioRanking
 import com.example.codeup.data.UsuarioRegisterRequest
 import retrofit2.Response
 import retrofit2.http.Body
@@ -22,6 +23,9 @@ interface UsuarioApi {
 
     @GET("usuarios/atualizar/{id}")
     suspend fun atualizarListaItensPorId(@Path("id") id: Int): Response<Usuario>
+
+    @GET("usuarios/ranking")
+    suspend fun ranking(): Response<List<UsuarioRanking>>
 
     @POST("usuarios/cadastrar")
     suspend fun cadastrar(@Body usuarioRegisterRequest: UsuarioRegisterRequest): Response<Usuario>

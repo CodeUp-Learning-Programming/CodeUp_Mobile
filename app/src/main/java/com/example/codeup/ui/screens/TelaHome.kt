@@ -4,11 +4,8 @@ import BarraNavegacao
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
@@ -42,19 +39,6 @@ class TelaHome : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-        enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.light(0, 0),
-            navigationBarStyle = SystemBarStyle.light(0, 0)
-        )
-        window.decorView.apply {
-            // Hide both the navigation bar and the status bar.
-            // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
-            // a general rule, you should design your app to hide the status bar whenever you
-            // hide the navigation bar.
-            systemUiVisibility =
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
-        }
         setContent {
             CodeupTheme {
                 Surface(
@@ -118,6 +102,7 @@ fun Home() {
             amizadeViewModel.listarAmigos(user.id!!, context)
             amizadeViewModel.solicitacoesRecebidas(user.id!!, context)
             usuarioViewModel.buscarExerciciosPorMes(user.id!!, context)
+            usuarioViewModel.ranking(context)
         }
 
         BarraNavegacao(

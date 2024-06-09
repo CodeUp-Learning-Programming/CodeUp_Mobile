@@ -138,22 +138,39 @@ fun ListaProcurarAmigos(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         val addAmigo: Painter = painterResource(id = imagem)
+                        val relogio: Painter = painterResource(id = R.drawable.icon_relogio_branco)
+                        val aceito: Painter = painterResource(id = R.drawable.icon_amigos_selecionado)
 
-                        Image(
-                            modifier = Modifier
-                                .clickable(onClick = {
-                                    val amizadeViewModelViewModel = AmizadeViewModel(usuario.token)
-                                    amizadeViewModelViewModel.solicitarAmizade(
-                                        SolicitarAmizadeRequest(
-                                            idSolicitante = usuario.id!!,
-                                            emailReceptor = amigo.email
+                        if(amigo.statusAmizade == "PENDENTE"){
+                            Image(
+                                modifier = Modifier,
+                                painter = relogio,
+                                contentDescription = null, // A descrição é opcional
+                            )
+                        }else if(amigo.statusAmizade == "ACEITO"){
+                            Image(
+                                modifier = Modifier,
+                                painter = aceito,
+                                contentDescription = null, // A descrição é opcional
+                            )
+                        } else{
+                            Image(
+                                modifier = Modifier
+                                    .clickable(onClick = {
+                                        val amizadeViewModelViewModel = AmizadeViewModel(usuario.token)
+                                        amizadeViewModelViewModel.solicitarAmizade(
+                                            SolicitarAmizadeRequest(
+                                                idSolicitante = usuario.id!!,
+                                                emailReceptor = amigo.email
+                                            )
                                         )
-                                    )
 
-                                }),
-                            painter = addAmigo,
-                            contentDescription = null, // A descrição é opcional
-                        )
+                                    }),
+                                painter = addAmigo,
+                                contentDescription = null, // A descrição é opcional
+                            )
+                        }
+
                     }
 
                 }

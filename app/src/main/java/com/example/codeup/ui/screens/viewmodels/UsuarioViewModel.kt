@@ -13,6 +13,7 @@ import com.example.codeup.data.UsuarioLoginRequest
 import com.example.codeup.data.UsuarioRegisterRequest
 import com.example.codeup.ui.screens.TelaHome
 import com.example.codeup.ui.screens.TelaLogin
+import com.example.codeup.util.StoreRanking
 import com.example.codeup.util.StoreRememberUser
 import com.example.codeup.util.StoreUser
 import com.example.codeup.util.StoreUserGraficoExercicio
@@ -140,7 +141,26 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
         }
     }
 
+    fun ranking(context: Context) {
 
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val storeRanking = StoreRanking.getInstance(context)
+                val usuarioResponse = apiUsuario.ranking()
+
+                if (usuarioResponse.isSuccessful && usuarioResponse.body() != null) {
+                    val response = usuarioResponse.body()!!
+                    storeRanking.saveRanking(response)
+                    Log.e("USUARIO", response.toString())
+
+                } else {
+                    Log.e("API", " erro no post")
+                }
+            } catch (e: Exception) {
+                Log.d("USUARIO","Erro de conexão: ${e.message}")
+            }
+        }
+    }
     fun buscarExerciciosPorMes(id: Int, context: Context) {
 
         viewModelScope.launch(Dispatchers.IO) {
