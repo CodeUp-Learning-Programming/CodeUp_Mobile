@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.map
 class StoreUser private constructor(private val context: Context) {
 
     companion object {
-        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("suario_preferences")
+        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("usuario_preferences")
         private val USER_KEY = stringPreferencesKey("user_key")
         private var INSTANCE: StoreUser? = null
         private val gson = Gson()

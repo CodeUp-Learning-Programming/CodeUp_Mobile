@@ -137,7 +137,7 @@ fun ListaRanking(
                                     .clip(CircleShape)
                             ) {
                                 AsyncImage(
-                                    model = "https://helpia.ai/wp-content/uploads/2023/11/bing-creator.jpeg",
+                                    model = usuarioRanking.foto,
                                     contentDescription = "astronauta",
                                 )
                             }
