@@ -40,7 +40,8 @@ fun MenuExercicio(
     totalCoracoes: Int,
     onClickReportar: () -> Unit,
     onClickValidarResposta: () -> Unit,
-    conteudo: @Composable () -> Unit
+    conteudo: @Composable () -> Unit,
+    loading: Boolean = false
 ) {
 
     var mostrarPopup by remember { mutableStateOf(false) }
@@ -119,8 +120,7 @@ fun MenuExercicio(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
-                        BotaoAzul(modifier = Modifier
-                            .fillMaxWidth(), text = stringResource(R.string.text_enviar).uppercase(), onClick = onClickValidarResposta)
+                        BotaoAzul(modifier = Modifier.fillMaxWidth(), text = stringResource(R.string.text_enviar).uppercase(), onClick = onClickValidarResposta, loading = loading)
                     }
                 }
             }

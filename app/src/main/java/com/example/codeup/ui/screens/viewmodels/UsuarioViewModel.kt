@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.codeup.api.RetrofitService
 import com.example.codeup.data.FotoPerfilRequest
 import com.example.codeup.data.Usuario
+import com.example.codeup.data.UsuarioAtualizado
 import com.example.codeup.data.UsuarioLoginRequest
 import com.example.codeup.data.UsuarioRegisterRequest
 import com.example.codeup.ui.screens.TelaHome
@@ -101,9 +102,16 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
                 val usuarioResponse = apiUsuario.buscarPorId(id)
 
                 if (usuarioResponse.isSuccessful && usuarioResponse.body() != null) {
-                    val usuario = usuarioResponse.body()!!
-                    usuarioAtivo.postValue(usuario)
-                    storeUser.saveUsuario(usuario)
+                    val usuarioAtualizado = usuarioResponse.body()!!
+
+                    val usuarioUpdate = UsuarioAtualizado(
+                        moedas = usuarioAtualizado.moedas,
+                        nivel = usuarioAtualizado.nivel,
+                        xp = usuarioAtualizado.xp,
+                        itensAdquiridos = usuarioAtualizado.itensAdquiridos
+                    )
+
+                    storeUser.atualizarUsuario(id, usuarioUpdate)
                 } else {
                     Log.e("API", " erro no post")
                 }

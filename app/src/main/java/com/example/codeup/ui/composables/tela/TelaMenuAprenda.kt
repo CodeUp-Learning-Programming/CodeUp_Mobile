@@ -1,5 +1,6 @@
 package com.example.codeup.ui.composables.tela
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -55,6 +56,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
+@SuppressLint("SuspiciousIndentation")
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TelaMenuAprenda(
@@ -88,6 +90,8 @@ fun TelaMenuAprenda(
                 amizadeViewModel.solicitacoesRecebidas(usuario.id, context)
                 usuarioViewModel.buscarExerciciosPorMes(usuario.id, context)
                 usuarioViewModel.ranking(context)
+                usuarioViewModel.atualizarPorId(usuario.id, context)
+
             delay(Random.nextLong(500, 3000))
             atualizando = false
         }
