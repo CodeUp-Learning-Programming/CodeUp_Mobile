@@ -17,6 +17,7 @@ class StoreFase private constructor(private val context: Context) {
     companion object {
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("fases")
         private val FASE_KEY = stringPreferencesKey("fase_key")
+        private val FASE_ATUAL_KEY = stringPreferencesKey("fase_atual_key")
         private var INSTANCE: StoreFase? = null
         private val gson = Gson()
 
@@ -39,6 +40,21 @@ class StoreFase private constructor(private val context: Context) {
         context.dataStore.edit { preferences ->
             val json = gson.toJson(fases)
             preferences[FASE_KEY] = json
+        }
+    }
+
+
+    // Retrieve the Usuario object
+    val getFaseAtual: Flow<Fase?> = context.dataStore.data.map { preferences ->
+        preferences[StoreFase.FASE_ATUAL_KEY]?.let { json ->
+            StoreFase.gson.fromJson(json, Fase::class.java)
+        }
+    }
+
+    // Save the Usuario object
+    suspend fun saveFaseAtual(fase: Fase) {
+        context.dataStore.edit { preferences ->
+            preferences[StoreFase.FASE_ATUAL_KEY] = StoreFase.gson.toJson(fase)
         }
     }
 }

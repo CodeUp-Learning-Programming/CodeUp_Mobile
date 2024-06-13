@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.codeup.data.Exercicio
+import com.example.codeup.data.JsResult
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +17,8 @@ class StoreExercicio private constructor(private val context: Context) {
 
     companion object {
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("exercicios")
-        private val FASE_KEY = stringPreferencesKey("exercicio_key")
+        private val EXERCICIO_KEY = stringPreferencesKey("exercicio_key")
+        private val EXERCICIO_RESULT_KEY = stringPreferencesKey("exercicio_result_key")
         private var INSTANCE: StoreExercicio? = null
         private val gson = Gson()
 
@@ -28,15 +30,28 @@ class StoreExercicio private constructor(private val context: Context) {
     }
 
     val getExercicio: Flow<List<Exercicio>> = context.dataStore.data.map { preferences ->
-        val json = preferences[FASE_KEY] ?: return@map emptyList()
+        val json = preferences[EXERCICIO_KEY] ?: return@map emptyList()
         gson.fromJson(json, object : TypeToken<List<Exercicio>>() {}.type) ?: emptyList()
     }
-
 
     suspend fun saveExercicios(exercicios: List<Exercicio>) {
         context.dataStore.edit { preferences ->
             val json = gson.toJson(exercicios)
-            preferences[FASE_KEY] = json
+            preferences[EXERCICIO_KEY] = json
         }
     }
+
+    val getResult: Flow<JsResult?> = context.dataStore.data.map { preferences ->
+        preferences[StoreExercicio.EXERCICIO_RESULT_KEY]?.let { json ->
+            StoreExercicio.gson.fromJson(json, JsResult::class.java)
+        }
+    }
+
+    // Save the Usuario object
+    suspend fun saveResult(resultado: JsResult) {
+        context.dataStore.edit { preferences ->
+            preferences[StoreExercicio.EXERCICIO_RESULT_KEY] = StoreExercicio.gson.toJson(resultado)
+        }
+    }
+
 }

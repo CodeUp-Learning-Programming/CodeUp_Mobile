@@ -44,7 +44,11 @@ import com.example.codeup.ui.composables.card.CardAprenda
 import com.example.codeup.ui.composables.card.CardExercicio
 import com.example.codeup.ui.composables.menu.MenuHome
 import com.example.codeup.ui.screens.TelaExercicio
+import com.example.codeup.ui.screens.viewmodels.AmizadeViewModel
 import com.example.codeup.ui.screens.viewmodels.ExercicioViewModel
+import com.example.codeup.ui.screens.viewmodels.FaseViewModel
+import com.example.codeup.ui.screens.viewmodels.LojaViewModel
+import com.example.codeup.ui.screens.viewmodels.UsuarioViewModel
 import com.example.codeup.util.StoreFase
 import com.example.codeup.util.StoreUserGraficoExercicio
 import kotlinx.coroutines.delay
@@ -74,6 +78,16 @@ fun TelaMenuAprenda(
         coroutineScope.launch {
             atualizando = true
             //Atualizar lista de amigos
+            val faseViewModel = FaseViewModel(usuario.token)
+            val lojaViewModel = LojaViewModel(usuario.token)
+            val amizadeViewModel = AmizadeViewModel(usuario.token)
+            val usuarioViewModel = UsuarioViewModel(usuario.token)
+                faseViewModel.buscarFasePelaMateria(1, context)
+                lojaViewModel.carregarLoja(context)
+                amizadeViewModel.listarAmigos(usuario.id, context)
+                amizadeViewModel.solicitacoesRecebidas(usuario.id, context)
+                usuarioViewModel.buscarExerciciosPorMes(usuario.id, context)
+                usuarioViewModel.ranking(context)
             delay(Random.nextLong(500, 3000))
             atualizando = false
         }
@@ -221,6 +235,10 @@ fun TelaMenuAprenda(
                             qtdExerciciosFase = listaFases[selectedCardIndex].qtdExerciciosFase,
                             qtdExerciciosFaseConcluidos = listaFases[selectedCardIndex].qtdExerciciosFaseConcluidos,
                             onClick = {
+                                coroutineScope.launch {
+                                    val storeFases = StoreFase.getInstance(context);
+                                    storeFases.saveFaseAtual(listaFases[selectedCardIndex])
+                                }
 
                                 val exercicioViewModel = ExercicioViewModel(usuario.token)
                                 exercicioViewModel.buscarExerciciosPorIdFase(

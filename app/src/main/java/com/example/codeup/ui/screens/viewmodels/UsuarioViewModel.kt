@@ -151,6 +151,7 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
                 if (usuarioResponse.isSuccessful && usuarioResponse.body() != null) {
                     val response = usuarioResponse.body()!!
                     storeRanking.saveRanking(response)
+                   // storeRanking.saveRankingUsuarioAtual(response)
                     Log.e("USUARIO", response.toString())
 
                 } else {
