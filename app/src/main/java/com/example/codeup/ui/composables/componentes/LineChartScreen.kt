@@ -1,4 +1,4 @@
-package com.example.codeup.ui.composables
+package com.example.codeup.ui.composables.componentes
 
 import android.graphics.Paint
 import androidx.compose.foundation.background
@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.yml.charts.axis.AxisData
+import co.yml.charts.common.extensions.formatToSinglePrecision
 import co.yml.charts.common.model.Point
 import co.yml.charts.ui.linechart.LineChart
 import co.yml.charts.ui.linechart.model.GridLines
@@ -24,48 +25,53 @@ import co.yml.charts.ui.linechart.model.SelectionHighlightPopUp
 import co.yml.charts.ui.linechart.model.ShadowUnderLine
 
 @Composable
-fun LineChartScreen() {
-    val steps = 3
-    val pointsData: List<Point> =
-        listOf(
-            Point(0.toFloat(), 16f),
-            Point(1f, 16f),
-            Point(2f, 29.toFloat()),
-            Point(3f, 14f)
-        )
+fun LineChartScreen(pointsData: List<Point>) {
+    val steps = pointsData.size
+
 
     val meses = listOf(
         "JAN", "FEV", "MAR", "ABR",
         "MAI", "JUN", "JUL", "AGO",
         "SET", "OUT", "NOV", "DEZ"
     )
+    // Mapeia os valores de x para os rótulos dos meses
+    val monthLabels = pointsData.map { point ->
+        val monthIndex = point.x.toInt() - 1 // x deve estar entre 1 e 12
+        if (monthIndex in 0..11) meses[monthIndex] else ""
+    }
+
 
     val xAxisData = AxisData.Builder()
         .axisStepSize(100.dp)
         .backgroundColor(Color.Transparent)
         .steps(pointsData.size - 1)
-        .labelData { i -> meses[i] }
-        .labelAndAxisLinePadding(15.dp)
+        .labelData { i -> monthLabels.getOrElse(i) { "" } }
+        .labelAndAxisLinePadding(20.dp)
         .axisLineColor(Color.White)
         .axisLabelColor(Color.White)
         .backgroundColor(Color.Black)
-        .startDrawPadding(0.dp) // Aumentando o padding inicial
         .build()
 
     val yAxisData = AxisData.Builder()
         .steps(steps)
+        .axisStepSize(100.dp)
         .axisLineColor(Color.White)
         .axisLabelColor(Color.White)
         .backgroundColor(Color.Black)
         .labelAndAxisLinePadding(20.dp)
         .labelData { i ->
-            "100"
+            // Adiciona yMin para obter os valores negativos do eixo à escala
+            val yMin = pointsData.minOf { it.y }
+            val yMax = pointsData.maxOf { it.y }
+            val yScale = (yMax - yMin) / steps
+            ((i * yScale) + yMin).formatToSinglePrecision()
         }.build()
 
     val lineChartData = LineChartData(
         paddingRight = 0.dp,
         paddingTop = 50.dp,
         bottomPadding = 5.dp,
+        isZoomAllowed = true,
         linePlotData = LinePlotData(
             lines = listOf(
                 Line(
@@ -113,4 +119,6 @@ fun LineChartScreen() {
             .background(Color.Black, shape = RoundedCornerShape(8.dp)),
         lineChartData = lineChartData
     )
+
+
 }

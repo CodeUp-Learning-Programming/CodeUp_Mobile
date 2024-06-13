@@ -21,7 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
-import com.example.codeup.ui.composables.TextoBranco
+import com.example.codeup.ui.composables.componentes.TextoBranco
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,6 +69,7 @@ fun MenuLoja(
                 }
 
             }
+//            PullRefreshIndicator(refreshing = atualizando, state = pullRefreshState)
 
 
         },

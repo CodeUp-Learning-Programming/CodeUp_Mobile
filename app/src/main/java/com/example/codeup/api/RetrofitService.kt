@@ -1,5 +1,6 @@
 package com.example.codeup.api
 
+import com.example.codeup.api.controller.AmizadeApi
 import com.example.codeup.api.controller.ExercicioApi
 import com.example.codeup.api.controller.FaseApi
 import com.example.codeup.api.controller.LojaApi
@@ -13,8 +14,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitService {
 
-    //    private const val BASE_URL = "http://34.238.58.124/"
-    private const val BASE_URL = "http://192.168.0.113:8080/api/"
+    //Ip máquina publica
+    //private const val BASE_URL = "http://52.44.103.17/api/"
+    private const val BASE_URL = "https://codeup.servehttp.com/api/"
+
+    //private const val BASE_URL = "http://10.18.32.128:8080/api/"
+
+    //Localhost
+    //private const val BASE_URL = "http://192.168.15.4:8080/api/"
 
     fun getApiExercicioService(token: String?): ExercicioApi {
         return createApiService(ExercicioApi::class.java, token)
@@ -34,6 +41,10 @@ object RetrofitService {
 
     fun getApiUsuarioService(token: String?): UsuarioApi {
         return createApiService(UsuarioApi::class.java, token)
+    }
+
+    fun getApiAmizadeService(token: String?): AmizadeApi {
+        return createApiService(AmizadeApi::class.java, token)
     }
 
     private val okHttpClient: OkHttpClient by lazy {

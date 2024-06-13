@@ -4,11 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,11 +18,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,30 +35,21 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 import com.example.codeup.data.UsuarioLoginRequest
-import com.example.codeup.ui.composables.BotaoAzul
-import com.example.codeup.ui.composables.CheckboxComGradiente
-import com.example.codeup.ui.composables.TextFieldBordaGradienteAzul
-import com.example.codeup.ui.composables.TextoAzulGradienteSublinhado
-import com.example.codeup.ui.composables.TextoBranco
+import com.example.codeup.ui.composables.componentes.BotaoAzul
+import com.example.codeup.ui.composables.componentes.CheckboxComGradiente
+import com.example.codeup.ui.composables.componentes.TextFieldBordaGradienteAzul
+import com.example.codeup.ui.composables.componentes.TextoAzulGradienteSublinhado
+import com.example.codeup.ui.composables.componentes.TextoBranco
 import com.example.codeup.ui.screens.viewmodels.UsuarioViewModel
 import com.example.codeup.ui.theme.CodeupTheme
 import com.example.codeup.util.StoreRememberUser
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class TelaLogin : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.light(0, 0),
-            navigationBarStyle = SystemBarStyle.light(0, 0)
-        )
-        window.decorView.apply {
-            // Hide both the navigation bar and the status bar.
-            // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
-            // a general rule, you should design your app to hide the status bar whenever you
-            // hide the navigation bar.
-            systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
-        }
         setContent {
             CodeupTheme {
                 Surface(
@@ -77,7 +67,6 @@ class TelaLogin : ComponentActivity() {
 fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
 
     //ViewModel
-    val carregando by usuarioViewModel.carregando.observeAsState(false)
     val loginStatus by usuarioViewModel.loginStatus.observeAsState()
 
     //DataStore
@@ -87,7 +76,7 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
     val emailSalvo = dataStore.getEmail.collectAsState(initial = "")
     val senhaSalva = dataStore.getPassword.collectAsState(initial = "")
 
-
+    val coroutineScope = rememberCoroutineScope()
     //Objeto Usuario
     val (usuarioLoginRequest, usuarioLoginRequestSetter) = remember {
         mutableStateOf(UsuarioLoginRequest())
@@ -96,20 +85,25 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
 
     var lembrar by remember { mutableStateOf(false) }
     var entrando by remember { mutableStateOf(false) }
-    //Logando automaticamente caso o usuário tenha selecionado lembrar anteriormente
-    if (emailSalvo.value!! != "" && senhaSalva.value!! != "" && !entrando) {
-        entrando = true
-        usuarioViewModel.login(
-            UsuarioLoginRequest(emailSalvo.value!!, senhaSalva.value!!),
-            context,
-            dataStore,
-            true
-        )
+
+    LaunchedEffect(emailSalvo.value, senhaSalva.value) {
+        if (emailSalvo.value!!.isNotEmpty() && senhaSalva.value!!.isNotEmpty() && !entrando) {
+            entrando = true
+            usuarioLoginRequestSetter(usuarioLoginRequest.copy(email = emailSalvo.value!!,senha = senhaSalva.value!!))
+            lembrar = true
+            usuarioViewModel.login(
+                UsuarioLoginRequest(emailSalvo.value!!, senhaSalva.value!!),
+                context,
+                dataStore,
+                true
+            )
+            delay(5000)
+            entrando = false
+        }
     }
 
     var emailInputValido by remember { mutableStateOf(false) }
     var senhaInputValido by remember { mutableStateOf(false) }
-
 
 
     Column(
@@ -211,15 +205,19 @@ fun Login(usuarioViewModel: UsuarioViewModel = UsuarioViewModel(null)) {
             )
 
             BotaoAzul(
-                loading = carregando,
+                loading = entrando,
                 text = stringResource(R.string.text_entrar), onClick = {
                     if (usuarioLoginRequest.email.isEmpty() || usuarioLoginRequest.senha.isEmpty()) {
                         emailInputValido = true
                         senhaInputValido = true
-
+                        entrando = false
                     } else {
                         usuarioViewModel.login(usuarioLoginRequest, context, dataStore, lembrar)
-
+                        coroutineScope.launch {
+                            entrando = true
+                            delay(5000)
+                            entrando = false
+                        }
                     }
                 }, modifier = Modifier.fillMaxWidth()
 

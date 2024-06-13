@@ -1,8 +1,7 @@
-package com.example.codeup.ui.composables
+package com.example.codeup.ui.composables.componentes
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -83,7 +82,6 @@ fun TextFieldBordaGradienteAzul(
         modifier = modifier.then(
             Modifier
                 .border(1.dp, corDaBorda, RoundedCornerShape(8.dp))
-                .height(55.dp)
                 .onFocusChanged { onFocusChanged(it) }
                 .background(
                     Color(0, 0, 0), shape = RoundedCornerShape(8.dp)

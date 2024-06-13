@@ -1,7 +1,5 @@
-
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.codeup.R
 import com.example.codeup.data.Materia
+import com.example.codeup.data.NotificacaoNavBar
 import com.example.codeup.data.Usuario
 import com.example.codeup.ui.TelasNavBar
 import com.example.codeup.ui.TelasNavBar.TELA_MENU_AMIGOS
@@ -32,7 +32,7 @@ import com.example.codeup.ui.TelasNavBar.TELA_MENU_APRENDA
 import com.example.codeup.ui.TelasNavBar.TELA_MENU_LOJA
 import com.example.codeup.ui.TelasNavBar.TELA_MENU_PERFIL
 import com.example.codeup.ui.TelasNavBar.TELA_MENU_RANKING
-import com.example.codeup.ui.composables.TextoBranco
+import com.example.codeup.ui.composables.componentes.ImagemComCirculoNotificacao
 import com.example.codeup.ui.composables.tela.TelaMenuAmigos
 import com.example.codeup.ui.composables.tela.TelaMenuAprenda
 import com.example.codeup.ui.composables.tela.TelaMenuLoja
@@ -40,23 +40,63 @@ import com.example.codeup.ui.composables.tela.TelaMenuPerfil
 import com.example.codeup.ui.composables.tela.TelaMenuRanking
 
 @Composable
-fun BarraNavegacao(navController: NavHostController, usuario: Usuario, materia: Materia) {
+fun BarraNavegacao(
+    navController: NavHostController,
+    usuario: Usuario,
+    materia: Materia,
+    listaNotificacao: List<NotificacaoNavBar>
+) {
+
+
     val items = listOf(
-        NavItem(TELA_MENU_APRENDA, R.drawable.icon_aprenda_selecionado, R.drawable.icon_aprenda, R.string.text_aprenda),
-        NavItem(TELA_MENU_RANKING, R.drawable.icon_medalha_selecionado, R.drawable.icon_medalha, R.string.text_ranking),
-        NavItem(TELA_MENU_AMIGOS, R.drawable.icon_amigos_selecionado, R.drawable.icon_amigos, R.string.text_amigos),
-        NavItem(TELA_MENU_LOJA, R.drawable.icon_loja_selecionado, R.drawable.icon_loja, R.string.text_loja),
-        NavItem(TELA_MENU_PERFIL, R.drawable.icon_usuario_selecionado, R.drawable.icon_usuario, R.string.text_perfil)
+        NavItem(
+            TELA_MENU_APRENDA,
+            stringResource(id = R.string.text_aprenda),
+            R.drawable.icon_aprenda_selecionado,
+            R.drawable.icon_aprenda,
+            R.string.text_aprenda,
+            listaNotificacao[0].totalNotificacoes
+        ), NavItem(
+            TELA_MENU_RANKING,
+            stringResource(id = R.string.text_ranking),
+            R.drawable.icon_medalha_selecionado,
+            R.drawable.icon_medalha,
+            R.string.text_ranking,
+            listaNotificacao[1].totalNotificacoes
+
+        ), NavItem(
+            TELA_MENU_AMIGOS,
+            stringResource(id = R.string.text_amigos),
+            R.drawable.icon_amigos_selecionado,
+            R.drawable.icon_amigos,
+            R.string.text_amigos,
+            listaNotificacao[2].totalNotificacoes
+        ), NavItem(
+            TELA_MENU_LOJA,
+            stringResource(id = R.string.text_loja),
+            R.drawable.icon_loja_selecionado,
+            R.drawable.icon_loja,
+            R.string.text_loja,
+            listaNotificacao[3].totalNotificacoes
+        ), NavItem(
+            TELA_MENU_PERFIL,
+            stringResource(id = R.string.text_perfil),
+            R.drawable.icon_usuario_selecionado,
+            R.drawable.icon_usuario,
+            R.string.text_perfil,
+            listaNotificacao[4].totalNotificacoes
+        )
     )
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        , contentAlignment = Alignment.BottomCenter) {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .height(80.dp)
-            .padding(bottom = 80.dp)
-            .background(Color.Black)) {
+    Box(
+        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 100.dp)
+                .background(Color.Black)
+        ) {
             NavHost(
                 navController = navController,
                 startDestination = TELA_MENU_APRENDA.name,
@@ -77,8 +117,11 @@ fun BarraNavegacao(navController: NavHostController, usuario: Usuario, materia: 
                 items.forEach { item ->
                     composable(item.route.name) {
                         when (item.route) {
-                            TELA_MENU_APRENDA -> TelaMenuAprenda(usuario = usuario, materia = materia)
-                            TELA_MENU_RANKING -> TelaMenuRanking(usuario = usuario)
+                            TELA_MENU_APRENDA -> TelaMenuAprenda(
+                                usuario = usuario, materia = materia
+                            )
+
+                            TELA_MENU_RANKING -> TelaMenuRanking()
                             TELA_MENU_AMIGOS -> TelaMenuAmigos(usuario = usuario)
                             TELA_MENU_LOJA -> TelaMenuLoja(usuario = usuario)
                             TELA_MENU_PERFIL -> TelaMenuPerfil(usuario = usuario)
@@ -88,7 +131,11 @@ fun BarraNavegacao(navController: NavHostController, usuario: Usuario, materia: 
             }
         }
 
-        NavigationBar(items, navController.currentBackStackEntryAsState().value?.destination?.route, navController)
+        NavigationBar(
+            items,
+            navController.currentBackStackEntryAsState().value?.destination?.route,
+            navController
+        )
     }
 }
 
@@ -97,7 +144,7 @@ fun NavigationBar(items: List<NavItem>, currentRoute: String?, navController: Na
     Box(
         modifier = Modifier
             .background(Color.Transparent)
-            .height(80.dp)
+            .height(100.dp)
             .padding(top = 10.dp),
         contentAlignment = Alignment.TopCenter
     ) {
@@ -106,6 +153,7 @@ fun NavigationBar(items: List<NavItem>, currentRoute: String?, navController: Na
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            var posicaoLista = 0
             items.forEach { item ->
                 val isSelected = currentRoute == item.route.name
                 NavigationIcon(item, isSelected, navController, currentRoute)
@@ -115,9 +163,13 @@ fun NavigationBar(items: List<NavItem>, currentRoute: String?, navController: Na
 }
 
 @Composable
-fun NavigationIcon(item: NavItem, isSelected: Boolean, navController: NavHostController, currentRoute: String?) {
+fun NavigationIcon(
+    item: NavItem, isSelected: Boolean, navController: NavHostController, currentRoute: String?
+) {
     Column(
         modifier = Modifier
+            .height(75.dp)
+            .width(75.dp)
             .clickable(enabled = !isSelected) { // Desabilita o clique se já está na tela selecionada
                 if (currentRoute != item.route.name) {
                     navController.navigate(item.route.name) {
@@ -131,12 +183,19 @@ fun NavigationIcon(item: NavItem, isSelected: Boolean, navController: NavHostCon
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Image(
-            painter = if (isSelected) painterResource(id = item.iconSelected) else painterResource(id = item.iconUnselected),
-            contentDescription = stringResource(item.contentDesc),
+        ImagemComCirculoNotificacao(
+            painter = if (isSelected) painterResource(id = item.iconSelected) else painterResource(
+                id = item.iconUnselected
+            ), totalNotificacoes = item.totalNotificacoes, texto = stringResource(item.contentDesc)
         )
-        TextoBranco(texto = stringResource(item.contentDesc), tamanhoFonte = 12)
     }
 }
 
-data class NavItem(val route: TelasNavBar, val iconSelected: Int, val iconUnselected: Int, val contentDesc: Int)
+data class NavItem(
+    val route: TelasNavBar,
+    val imageName: String,
+    val iconSelected: Int,
+    val iconUnselected: Int,
+    val contentDesc: Int,
+    val totalNotificacoes: Int = 0,
+)

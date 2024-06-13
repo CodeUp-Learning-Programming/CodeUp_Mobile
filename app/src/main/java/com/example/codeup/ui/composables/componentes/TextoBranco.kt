@@ -1,7 +1,8 @@
-package com.example.codeup.ui.composables
+package com.example.codeup.ui.composables.componentes
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -15,7 +16,8 @@ fun TextoBranco(
     texto: String,
     tamanhoFonte: Int,
     pesoFonte: String = "",
-    alinhamentoTexto: TextAlign = TextAlign.Start
+    alinhamentoTexto: TextAlign = TextAlign.Start,
+    modifier: Modifier = Modifier
 ) {
     if (pesoFonte == "Titulo") {
         Text(

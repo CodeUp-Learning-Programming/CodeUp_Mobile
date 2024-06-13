@@ -1,13 +1,10 @@
-package com.example.codeup.ui.screens
+                    package com.example.codeup.ui.screens
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,10 +31,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
 import com.example.codeup.data.UsuarioRegisterRequest
-import com.example.codeup.ui.composables.BotaoAzul
-import com.example.codeup.ui.composables.TextFieldBordaGradienteAzul
-import com.example.codeup.ui.composables.TextoAzulGradienteSublinhado
-import com.example.codeup.ui.composables.TextoBranco
+import com.example.codeup.ui.composables.componentes.BotaoAzul
+import com.example.codeup.ui.composables.componentes.TextFieldBordaGradienteAzul
+import com.example.codeup.ui.composables.componentes.TextoAzulGradienteSublinhado
+import com.example.codeup.ui.composables.componentes.TextoBranco
 import com.example.codeup.ui.screens.viewmodels.UsuarioViewModel
 import com.example.codeup.ui.theme.CodeupTheme
 import com.maxkeppeker.sheets.core.models.base.rememberSheetState
@@ -50,20 +47,10 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TelaCadastro : ComponentActivity() {
+                    class TelaCadastro : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.light(0, 0),
-            navigationBarStyle = SystemBarStyle.light(0, 0)
-        )
-        window.decorView.apply {
-            // Hide both the navigation bar and the status bar.
-            // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
-            // a general rule, you should design your app to hide the status bar whenever you
-            // hide the navigation bar.
-            systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
-        }
+
         setContent {
             CodeupTheme {
                 Surface(

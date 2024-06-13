@@ -25,9 +25,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.codeup.R
 import com.example.codeup.data.ItemLoja
-import com.example.codeup.ui.composables.BotaoAzulClaro
-import com.example.codeup.ui.composables.BotaoPretoBordaBranca
-import com.example.codeup.ui.composables.TextoBranco
+import com.example.codeup.ui.composables.componentes.BotaoAzulClaro
+import com.example.codeup.ui.composables.componentes.BotaoPretoBordaBranca
+import com.example.codeup.ui.composables.componentes.TextoBranco
 
 @Composable
 fun CardItemLoja(
@@ -73,10 +73,24 @@ fun CardItemLoja(
                             .width(60.dp)
                             .clip(CircleShape)
                     ) {
-                        AsyncImage(
-                            model = itemLoja.fotoItem,
-                            contentDescription = itemLoja.descricaoItem,
-                        )
+                        if (itemLoja.tipoItem != "Utilitários") {
+                            AsyncImage(
+                                model = itemLoja.fotoItem,
+                                contentDescription = itemLoja.descricaoItem,
+                            )
+                        } else {
+                            if (itemLoja.nomeItem == "Reabastecimento de vidas") {
+                                val fotoCoracao: Painter =
+                                    painterResource(R.drawable.icon_item_coracao)
+
+                                Image(
+                                    modifier = Modifier.align(Alignment.Center),
+                                    painter = fotoCoracao,
+                                    contentDescription = stringResource(R.string.text_item_coracao),
+                                )
+                            }
+                        }
+
                     }
                 }
                 //Nome

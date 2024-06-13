@@ -22,13 +22,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
-import com.example.codeup.ui.composables.ImagemFundo
-import com.example.codeup.ui.composables.TextoBranco
+import com.example.codeup.ui.composables.componentes.ImagemFundo
+import com.example.codeup.ui.composables.componentes.TextoBranco
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuHome(
-    imagem: String,
+    tema: Int,
     nomeMateria: String,
     totalCoracoes: Int,
     totalSequencia: Int,
@@ -174,7 +174,7 @@ fun MenuHome(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
 
-            ImagemFundo(backgroundImageResId = R.drawable.tema_pontos) {
+            ImagemFundo(backgroundImageResId = tema) {
                 //Colocar conteudo aqui dinamicamente
                 conteudo()
             }

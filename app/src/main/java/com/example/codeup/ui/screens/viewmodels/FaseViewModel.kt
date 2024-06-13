@@ -6,14 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.codeup.api.RetrofitService
-import com.example.codeup.data.Fase
 import com.example.codeup.util.StoreFase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 class FaseViewModel(private val bearerToken: String?): ViewModel(){
-    val fases = MutableLiveData<List<Fase>>() // Corrigido para o tipo List<Fase>
+//    val fases = MutableLiveData<List<Fase>>() // Corrigido para o tipo List<Fase>
     val apiFase = RetrofitService.getApiFaseService(bearerToken)
     val erroApi = MutableLiveData("")
 
@@ -25,7 +24,7 @@ class FaseViewModel(private val bearerToken: String?): ViewModel(){
                 val response = apiFase.buscarFasePelaMateria(idMateria)
                 if (response.isSuccessful && response.body() != null) {
                     val faseResponse = response.body()
-                    fases.value = faseResponse ?: emptyList()
+//                    fases.value = faseResponse ?: emptyList()
                     storeFases.saveFases(faseResponse!!)
                 } else {
                     Log.e("FaseViewModel", "Erro ao carregar fases: ${response.message()}")

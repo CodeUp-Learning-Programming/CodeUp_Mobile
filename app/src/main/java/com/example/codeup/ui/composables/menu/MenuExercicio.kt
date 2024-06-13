@@ -30,15 +30,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.codeup.R
-import com.example.codeup.ui.composables.BotaoAzul
 import com.example.codeup.ui.composables.card.CardSair
+import com.example.codeup.ui.composables.componentes.BotaoAzul
 import com.example.codeup.ui.screens.TelaHome
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuExercicio(
     totalCoracoes: Int,
-    conteudo: @Composable () -> Unit
+    onClickReportar: () -> Unit,
+    onClickValidarResposta: () -> Unit,
+    conteudo: @Composable () -> Unit,
+    loading: Boolean = false
 ) {
 
     var mostrarPopup by remember { mutableStateOf(false) }
@@ -78,7 +81,7 @@ fun MenuExercicio(
                         }
 
                         val painter2: Painter = painterResource(id = imagemCoracoes) // isso tem que ser dinamico
-                        val painter3: Painter = painterResource(id = R.drawable.icon_bandeira)
+                        val reportar: Painter = painterResource(id = R.drawable.icon_bandeira)
 
                         Image(
                             modifier = Modifier.clickable(onClick = abrirPopup),
@@ -90,8 +93,9 @@ fun MenuExercicio(
                             contentDescription = stringResource(R.string.text_descricao_materia),
                         )
                         Image(
-                            painter = painter3,
-                            contentDescription = stringResource(R.string.text_descricao_materia),
+                            modifier = Modifier.clickable(onClick = onClickReportar),
+                            painter = reportar,
+                            contentDescription = stringResource(R.string.text_icone_reportar),
                         )
                     }
                 }
@@ -115,8 +119,8 @@ fun MenuExercicio(
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        BotaoAzul(modifier = Modifier
-                            .fillMaxWidth(), text = stringResource(R.string.text_enviar).uppercase(), onClick = { /**/ })
+
+                        BotaoAzul(modifier = Modifier.fillMaxWidth(), text = stringResource(R.string.text_enviar).uppercase(), onClick = onClickValidarResposta, loading = loading)
                     }
                 }
             }

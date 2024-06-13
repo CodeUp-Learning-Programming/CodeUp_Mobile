@@ -9,12 +9,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.codeup.api.RetrofitService
 import com.example.codeup.data.FotoPerfilRequest
 import com.example.codeup.data.Usuario
+import com.example.codeup.data.UsuarioAtualizado
 import com.example.codeup.data.UsuarioLoginRequest
 import com.example.codeup.data.UsuarioRegisterRequest
 import com.example.codeup.ui.screens.TelaHome
 import com.example.codeup.ui.screens.TelaLogin
+import com.example.codeup.util.StoreRanking
 import com.example.codeup.util.StoreRememberUser
 import com.example.codeup.util.StoreUser
+import com.example.codeup.util.StoreUserGraficoExercicio
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -24,7 +27,6 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
 
 
     // Estado para carregar indicação
-    var carregando = MutableLiveData(false)
     val loginStatus = MutableLiveData<String?>()
 
     val usuarioAtivo = MutableLiveData<Usuario>()
@@ -60,13 +62,12 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
     ) {
         Log.d("USUARIO","Iniciando Login")
         viewModelScope.launch(Dispatchers.IO) {
-            carregando.postValue(true)
-
             try {
                 val storeUser = StoreUser.getInstance(context)
                 val usuarioResponse = apiUsuario.login(usuarioLoginRequest)
 
                 if (usuarioResponse.isSuccessful && usuarioResponse.body() != null) {
+
                     val usuario = usuarioResponse.body()!!
                     usuarioAtivo.postValue(usuario)
                     storeUser.saveUsuario(usuario)
@@ -80,6 +81,7 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
                     val telaHome = Intent(context, TelaHome::class.java)
                     context.startActivity(telaHome)
 
+
                 } else {
                     Log.d("USUARIO","Login mal-sucedido")
                     loginStatus.postValue("Erro de login: ${usuarioResponse.errorBody()?.string()}")
@@ -87,8 +89,6 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
             } catch (e: Exception) {
                 Log.d("USUARIO","Erro de conexão")
                 loginStatus.postValue("Erro de conexão: ${e.message}")
-            } finally {
-                carregando.postValue(false)
             }
         }
     }
@@ -102,9 +102,16 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
                 val usuarioResponse = apiUsuario.buscarPorId(id)
 
                 if (usuarioResponse.isSuccessful && usuarioResponse.body() != null) {
-                    val usuario = usuarioResponse.body()!!
-                    usuarioAtivo.postValue(usuario)
-                    storeUser.saveUsuario(usuario)
+                    val usuarioAtualizado = usuarioResponse.body()!!
+
+                    val usuarioUpdate = UsuarioAtualizado(
+                        moedas = usuarioAtualizado.moedas,
+                        nivel = usuarioAtualizado.nivel,
+                        xp = usuarioAtualizado.xp,
+                        itensAdquiridos = usuarioAtualizado.itensAdquiridos
+                    )
+
+                    storeUser.atualizarUsuario(id, usuarioUpdate)
                 } else {
                     Log.e("API", " erro no post")
                 }
@@ -121,7 +128,7 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                if (tipoItem == "Imagem") {
+                if (tipoItem == "Foto de Perfil") {
                     val usuarioResponse = apiUsuario.atualizarFotoPerfil(FotoPerfilRequest(fotoItem))
 
                     if (usuarioResponse.isSuccessful) {
@@ -142,4 +149,45 @@ class UsuarioViewModel(private val bearerToken: String?) : ViewModel() {
         }
     }
 
+    fun ranking(context: Context) {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val storeRanking = StoreRanking.getInstance(context)
+                val usuarioResponse = apiUsuario.ranking()
+
+                if (usuarioResponse.isSuccessful && usuarioResponse.body() != null) {
+                    val response = usuarioResponse.body()!!
+                    storeRanking.saveRanking(response)
+                   // storeRanking.saveRankingUsuarioAtual(response)
+                    Log.e("USUARIO", response.toString())
+
+                } else {
+                    Log.e("API", " erro no post")
+                }
+            } catch (e: Exception) {
+                Log.d("USUARIO","Erro de conexão: ${e.message}")
+            }
+        }
+    }
+    fun buscarExerciciosPorMes(id: Int, context: Context) {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val storeUserGraficoExercicio = StoreUserGraficoExercicio.getInstance(context)
+                val usuarioResponse = apiUsuario.buscarExerciciosPorMes(id)
+
+                if (usuarioResponse.isSuccessful && usuarioResponse.body() != null) {
+                    val usuario = usuarioResponse.body()!!
+                    storeUserGraficoExercicio.saveListExercicios(usuario)
+                    Log.e("USUARIO", usuario.toString())
+
+                } else {
+                    Log.e("API", " erro no post")
+                }
+            } catch (e: Exception) {
+                Log.d("USUARIO","Erro de conexão: ${e.message}")
+            }
+        }
+    }
 }

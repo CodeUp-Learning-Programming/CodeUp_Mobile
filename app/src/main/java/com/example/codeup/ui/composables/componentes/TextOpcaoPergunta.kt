@@ -1,4 +1,4 @@
-package com.example.codeup.ui.composables
+package com.example.codeup.ui.composables.componentes
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,20 +25,38 @@ fun TextOpcaoPergunta(
     texto: String,
     isSelected: Boolean,
     onOptionSelected: () -> Unit,
-    dado_incorreto: Boolean = false,
-) {
+    respostaCerta: Boolean = false,
+    validarResposta : Boolean = false,
+
+    ) {
 
     val interactionSource = remember { MutableInteractionSource() }
 
     //selecionado
-    val corDaBorda = if (isSelected) {
+    val corDaBorda = if (isSelected && !validarResposta) {
         Brush.horizontalGradient(
             colors = listOf(
                 Color(0, 225, 242),
                 Color(0, 132, 249)
             )
         )
-    } else {
+    } else if(!respostaCerta && validarResposta){
+        //padrão
+        Brush.horizontalGradient(
+            colors = listOf(
+                Color(242, 0, 0),
+                Color(249, 45, 0)
+            )
+        )
+    } else if(respostaCerta && validarResposta){
+        //padrão
+        Brush.horizontalGradient(
+            colors = listOf(
+                Color(48, 242, 0),
+                Color(4, 186, 1)
+            )
+        )
+    }else {
         //padrão
         Brush.horizontalGradient(
             colors = listOf(
